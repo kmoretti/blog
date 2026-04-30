@@ -12,6 +12,15 @@ const pageDescription = "我的朋友们";
   className="max-w-100px flex h-svh flex-col justify-center"
 >
   <main class="space-y-6">
+    <header class="mb-6 space-y-2">
+      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
+        <a href="/" class="hover:underline">Frederick's Blog</a>
+        <span class="mx-1">/</span>
+      </nav>
+      <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+        朋友们
+      </h1>
+    </header>
     <div
       class="grid grid-cols-6 gap-3 p-4 sm:grid-cols-8 sm:gap-4 md:grid-cols-10 lg:grid-cols-10"
     >
@@ -21,7 +30,7 @@ const pageDescription = "我的朋友们";
             href={friend.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="group relative flex items-center justify-center transition-transform hover:scale-110 hover:z-10"
+            class="group relative flex items-center justify-center transition-transform hover:z-10 hover:scale-110"
             title={friend.name}
           >
             <img
@@ -30,7 +39,7 @@ const pageDescription = "我的朋友们";
               class="w-12 rounded-full object-cover sm:w-14 md:w-16"
               loading="lazy"
             />
-            <span class="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-200 dark:text-gray-800 pointer-events-none z-50">
+            <span class="pointer-events-none absolute bottom-[-2rem] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-200 dark:text-gray-800">
               {friend.name}
             </span>
           </a>

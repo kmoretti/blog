@@ -19,12 +19,18 @@ const { Content } = await entry.render();
   className="max-w-100px flex flex-col justify-center"
 >
   <main>
-    <a
-      href="/friends/"
-      class="text-zinc-500 hover:underline dark:text-zinc-500"
-    >
-      &larr; 返回友情链接
-    </a>
+    <header class="mb-6 space-y-2">
+      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
+        <a href="/" class="hover:underline">Frederick's Blog</a>
+        <span class="mx-1">/</span>
+        <a href="/friends/" class="hover:underline">朋友们</a>
+        <span class="mx-1">/</span>
+      </nav>
+      <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+        交换友链
+      </h1>
+      <hr class="dark:border-zinc-700" />
+    </header>
     <article class="prose dark:prose-invert">
       <Content />
     </article>
