@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import Heatmap from "../components/Heatmap.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Layout from "../layouts/Layout.astro";
 import { formatDate } from "../lib/utils";
@@ -19,10 +18,19 @@ const latestPosts = sortedPosts.slice(0, 2);
   className="flex h-svh max-w-sm flex-col justify-center"
 >
   <main class="space-y-4">
-    <Heatmap />
-
-    <!-- 最新文章列表 -->
+    <article>
+      <h1>Hej.</h1>
+      <p>
+        这里是<a href="/about/">Frederick</a
+        >的个人站，一个属于自己的小世界。博主闲暇时间有参与开源社区，欢迎在<a
+          target="_blank"
+          href="https://github.com/fenychn0206">GitHub</a
+        >上关注我！
+      </p>
+      <hr />
+    </article>
     <ul class="flex flex-col gap-1.5">
+      <b>近期文章</b>
       <div class="space-y-3">
         {
           latestPosts.map((post) => (

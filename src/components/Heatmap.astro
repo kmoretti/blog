@@ -1,23 +1,25 @@
 ---
 import { getColorIntensity, getHeatmapData } from "../lib/heatmap";
 
-const heatmapData = await getHeatmapData(100);
+const desktopRows = 5;
+const desktopCols = 30;
+const mobileRows = 4;
+const mobileCols = 20;
+
+const desktopCellCount = desktopRows * desktopCols;
+const mobileCellCount = mobileRows * mobileCols;
+
+const heatmapData = await getHeatmapData(
+  Math.max(desktopCellCount, mobileCellCount),
+);
 const maxWordCount = Math.max(...heatmapData.map((d) => d.wordCount));
-
-// 将40天的数据分成4行，每行10个
-const rows = 5;
-const cols = 20;
-const grid: typeof heatmapData = [];
-
-for (let i = 0; i < rows * cols; i++) {
-  grid.push(heatmapData[i] || { date: new Date(), wordCount: 0 });
-}
+const grid = heatmapData;
 ---
 
 <div class="heatmap-container relative space-y-2">
-  <div class="grid gap-1.5" style="grid-template-columns: repeat(20, 1fr);">
+  <div class="heatmap-grid grid gap-1.5">
     {
-      grid.map((day, index) => {
+      grid.map((day) => {
         const colorClass = getColorIntensity(day.wordCount, maxWordCount);
         const dateStr = day.date.toLocaleDateString("zh-CN", {
           year: "numeric",
@@ -46,6 +48,20 @@ for (let i = 0; i < rows * cols; i++) {
 </div>
 
 <style>
+  .heatmap-grid {
+    grid-template-columns: repeat(30, 1fr);
+  }
+
+  @media (max-width: 639px) {
+    .heatmap-grid {
+      grid-template-columns: repeat(20, 1fr);
+    }
+
+    .heatmap-grid > :not(:nth-last-child(-n + 80)) {
+      display: none;
+    }
+  }
+
   .heatmap-cell:hover {
     transform: scale(1.1);
     z-index: 20;

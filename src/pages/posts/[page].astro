@@ -2,6 +2,7 @@
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import Heatmap from "../../components/Heatmap.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../lib/utils";
@@ -24,6 +25,7 @@ const { page }: { page: Page<CollectionEntry<"posts">> } = Astro.props;
   className="max-w-100px flex h-svh flex-col justify-center"
 >
   <main class="flex flex-col gap-4">
+    <Heatmap />
     <ul class="flex flex-col gap-1.5">
       {
         page.data.map((post: any) => (

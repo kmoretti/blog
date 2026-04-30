@@ -9,7 +9,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   html.dark .astro-code,
   html.dark .astro-code span {
@@ -62,13 +61,16 @@
       @apply my-4 max-h-[600px] overflow-auto rounded-lg border p-4 font-mono text-sm font-medium dark:border-zinc-700;
     }
     img {
-      @apply my-4 rounded-lg border dark:border-zinc-700 block mx-auto;
+      @apply mx-auto my-4 block rounded-lg border dark:border-zinc-700;
     }
     video {
       @apply my-4 rounded-lg border dark:border-zinc-700;
     }
     blockquote {
       @apply my-4 border-l-2 pl-4;
+    }
+    hr {
+      @apply dark:border-zinc-700;
     }
     /* GitHub-style alerts */
     .markdown-alert {
