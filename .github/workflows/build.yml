@@ -1,9 +1,10 @@
-name: Astro 1Panel Depoly
+name: Build And Publish Deploy Branch
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,58 +13,36 @@ env:
   TZ: Asia/Shanghai
 
 jobs:
-  build-and-deploy:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: 检查
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 设置 pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           run_install: false
 
-      - name: 设置 Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: pnpm
 
-      - name: 安装依赖
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: 构建
+
+      - name: Build site
         run: pnpm build
 
-      - name: 构建静态产物到 deploy 分支
+      - name: Publish dist to deploy branch
         run: |
           cd dist
           git init
           git checkout -B deploy
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add .
-          git commit -m "Deploy: ${{ github.event.head_commit.message }} [$(date +'%Y-%m-%d %H:%M:%S')]"
-          # 强制推送到仓库的 deploy 分支
-          git push --force --quiet "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:deploy
-      - name: 推送至服务器
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          port: ${{ secrets.PORT }}
-          script: |
-            SITE_DIR="/opt/1panel/www/sites/www.ooowl.net/index"
-            mkdir -p $SITE_DIR
-            cd $SITE_DIR
-            git config --global --add safe.directory $SITE_DIR
-            if [ ! -d ".git" ]; then
-              git init
-            fi
-            git fetch --depth=1 "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" deploy
-            git checkout -B deploy FETCH_HEAD
-            git reset --hard FETCH_HEAD
-            git clean -fd
-            chown -R 1000:1000 $SITE_DIR
-            echo "Build successfully deployed to server at $(date +'%Y-%m-%d %H:%M:%S')!"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy: ${{ github.sha }}" || echo "No changes to commit"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:deploy
