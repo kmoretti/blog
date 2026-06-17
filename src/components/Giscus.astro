@@ -7,33 +7,34 @@ interface Props {
 }
 
 const { pageKey, pageTitle } = Astro.props;
+const scriptConfig = {
+  repo: GISCUS_CONFIG.repo,
+  repoId: GISCUS_CONFIG.repoId,
+  category: GISCUS_CONFIG.category,
+  categoryId: GISCUS_CONFIG.categoryId,
+  mapping: GISCUS_CONFIG.mapping,
+  strict: GISCUS_CONFIG.strict,
+  reactionsEnabled: GISCUS_CONFIG.reactionsEnabled,
+  emitMetadata: GISCUS_CONFIG.emitMetadata,
+  inputPosition: GISCUS_CONFIG.inputPosition,
+  lang: GISCUS_CONFIG.lang,
+  pageKey,
+  pageTitle,
+};
 ---
 
 <div class="giscus-container">
   <p class="giscus-hint">来过，就留下你的足迹吧！</p>
-  <div
-    id="giscus-comments"
-    data-page-key={pageKey}
-    data-repo={GISCUS_CONFIG.repo}
-    data-repo-id={GISCUS_CONFIG.repoId}
-    data-category={GISCUS_CONFIG.category}
-    data-category-id={GISCUS_CONFIG.categoryId}
-    data-mapping={GISCUS_CONFIG.mapping}
-    data-strict={GISCUS_CONFIG.strict}
-    data-reactions-enabled={GISCUS_CONFIG.reactionsEnabled}
-    data-emit-metadata={GISCUS_CONFIG.emitMetadata}
-    data-input-position={GISCUS_CONFIG.inputPosition}
-    data-lang={GISCUS_CONFIG.lang}
-    data-page-title={GISCUS_CONFIG.mapping === "specific" ? pageTitle : undefined}
-  >
-  </div>
+  <div id="giscus-comments"></div>
 </div>
 
-<script>
+<script is:inline define:vars={{ giscusConfig: scriptConfig }}>
   const GISCUS_PATH_KEY = "__giscusLastPath";
-  const globalWindow = window as typeof window & {
-    __giscusLastPath?: string;
-  };
+  const GISCUS_CONFIG_KEY = "__giscusConfig";
+  const GISCUS_HANDLERS_BOUND_KEY = "__giscusHandlersBound";
+  const globalWindow = window;
+
+  globalWindow[GISCUS_CONFIG_KEY] = giscusConfig;
 
   function getGiscusTheme() {
     return document.documentElement.classList.contains("dark")
@@ -43,7 +44,9 @@ const { pageKey, pageTitle } = Astro.props;
 
   function getConfig() {
     const container = document.getElementById("giscus-comments");
-    if (!(container instanceof HTMLElement)) return null;
+    const config = globalWindow[GISCUS_CONFIG_KEY];
+
+    if (!(container instanceof HTMLElement) || !config) return null;
 
     const {
       repo,
@@ -58,7 +61,7 @@ const { pageKey, pageTitle } = Astro.props;
       lang,
       pageKey,
       pageTitle,
-    } = container.dataset;
+    } = config;
 
     if (!repo || !repoId || !category || !categoryId) return null;
 
@@ -91,7 +94,7 @@ const { pageKey, pageTitle } = Astro.props;
       const container = document.getElementById("giscus-comments");
       if (container) {
         container.innerHTML =
-          '<p class="text-sm text-zinc-500 dark:text-zinc-400">Giscus 尚未完成配置。</p>';
+          '<p class="text-sm text-zinc-500 dark:text-zinc-400">Giscus 评论未配置。</p>';
       }
       return;
     }
@@ -145,17 +148,20 @@ const { pageKey, pageTitle } = Astro.props;
 
   initGiscus();
 
-  const observer = new MutationObserver(() => {
-    updateGiscusTheme();
-  });
+  if (!globalWindow[GISCUS_HANDLERS_BOUND_KEY]) {
+    const observer = new MutationObserver(() => {
+      updateGiscusTheme();
+    });
 
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["class"],
-  });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
-  document.addEventListener("astro:after-swap", initGiscus);
-  document.addEventListener("astro:page-load", updateGiscusTheme);
+    document.addEventListener("astro:after-swap", initGiscus);
+    document.addEventListener("astro:page-load", updateGiscusTheme);
+    globalWindow[GISCUS_HANDLERS_BOUND_KEY] = true;
+  }
 </script>
 
 <style is:global>
