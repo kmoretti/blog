@@ -1,23 +1,12 @@
 ---
+import { GISCUS_CONFIG } from "../consts";
+
 interface Props {
   pageKey: string;
   pageTitle: string;
 }
 
 const { pageKey, pageTitle } = Astro.props;
-
-const {
-  PUBLIC_GISCUS_REPO,
-  PUBLIC_GISCUS_REPO_ID,
-  PUBLIC_GISCUS_CATEGORY,
-  PUBLIC_GISCUS_CATEGORY_ID,
-  PUBLIC_GISCUS_MAPPING = "pathname",
-  PUBLIC_GISCUS_STRICT = "0",
-  PUBLIC_GISCUS_REACTIONS_ENABLED = "1",
-  PUBLIC_GISCUS_EMIT_METADATA = "0",
-  PUBLIC_GISCUS_INPUT_POSITION = "top",
-  PUBLIC_GISCUS_LANG = "zh-CN",
-} = import.meta.env;
 ---
 
 <div class="giscus-container">
@@ -26,16 +15,16 @@ const {
     id="giscus-comments"
     data-page-key={pageKey}
     data-page-title={pageTitle}
-    data-repo={PUBLIC_GISCUS_REPO}
-    data-repo-id={PUBLIC_GISCUS_REPO_ID}
-    data-category={PUBLIC_GISCUS_CATEGORY}
-    data-category-id={PUBLIC_GISCUS_CATEGORY_ID}
-    data-mapping={PUBLIC_GISCUS_MAPPING}
-    data-strict={PUBLIC_GISCUS_STRICT}
-    data-reactions-enabled={PUBLIC_GISCUS_REACTIONS_ENABLED}
-    data-emit-metadata={PUBLIC_GISCUS_EMIT_METADATA}
-    data-input-position={PUBLIC_GISCUS_INPUT_POSITION}
-    data-lang={PUBLIC_GISCUS_LANG}
+    data-repo={GISCUS_CONFIG.repo}
+    data-repo-id={GISCUS_CONFIG.repoId}
+    data-category={GISCUS_CONFIG.category}
+    data-category-id={GISCUS_CONFIG.categoryId}
+    data-mapping={GISCUS_CONFIG.mapping}
+    data-strict={GISCUS_CONFIG.strict}
+    data-reactions-enabled={GISCUS_CONFIG.reactionsEnabled}
+    data-emit-metadata={GISCUS_CONFIG.emitMetadata}
+    data-input-position={GISCUS_CONFIG.inputPosition}
+    data-lang={GISCUS_CONFIG.lang}
   >
   </div>
 </div>

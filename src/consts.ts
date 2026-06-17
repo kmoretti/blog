@@ -7,3 +7,16 @@ export const SITE_DESCRIPTION =
   "克喵的博客我在这里记录我的日常生活、踩坑记录和资源分享。";
 
 export const EMAIL = "mcy@kemiaosw.top";
+
+export const GISCUS_CONFIG = {
+  repo: "kmoretti/blog",
+  repoId: "R_kgDOS9I8wA",
+  category: "评论",
+  categoryId: "DIC_kwDOS9I8wM4C_VFM",
+  mapping: "pathname",
+  strict: "1",
+  reactionsEnabled: "1",
+  emitMetadata: "0",
+  inputPosition: "top",
+  lang: "zh-CN",
+} as const;
