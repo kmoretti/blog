@@ -22,7 +22,8 @@
       this.touchEndX = 0;
       this.wheelTimer = null;
       this.preloadedImages = {};
-      this.isBound = false;
+      this.isDocumentBound = false;
+      this.isOverlayBound = false;
 
       this.handleDocumentClick = this.handleDocumentClick.bind(this);
       this.handleOverlayClick = this.handleOverlayClick.bind(this);
@@ -39,10 +40,9 @@
     }
 
     init() {
-      if (this.overlay) return;
       this.createStyles();
-      this.createLightbox();
-      this.bindEvents();
+      this.ensureMounted();
+      this.bindDocumentEvents();
     }
 
     createStyles() {
@@ -188,6 +188,7 @@
     }
 
     createLightbox() {
+      this.isOverlayBound = false;
       this.overlay = document.createElement("div");
       this.overlay.className = "lb-lightbox-overlay";
 
@@ -232,15 +233,20 @@
       document.body.appendChild(this.overlay);
     }
 
-    bindEvents() {
-      if (this.isBound) return;
-
+    bindDocumentEvents() {
+      if (this.isDocumentBound) return;
       document.addEventListener("click", this.handleDocumentClick, true);
+      document.addEventListener("keydown", this.handleKeyDown);
+      this.isDocumentBound = true;
+    }
+
+    bindOverlayEvents() {
+      if (!this.overlay || this.isOverlayBound) return;
+
       this.overlay.addEventListener("click", this.handleOverlayClick);
       this.prevButton.addEventListener("click", this.handlePreviousClick);
       this.nextButton.addEventListener("click", this.handleNextClick);
       this.closeButton.addEventListener("click", this.handleCloseClick);
-      document.addEventListener("keydown", this.handleKeyDown);
       this.overlay.addEventListener("wheel", this.handleWheel, {
         passive: false,
       });
@@ -252,7 +258,31 @@
       });
       this.overlay.addEventListener("touchend", this.handleTouchEnd);
 
-      this.isBound = true;
+      this.isOverlayBound = true;
+    }
+
+    ensureMounted() {
+      if (!document.body) return false;
+
+      const isMounted =
+        this.overlay &&
+        this.overlay.ownerDocument === document &&
+        document.body.contains(this.overlay);
+
+      if (isMounted) return true;
+
+      this.createLightbox();
+      this.bindOverlayEvents();
+      return true;
+    }
+
+    syncWithDocument() {
+      if (!this.ensureMounted()) return;
+
+      if (!this.overlay.classList.contains("active")) {
+        document.body.style.overflow = "";
+        this.isOpen = false;
+      }
     }
 
     getImageCollection(clickedImage) {
@@ -348,6 +378,8 @@
     }
 
     open() {
+      if (!this.ensureMounted()) return;
+
       const activeImage = this.images[this.currentIndex];
       if (!activeImage) return;
 
@@ -415,7 +447,6 @@
       const imgSrc = imgElement.currentSrc || imgElement.src;
       const imgAlt = imgElement.getAttribute("alt") || "";
       const newImage = new Image();
-      newImage.src = imgSrc;
 
       newImage.onload = () => {
         this.zoomLevel = 1;
@@ -435,6 +466,8 @@
       newImage.onerror = () => {
         console.error("Failed to load image:", imgSrc);
       };
+
+      newImage.src = imgSrc;
     }
 
     preloadImages() {
@@ -473,7 +506,7 @@
 
   const mount = () => {
     if (document.body) {
-      setupLightbox();
+      setupLightbox().syncWithDocument();
     }
   };
 
