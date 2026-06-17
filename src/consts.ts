@@ -8,7 +8,28 @@ export const SITE_DESCRIPTION =
 
 export const EMAIL = "mcy@kemiaosw.top";
 
-export const GISCUS_CONFIG = {
+type GiscusMapping =
+  | "pathname"
+  | "url"
+  | "title"
+  | "og:title"
+  | "specific"
+  | "number";
+
+interface GiscusConfig {
+  repo: string;
+  repoId: string;
+  category: string;
+  categoryId: string;
+  mapping: GiscusMapping;
+  strict: "0" | "1";
+  reactionsEnabled: "0" | "1";
+  emitMetadata: "0" | "1";
+  inputPosition: "top" | "bottom";
+  lang: string;
+}
+
+export const GISCUS_CONFIG: GiscusConfig = {
   repo: "kmoretti/blog",
   repoId: "R_kgDOS9I8wA",
   category: "评论",
@@ -19,4 +40,4 @@ export const GISCUS_CONFIG = {
   emitMetadata: "0",
   inputPosition: "top",
   lang: "zh-CN",
-} as const;
+};
