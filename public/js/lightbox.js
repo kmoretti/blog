@@ -35,6 +35,7 @@
       this.handleTouchStart = this.handleTouchStart.bind(this);
       this.handleTouchMove = this.handleTouchMove.bind(this);
       this.handleTouchEnd = this.handleTouchEnd.bind(this);
+      this.handleBeforeSwap = this.handleBeforeSwap.bind(this);
 
       this.init();
     }
@@ -43,6 +44,7 @@
       this.createStyles();
       this.ensureMounted();
       this.bindDocumentEvents();
+      document.addEventListener("astro:before-swap", this.handleBeforeSwap);
     }
 
     createStyles() {
@@ -240,8 +242,21 @@
       this.isDocumentBound = true;
     }
 
+    unbindDocumentEvents() {
+      if (!this.isDocumentBound) return;
+      document.removeEventListener("click", this.handleDocumentClick, true);
+      document.removeEventListener("keydown", this.handleKeyDown);
+      this.isDocumentBound = false;
+    }
+
     bindOverlayEvents() {
-      if (!this.overlay || this.isOverlayBound) return;
+      if (!this.overlay) return;
+
+      // Always rebind — safe even if called multiple times on the same overlay
+      this.overlay.removeEventListener("click", this.handleOverlayClick);
+      this.prevButton.removeEventListener("click", this.handlePreviousClick);
+      this.nextButton.removeEventListener("click", this.handleNextClick);
+      this.closeButton.removeEventListener("click", this.handleCloseClick);
 
       this.overlay.addEventListener("click", this.handleOverlayClick);
       this.prevButton.addEventListener("click", this.handlePreviousClick);
@@ -279,12 +294,39 @@
     syncWithDocument() {
       this.createStyles();
 
+      // If the overlay is not in the current DOM (e.g. after a view
+      // transition replaced <body>), tear it down so ensureMounted
+      // creates a fresh one below.
+      if (
+        this.overlay &&
+        (!document.body || !document.body.contains(this.overlay))
+      ) {
+        this.overlay = null;
+        this.isOverlayBound = false;
+      }
+
       if (!this.ensureMounted()) return;
 
       if (!this.overlay.classList.contains("active")) {
         document.body.style.overflow = "";
         this.isOpen = false;
       }
+    }
+
+    /** Astro view-transition hook — clean up before <body> is swapped. */
+    handleBeforeSwap() {
+      if (this.isOpen) {
+        this.isOpen = false;
+        this.zoomLevel = 1;
+        this.clearPreloadedImages();
+      }
+      document.body.style.overflow = "";
+
+      if (this.overlay && this.overlay.parentNode) {
+        this.overlay.parentNode.removeChild(this.overlay);
+      }
+      this.overlay = null;
+      this.isOverlayBound = false;
     }
 
     getImageCollection(clickedImage) {
@@ -384,8 +426,20 @@
 
       if (!this.ensureMounted()) return;
 
+      // Safety net: if the overlay ended up detached (e.g. after a
+      // view transition that syncWithDocument missed), re-mount.
+      if (!document.body.contains(this.overlay)) {
+        this.overlay = null;
+        this.isOverlayBound = false;
+        if (!this.ensureMounted()) return;
+      }
+
       const activeImage = this.images[this.currentIndex];
-      if (!activeImage) return;
+      if (!activeImage) {
+        // No valid image — make sure we don't leave the page frozen.
+        this.close();
+        return;
+      }
 
       this.isOpen = true;
       this.overlay.classList.add("active");
@@ -398,12 +452,16 @@
     }
 
     close() {
-      this.overlay.classList.remove("active");
+      if (this.overlay) {
+        this.overlay.classList.remove("active");
+      }
       document.body.style.overflow = "";
       this.isOpen = false;
       this.zoomLevel = 1;
-      this.image.style.transform = "scale(1)";
-      this.image.style.opacity = "0";
+      if (this.image) {
+        this.image.style.transform = "scale(1)";
+        this.image.style.opacity = "0";
+      }
       this.clearPreloadedImages();
 
       if (typeof this.options.onClose === "function") {
@@ -521,4 +579,14 @@
   }
 
   document.addEventListener("astro:page-load", mount);
+
+  // Clean up when the entire app is torn down (unlikely but safe)
+  document.addEventListener("astro:before-preparation", () => {
+    if (instance) {
+      document.removeEventListener(
+        "astro:before-swap",
+        instance.handleBeforeSwap,
+      );
+    }
+  });
 })();
