@@ -277,6 +277,8 @@
     }
 
     syncWithDocument() {
+      this.createStyles();
+
       if (!this.ensureMounted()) return;
 
       if (!this.overlay.classList.contains("active")) {
@@ -378,6 +380,8 @@
     }
 
     open() {
+      this.createStyles();
+
       if (!this.ensureMounted()) return;
 
       const activeImage = this.images[this.currentIndex];
