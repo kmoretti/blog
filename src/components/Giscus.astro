@@ -14,7 +14,6 @@ const { pageKey, pageTitle } = Astro.props;
   <div
     id="giscus-comments"
     data-page-key={pageKey}
-    data-page-title={pageTitle}
     data-repo={GISCUS_CONFIG.repo}
     data-repo-id={GISCUS_CONFIG.repoId}
     data-category={GISCUS_CONFIG.category}
@@ -25,6 +24,7 @@ const { pageKey, pageTitle } = Astro.props;
     data-emit-metadata={GISCUS_CONFIG.emitMetadata}
     data-input-position={GISCUS_CONFIG.inputPosition}
     data-lang={GISCUS_CONFIG.lang}
+    data-page-title={GISCUS_CONFIG.mapping === "specific" ? pageTitle : undefined}
   >
   </div>
 </div>
