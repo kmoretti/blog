@@ -2,6 +2,8 @@
 title: "算法竞赛：拥有一个顺手的 IDE · Windows 篇"
 description: "Sublime Text了解一下？"
 date: 2025-07-02
+tags: ["算法竞赛", "Windows", "开发环境"]
+categories: ["技术"]
 ---
 
 如果你第一次学习 OI，你一定会了解一个名为 Dev-C++ 的编辑器。
@@ -78,9 +80,9 @@ Sublime Text 是一款轻量级编辑器，拥有许多可以个性化的内容�
 
 ```json
 {
-    "spell_check": true,
-    "indent_to_bracket": true,
-    "draw_white_space": ["selection", "trailing", "isolated"],
+  "spell_check": true,
+  "indent_to_bracket": true,
+  "draw_white_space": ["selection", "trailing", "isolated"]
 }
 ```
 
@@ -116,19 +118,18 @@ C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages
 
 ```json
 {
-    "encoding": "utf-8",
-    "working_dir": "$file_path",
-    "shell_cmd": "g++ -Wall \"${file}\" -o \"${file_path}/${file_base_name}\"",
-    "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-    "selector": "source.c++",
+  "encoding": "utf-8",
+  "working_dir": "$file_path",
+  "shell_cmd": "g++ -Wall \"${file}\" -o \"${file_path}/${file_base_name}\"",
+  "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+  "selector": "source.c++",
 
-    "variants":
-    [
-        {
-        "name": "Run",
-            "shell_cmd": "g++ -Wall -std=c++14 -O2 \"${file}\" -o \"${file_base_name}\" && start cmd /c \"\"${file_path}/${file_base_name}\" & pause\""
-        }
-    ]
+  "variants": [
+    {
+      "name": "Run",
+      "shell_cmd": "g++ -Wall -std=c++14 -O2 \"${file}\" -o \"${file_base_name}\" && start cmd /c \"\"${file_path}/${file_base_name}\" & pause\""
+    }
+  ]
 }
 ```
 
@@ -178,16 +179,12 @@ C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages
 
 ```html
 <snippet>
-    <content>
-<![CDATA[
-[你的代码框架]
-]]>
-    </content>
-    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>[关键词]</tabTrigger>
-    <description>[取名随意]</description>
-    <!-- Optional: Set a scope to limit where the snippet will trigger -->
-    <scope>source.c, source.c++</scope>
+  <content> <![CDATA[ [你的代码框架] ]]> </content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>[关键词]</tabTrigger>
+  <description>[取名随意]</description>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.c, source.c++</scope>
 </snippet>
 ```
 
@@ -195,28 +192,17 @@ C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages
 
 ```html
 <snippet>
-    <content>
-<![CDATA[
-#include <bits/stdc++.h>
-#define op if (debug)
-
-using namespace std;
-typedef long long lo;
-const bool debug = 0;
-
-int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(nullptr); cout.tie(nullptr);
-
-	return 0;
-}
-]]>
-    </content>
-    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-    <tabTrigger>_algo</tabTrigger>
-    <description>竞赛模板</description>
-    <!-- Optional: Set a scope to limit where the snippet will trigger -->
-    <scope>source.c, source.c++</scope>
+  <content>
+    <![CDATA[ #include <bits/stdc++.h> #define op if (debug) using namespace
+    std; typedef long long lo; const bool debug = 0; int main() {
+    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0;
+    } ]]>
+  </content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>_algo</tabTrigger>
+  <description>竞赛模板</description>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.c, source.c++</scope>
 </snippet>
 ```
 

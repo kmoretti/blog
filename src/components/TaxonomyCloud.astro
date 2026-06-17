@@ -1,0 +1,67 @@
+---
+import type { TaxonomyItem, TaxonomyKey } from "../lib/utils";
+
+interface Props {
+  title: string;
+  description?: string;
+  items: TaxonomyItem[];
+  type: TaxonomyKey;
+}
+
+const { title, description, items, type } = Astro.props;
+
+function getCloudStyle(count: number, minCount: number, maxCount: number) {
+  if (maxCount === minCount) {
+    return {
+      fontSize: "1rem",
+      opacity: "0.92",
+    };
+  }
+
+  const ratio = (count - minCount) / (maxCount - minCount);
+  return {
+    fontSize: `${0.95 + ratio * 0.8}rem`,
+    opacity: `${0.72 + ratio * 0.28}`,
+  };
+}
+
+const counts = items.map((item) => item.count);
+const minCount = counts.length ? Math.min(...counts) : 0;
+const maxCount = counts.length ? Math.max(...counts) : 0;
+---
+
+<section class="flex flex-col gap-4">
+  <div class="space-y-1">
+    <h1 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+      {title}
+    </h1>
+    {
+      description && (
+        <p class="text-sm text-zinc-500 dark:text-zinc-400">{description}</p>
+      )
+    }
+  </div>
+
+  {
+    items.length > 0 ? (
+      <div class="flex flex-wrap gap-3">
+        {items.map((item) => (
+          <a
+            href={`/${type}/${item.slug}/`}
+            class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 no-underline transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-zinc-200/80 dark:border-zinc-700 dark:bg-zinc-800/80 dark:hover:border-zinc-600 dark:hover:bg-zinc-700/80"
+            style={getCloudStyle(item.count, minCount, maxCount)}
+          >
+            <span class="font-medium text-zinc-800 dark:text-zinc-100">
+              {item.name}
+            </span>
+            <span class="text-xs text-zinc-500 dark:text-zinc-400">
+              {item.count}
+            </span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="text-sm text-zinc-500 dark:text-zinc-400">暂无内容。</p>
+    )
+  }
+</section>

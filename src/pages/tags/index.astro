@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import TaxonomyCloud from "../../components/TaxonomyCloud.astro";
+import { SITE_TITLE } from "../../consts";
+import Layout from "../../layouts/Layout.astro";
+import { collectTaxonomy } from "../../lib/utils";
+
+const posts = await getCollection("posts");
+const tags = collectTaxonomy(posts, "tags");
+---
+
+<Layout
+  title={`标签 | ${SITE_TITLE}`}
+  description="浏览博客标签云"
+  className="flex min-h-svh max-w-4xl flex-col"
+>
+  <main class="pb-16">
+    <TaxonomyCloud
+      title="标签"
+      description={`共 ${tags.length} 个标签`}
+      items={tags}
+      type="tags"
+    />
+  </main>
+</Layout>

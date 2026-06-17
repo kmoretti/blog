@@ -2,6 +2,8 @@
 title: "博客三周年：缝缝补补的过去"
 description: "袜，三周年了（迟到的文章）"
 date: 2026-02-08
+tags: ["博客", "年度记录"]
+categories: ["博客"]
 ---
 
 > [!NOTE]

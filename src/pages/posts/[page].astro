@@ -1,17 +1,16 @@
 ---
 import type { Page } from "astro";
+import { Icon } from "astro-icon/components";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import Heatmap from "../../components/Heatmap.astro";
+import PostSearch from "../../components/PostSearch.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
-import { formatDate } from "../../lib/utils";
+import { formatDate, sortPostsByDate } from "../../lib/utils";
 
 export async function getStaticPaths({ paginate }: any) {
   const collection = await getCollection("posts");
-  const posts = collection.sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-  );
+  const posts = sortPostsByDate(collection);
 
   return paginate(posts, { pageSize: 7 });
 }
@@ -22,13 +21,49 @@ const { page }: { page: Page<CollectionEntry<"posts">> } = Astro.props;
 <Layout
   title={SITE_TITLE}
   description={SITE_DESCRIPTION}
-  className="max-w-100px flex h-svh flex-col justify-center"
+  className="max-w-100px flex min-h-svh flex-col justify-center"
 >
   <main class="flex flex-col gap-4">
-    <!-- <Heatmap /> -->
+    <section class="flex flex-col gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <a
+          href="/tags/"
+          class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-sm font-medium text-zinc-700 no-underline transition hover:border-zinc-300 hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
+        >
+          <Icon name="material-symbols:tag-rounded" width="18" height="18" />
+          标签
+        </a>
+        <a
+          href="/categories/"
+          class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-sm font-medium text-zinc-700 no-underline transition hover:border-zinc-300 hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
+        >
+          <Icon
+            name="material-symbols:dashboard-rounded"
+            width="18"
+            height="18"
+          />
+          分类
+        </a>
+        <button
+          type="button"
+          id="search-toggle"
+          class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-sm font-medium text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
+          aria-expanded="false"
+          aria-controls="post-search-container"
+        >
+          <Icon name="material-symbols:search-rounded" width="18" height="18" />
+          搜索
+        </button>
+      </div>
+
+      <div id="post-search-container" class="hidden">
+        <PostSearch />
+      </div>
+    </section>
+
     <ul class="flex flex-col gap-1.5">
       {
-        page.data.map((post: any) => (
+        page.data.map((post) => (
           <li>
             <a href={`/posts/${post.slug}/`} class="group flex flex-col gap-1">
               <div class="flex justify-between gap-3">
@@ -48,7 +83,6 @@ const { page }: { page: Page<CollectionEntry<"posts">> } = Astro.props;
       }
     </ul>
 
-    <!-- 分页导航 -->
     {
       page.lastPage > 1 && (
         <nav class="flex items-center justify-center gap-2 text-sm">
@@ -78,3 +112,38 @@ const { page }: { page: Page<CollectionEntry<"posts">> } = Astro.props;
     }
   </main>
 </Layout>
+
+<script is:inline>
+  function setupPostSearch() {
+    const button = document.getElementById("search-toggle");
+    const container = document.getElementById("post-search-container");
+    if (
+      !(button instanceof HTMLButtonElement) ||
+      !(container instanceof HTMLElement)
+    )
+      return;
+    if (button.dataset.bound === "1") return;
+
+    button.addEventListener("click", () => {
+      const nextExpanded = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", String(nextExpanded));
+      container.classList.toggle("hidden", !nextExpanded);
+
+      if (nextExpanded) {
+        document.dispatchEvent(new CustomEvent("post-search:open"));
+      }
+    });
+
+    button.dataset.bound = "1";
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupPostSearch, {
+      once: true,
+    });
+  } else {
+    setupPostSearch();
+  }
+
+  document.addEventListener("astro:page-load", setupPostSearch);
+</script>

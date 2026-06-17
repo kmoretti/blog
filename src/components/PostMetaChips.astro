@@ -1,0 +1,26 @@
+---
+import type { TaxonomyKey } from "../lib/utils";
+import { slugifyTaxonomy } from "../lib/utils";
+
+interface Props {
+  items: string[];
+  type: TaxonomyKey;
+}
+
+const { items, type } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <div class="flex flex-wrap justify-center gap-2">
+      {items.map((item) => (
+        <a
+          href={`/${type}/${slugifyTaxonomy(item)}/`}
+          class="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-100/70 px-2.5 py-1 text-xs font-medium text-zinc-600 no-underline transition hover:border-zinc-300 hover:bg-zinc-200/80 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800/70 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-700/80 dark:hover:text-zinc-100"
+        >
+          {item}
+        </a>
+      ))}
+    </div>
+  )
+}

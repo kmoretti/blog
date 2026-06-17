@@ -1,0 +1,112 @@
+---
+
+---
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+
+<div
+  class="rounded-2xl border border-zinc-200 bg-zinc-50/90 p-3 dark:border-zinc-700 dark:bg-zinc-800/70"
+>
+  <label for="post-search-panel" class="sr-only">搜索文章</label>
+  <div id="post-search-panel" class="pagefind-search"></div>
+</div>
+
+<script is:inline>
+  /** @type {Promise<any> | undefined} */
+  let pagefindUiPromise;
+
+  /**
+   * @param {HTMLElement} container
+   */
+  function syncTheme(container) {
+    const isDark = document.documentElement.classList.contains("dark");
+    container.dataset.theme = isDark ? "dark" : "light";
+  }
+
+  async function loadPagefind() {
+    if (!pagefindUiPromise) {
+      pagefindUiPromise = import("/pagefind/pagefind-ui.js");
+    }
+
+    return pagefindUiPromise;
+  }
+
+  async function mountPagefind() {
+    const host = document.querySelector(".pagefind-search");
+    if (!(host instanceof HTMLElement) || host.dataset.ready === "1") return;
+
+    syncTheme(host);
+
+    const { PagefindUI } = await loadPagefind();
+    new PagefindUI({
+      element: host,
+      showImages: false,
+      showSubResults: true,
+      excerptLength: 18,
+      resetStyles: false,
+      translations: {
+        placeholder: "搜索文章、标签、分类",
+        clear_search: "清空搜索",
+        load_more: "加载更多",
+        search_label: "站内搜索",
+        filters_label: "筛选",
+        zero_results: "没有找到相关结果",
+        many_results: "找到 [COUNT] 条结果",
+        one_result: "找到 1 条结果",
+        alt_search: "搜索 [SEARCH_TERM]",
+      },
+    });
+
+    host.dataset.ready = "1";
+  }
+
+  function onThemeChange() {
+    const host = document.querySelector(".pagefind-search");
+    if (host instanceof HTMLElement) syncTheme(host);
+  }
+
+  document.addEventListener("post-search:open", mountPagefind);
+  document.addEventListener("astro:page-load", onThemeChange);
+  document.addEventListener("theme-changed", onThemeChange);
+</script>
+
+<style>
+  .pagefind-search {
+    --pagefind-ui-scale: 0.95;
+    --pagefind-ui-primary: rgb(39 39 42);
+    --pagefind-ui-text: rgb(39 39 42);
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: rgb(212 212 216);
+    --pagefind-ui-tag: rgb(244 244 245);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 0.9rem;
+    --pagefind-ui-image-border-radius: 0.75rem;
+    --pagefind-ui-font: "Noto Sans SC", sans-serif;
+  }
+
+  .pagefind-search[data-theme="dark"] {
+    --pagefind-ui-primary: rgb(244 244 245);
+    --pagefind-ui-text: rgb(228 228 231);
+    --pagefind-ui-border: rgb(82 82 91);
+    --pagefind-ui-tag: rgb(39 39 42);
+  }
+
+  .pagefind-search :global(.pagefind-ui__search-input),
+  .pagefind-search :global(.pagefind-ui__result),
+  .pagefind-search :global(.pagefind-ui__button) {
+    @apply bg-white/90 dark:bg-zinc-900/80;
+  }
+
+  .pagefind-search :global(.pagefind-ui__search-input) {
+    @apply text-zinc-900 placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500;
+  }
+
+  .pagefind-search :global(.pagefind-ui__result-link) {
+    @apply text-zinc-900 no-underline dark:text-zinc-100;
+  }
+
+  .pagefind-search :global(.pagefind-ui__result-excerpt),
+  .pagefind-search :global(.pagefind-ui__message) {
+    @apply text-zinc-600 dark:text-zinc-400;
+  }
+</style>

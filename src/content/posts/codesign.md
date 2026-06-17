@@ -2,6 +2,8 @@
 title: "Codesign：高效设计的秘诀"
 description: "腾讯Codesign，设计师的好帮手"
 date: 2024-05-01
+tags: ["设计", "工具", "Codesign"]
+categories: ["设计"]
 ---
 
 > 引入：之前发现了腾讯的许多新的产品，其中有AiLogo、Codesign等系列。然后发现Codesign是一个不错的设计师工具，可以用来制作图标库，于是便欣然尝试……

@@ -2,6 +2,8 @@
 title: "Github：设置两步验证（2FA）"
 description: "两步验证，为你的账户安全保驾护航"
 date: 2024-04-26
+tags: ["GitHub", "安全", "2FA"]
+categories: ["技术"]
 ---
 
 ## 前言

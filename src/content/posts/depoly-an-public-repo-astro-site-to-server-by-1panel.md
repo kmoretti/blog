@@ -2,6 +2,8 @@
 title: "通过 1Panel 部署 Astro 站点到服务器——公开仓库篇"
 description: "部署平台太拉垮？那就上服务器！"
 date: 2026-03-13
+tags: ["Astro", "部署", "1Panel", "GitHub Actions"]
+categories: ["技术"]
 ---
 
 ## 碎碎念

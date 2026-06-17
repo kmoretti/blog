@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 import Artalk from "../../components/Artalk.astro";
+import PostMetaChips from "../../components/PostMetaChips.astro";
 import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../lib/utils";
 
@@ -11,9 +12,10 @@ export async function getStaticPaths() {
     props: post,
   }));
 }
+
 type Props = CollectionEntry<"posts">;
 
-const post = Astro.props;
+const post: Props = Astro.props;
 const { Content } = await post.render();
 ---
 
@@ -21,25 +23,49 @@ const { Content } = await post.render();
   title={post.data.title + " | Frederick's Blog"}
   description={post.data.description}
   image={post.data.image}
-  className="flex h-svh max-w-4xl flex-col"
+  className="flex min-h-svh max-w-4xl flex-col"
 >
   <main class="pb-16">
-    <h1 class="mb-3 text-center text-xl font-medium">
-      {post.data.title}
-    </h1>
-    {
-      post.data.description && (
-        <p class="mb-3 text-center text-sm text-zinc-600 dark:text-zinc-400">
-          {post.data.description}
-        </p>
-      )
-    }
-    <p class="mb-1 text-center font-medium text-zinc-500">
-      {formatDate(post.data.date)}
-    </p>
-    <article>
+    <header class="mb-6 space-y-3 text-center">
+      <h1 class="text-xl font-medium">{post.data.title}</h1>
+      {
+        post.data.description && (
+          <p class="text-sm text-zinc-600 dark:text-zinc-400">
+            {post.data.description}
+          </p>
+        )
+      }
+      <p class="font-medium text-zinc-500">{formatDate(post.data.date)}</p>
+      <div class="flex flex-col gap-2">
+        <PostMetaChips items={post.data.categories} type="categories" />
+        <PostMetaChips items={post.data.tags} type="tags" />
+      </div>
+    </header>
+
+    <article
+      data-pagefind-body
+      data-pagefind-sort={post.data.date.toISOString()}
+    >
+      <div class="hidden">
+        <span data-pagefind-meta="title">{post.data.title}</span>
+        <span data-pagefind-meta="description">{post.data.description}</span>
+        <span data-pagefind-meta="date">{formatDate(post.data.date)}</span>
+        {
+          post.data.categories.map((category) => (
+            <span data-pagefind-filter={`categories:${category}`}>
+              {category}
+            </span>
+          ))
+        }
+        {
+          post.data.tags.map((tag) => (
+            <span data-pagefind-filter={`tags:${tag}`}>{tag}</span>
+          ))
+        }
+      </div>
       <Content />
     </article>
+
     <Artalk pageKey={Astro.url.pathname} pageTitle={post.data.title} />
   </main>
 </Layout>
