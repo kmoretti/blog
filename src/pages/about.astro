@@ -1,5 +1,5 @@
 ---
-import Artalk from "../components/Artalk.astro";
+import Giscus from "../components/Giscus.astro";
 import { SITE_TITLE } from "../consts";
 import Layout from "../layouts/Layout.astro";
 
@@ -63,6 +63,6 @@ const githubUrl = "https://github.com/fenychn0206";
       </p>
       <h2>留言板</h2>
     </article>
-    <Artalk pageKey={Astro.url.pathname} pageTitle="关于我" />
+    <Giscus pageKey={Astro.url.pathname} pageTitle="关于我" />
   </main>
 </Layout>

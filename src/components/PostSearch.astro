@@ -2,8 +2,6 @@
 
 ---
 
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-
 <div
   class="rounded-2xl border border-zinc-200 bg-zinc-50/90 p-3 dark:border-zinc-700 dark:bg-zinc-800/70"
 >
@@ -14,6 +12,51 @@
 <script is:inline>
   /** @type {Promise<any> | undefined} */
   let pagefindUiPromise;
+  /** @type {Promise<boolean> | undefined} */
+  let pagefindAssetsPromise;
+
+  const PAGEFIND_UI_PATH = "/pagefind/pagefind-ui.js";
+  const PAGEFIND_UI_STYLE_PATH = "/pagefind/pagefind-ui.css";
+  const PAGEFIND_UI_STYLE_ID = "pagefind-ui-styles";
+
+  function renderUnavailableMessage(host) {
+    host.innerHTML =
+      '<p class="text-sm text-zinc-500 dark:text-zinc-400">搜索索引暂不可用，请先执行构建后再试。</p>';
+    host.dataset.ready = "1";
+  }
+
+  /**
+   * @param {any} module
+   */
+  function resolvePagefindUi(module) {
+    if (typeof window.PagefindUI === "function") return window.PagefindUI;
+    if (typeof module?.PagefindUI === "function") return module.PagefindUI;
+    if (typeof module?.default?.PagefindUI === "function") {
+      return module.default.PagefindUI;
+    }
+
+    throw new Error("Pagefind UI failed to initialize.");
+  }
+
+  async function hasPagefindAssets() {
+    if (!pagefindAssetsPromise) {
+      pagefindAssetsPromise = fetch(PAGEFIND_UI_PATH, { method: "HEAD" })
+        .then((response) => response.ok)
+        .catch(() => false);
+    }
+
+    return pagefindAssetsPromise;
+  }
+
+  function ensurePagefindStyles() {
+    if (document.getElementById(PAGEFIND_UI_STYLE_ID)) return;
+
+    const link = document.createElement("link");
+    link.id = PAGEFIND_UI_STYLE_ID;
+    link.rel = "stylesheet";
+    link.href = PAGEFIND_UI_STYLE_PATH;
+    document.head.append(link);
+  }
 
   /**
    * @param {HTMLElement} container
@@ -25,7 +68,7 @@
 
   async function loadPagefind() {
     if (!pagefindUiPromise) {
-      pagefindUiPromise = import("/pagefind/pagefind-ui.js");
+      pagefindUiPromise = import(PAGEFIND_UI_PATH);
     }
 
     return pagefindUiPromise;
@@ -37,27 +80,40 @@
 
     syncTheme(host);
 
-    const { PagefindUI } = await loadPagefind();
-    new PagefindUI({
-      element: host,
-      showImages: false,
-      showSubResults: true,
-      excerptLength: 18,
-      resetStyles: false,
-      translations: {
-        placeholder: "搜索文章、标签、分类",
-        clear_search: "清空搜索",
-        load_more: "加载更多",
-        search_label: "站内搜索",
-        filters_label: "筛选",
-        zero_results: "没有找到相关结果",
-        many_results: "找到 [COUNT] 条结果",
-        one_result: "找到 1 条结果",
-        alt_search: "搜索 [SEARCH_TERM]",
-      },
-    });
+    if (!(await hasPagefindAssets())) {
+      renderUnavailableMessage(host);
+      return;
+    }
 
-    host.dataset.ready = "1";
+    try {
+      ensurePagefindStyles();
+      const module = await loadPagefind();
+      const PagefindUI = resolvePagefindUi(module);
+
+      new PagefindUI({
+        element: host,
+        showImages: false,
+        showSubResults: true,
+        excerptLength: 18,
+        resetStyles: false,
+        translations: {
+          placeholder: "搜索文章、标签、分类",
+          clear_search: "清空搜索",
+          load_more: "加载更多",
+          search_label: "站内搜索",
+          filters_label: "筛选",
+          zero_results: "没有找到相关结果",
+          many_results: "找到 [COUNT] 条结果",
+          one_result: "找到 1 条结果",
+          alt_search: "搜索 [SEARCH_TERM]",
+        },
+      });
+
+      host.dataset.ready = "1";
+    } catch (error) {
+      console.error(error);
+      renderUnavailableMessage(host);
+    }
   }
 
   function onThemeChange() {

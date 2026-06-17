@@ -8,17 +8,24 @@ interface Props {
 }
 
 const { items, type } = Astro.props;
+const isTag = type === "tags";
+const chipClass = isTag
+  ? "border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"
+  : "border-sky-200/80 bg-sky-50/85 text-sky-700 hover:border-sky-300 hover:bg-sky-100/90 hover:text-sky-900 dark:border-sky-900/70 dark:bg-sky-950/35 dark:text-sky-200 dark:hover:border-sky-800 dark:hover:bg-sky-900/50 dark:hover:text-sky-100";
 ---
 
 {
   items.length > 0 && (
-    <div class="flex flex-wrap justify-center gap-2">
+    <div class="flex flex-wrap justify-center gap-2.5">
       {items.map((item) => (
         <a
           href={`/${type}/${slugifyTaxonomy(item)}/`}
-          class="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-100/70 px-2.5 py-1 text-xs font-medium text-zinc-600 no-underline transition hover:border-zinc-300 hover:bg-zinc-200/80 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-800/70 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-700/80 dark:hover:text-zinc-100"
+          class:list={[
+            "inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5",
+            chipClass,
+          ]}
         >
-          {item}
+          {isTag ? `# ${item}` : item}
         </a>
       ))}
     </div>

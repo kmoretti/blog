@@ -54,6 +54,13 @@
     h6 {
       @apply mb-2 mt-4 text-sm font-medium dark:text-white;
     }
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply scroll-mt-24;
+    }
     :not(pre) > code {
       @apply whitespace-nowrap rounded border bg-zinc-200/50 px-1 py-0.5 font-mono text-sm font-medium text-black dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-white;
     }
@@ -62,6 +69,9 @@
     }
     img {
       @apply mx-auto my-4 block rounded-lg border dark:border-zinc-700;
+    }
+    &[data-lightbox-root] img {
+      @apply cursor-zoom-in;
     }
     video {
       @apply my-4 rounded-lg border dark:border-zinc-700;

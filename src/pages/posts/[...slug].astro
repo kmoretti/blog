@@ -1,9 +1,14 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import Artalk from "../../components/Artalk.astro";
+import { Icon } from "astro-icon/components";
+import Giscus from "../../components/Giscus.astro";
 import PostMetaChips from "../../components/PostMetaChips.astro";
 import Layout from "../../layouts/Layout.astro";
-import { formatDate } from "../../lib/utils";
+import {
+  formatDate,
+  formatNumber,
+  getPostReadingStats,
+} from "../../lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -17,16 +22,17 @@ type Props = CollectionEntry<"posts">;
 
 const post: Props = Astro.props;
 const { Content } = await post.render();
+const stats = getPostReadingStats(post.body);
 ---
 
 <Layout
   title={post.data.title + " | Frederick's Blog"}
   description={post.data.description}
   image={post.data.image}
-  className="flex min-h-svh max-w-4xl flex-col"
+  className="flex min-h-svh max-w-6xl flex-col"
 >
   <main class="pb-16">
-    <header class="mb-6 space-y-3 text-center">
+    <header class="mx-auto mb-6 max-w-3xl space-y-3 text-center">
       <h1 class="text-xl font-medium">{post.data.title}</h1>
       {
         post.data.description && (
@@ -35,37 +41,102 @@ const { Content } = await post.render();
           </p>
         )
       }
-      <p class="font-medium text-zinc-500">{formatDate(post.data.date)}</p>
-      <div class="flex flex-col gap-2">
+      <div class="mx-auto flex max-w-2xl flex-wrap justify-center gap-2.5 pt-1">
+        <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300">
+          <Icon
+            name="material-symbols:calendar-month-rounded"
+            width="18"
+            height="18"
+          />
+          <span>{formatDate(post.data.date)}</span>
+        </div>
+        <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300">
+          <Icon
+            name="material-symbols:auto-stories-rounded"
+            width="18"
+            height="18"
+          />
+          <span>{`\u63a8\u8350\u9605\u8bfb ${stats.readingMinutes} \u5206\u949f`}</span>
+        </div>
+        <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300">
+          <Icon
+            name="material-symbols:article-rounded"
+            width="18"
+            height="18"
+          />
+          <span>{`${formatNumber(stats.wordCount)} \u5b57`}</span>
+        </div>
+        <div
+          id="busuanzi_container_page_pv"
+          data-busuanzi-item
+          class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"
+        >
+          <Icon
+            name="material-symbols:visibility-rounded"
+            width="18"
+            height="18"
+          />
+          <span>{"\u6d4f\u89c8\u91cf"}</span>
+          <span
+            id="busuanzi_value_page_pv"
+            class="font-semibold text-zinc-900 dark:text-zinc-100"
+          ></span>
+        </div>
+        <div
+          id="busuanzi_container_site_uv"
+          data-busuanzi-item
+          class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"
+        >
+          <Icon
+            name="material-symbols:group-rounded"
+            width="18"
+            height="18"
+          />
+          <span>{"\u89c2\u4f17\u6570"}</span>
+          <span
+            id="busuanzi_value_site_uv"
+            class="font-semibold text-zinc-900 dark:text-zinc-100"
+          ></span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 pt-2">
         <PostMetaChips items={post.data.categories} type="categories" />
         <PostMetaChips items={post.data.tags} type="tags" />
       </div>
     </header>
 
-    <article
-      data-pagefind-body
-      data-pagefind-sort={post.data.date.toISOString()}
-    >
-      <div class="hidden">
-        <span data-pagefind-meta="title">{post.data.title}</span>
-        <span data-pagefind-meta="description">{post.data.description}</span>
-        <span data-pagefind-meta="date">{formatDate(post.data.date)}</span>
-        {
-          post.data.categories.map((category) => (
-            <span data-pagefind-filter={`categories:${category}`}>
-              {category}
-            </span>
-          ))
-        }
-        {
-          post.data.tags.map((tag) => (
-            <span data-pagefind-filter={`tags:${tag}`}>{tag}</span>
-          ))
-        }
-      </div>
-      <Content />
-    </article>
+    <div class="mx-auto max-w-3xl">
+      <article
+        id="content"
+        class="markdown-body"
+        data-lightbox-root
+        data-pagefind-body
+        data-pagefind-sort={post.data.date.toISOString()}
+      >
+        <div class="hidden">
+          <span data-pagefind-meta="title">{post.data.title}</span>
+          <span data-pagefind-meta="description">{post.data.description}</span>
+          <span data-pagefind-meta="date">{formatDate(post.data.date)}</span>
+          {
+            post.data.categories.map((category) => (
+              <span data-pagefind-filter={`categories:${category}`}>
+                {category}
+              </span>
+            ))
+          }
+          {
+            post.data.tags.map((tag) => (
+              <span data-pagefind-filter={`tags:${tag}`}>{tag}</span>
+            ))
+          }
+        </div>
+        <Content />
+      </article>
+    </div>
 
-    <Artalk pageKey={Astro.url.pathname} pageTitle={post.data.title} />
+    <div class="mx-auto mt-10 max-w-3xl">
+      <Giscus pageKey={Astro.url.pathname} pageTitle={post.data.title} />
+    </div>
   </main>
+  <script is:inline defer src="/js/GmeekTOC.js"></script>
 </Layout>

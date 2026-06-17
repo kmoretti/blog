@@ -14,6 +14,43 @@ export function formatDate(date: Date) {
   }).format(date);
 }
 
+export function formatNumber(value: number) {
+  return Intl.NumberFormat("zh-CN").format(value);
+}
+
+function stripMarkdownForStats(content: string) {
+  return content
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/^\s{0,3}[-*+]\s+/gm, " ")
+    .replace(/^\s{0,3}\d+\.\s+/gm, " ")
+    .replace(/^#{1,6}\s+/gm, " ")
+    .replace(/[>*_~|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function getPostReadingStats(content: string) {
+  const plainText = stripMarkdownForStats(content);
+  const cjkCount = (plainText.match(/[\u3400-\u9fff]/g) ?? []).length;
+  const latinWordCount = (
+    plainText.match(/[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*/g) ?? []
+  ).length;
+  const wordCount = latinWordCount + cjkCount;
+  const readingMinutes = Math.max(
+    1,
+    Math.ceil(cjkCount / 300 + latinWordCount / 200),
+  );
+
+  return {
+    wordCount,
+    readingMinutes,
+  };
+}
+
 export type PostEntry = CollectionEntry<"posts">;
 export type TaxonomyKey = "tags" | "categories";
 

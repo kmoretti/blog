@@ -20,7 +20,6 @@
     "@fontsource/noto-sans-mono": "^5.2.10",
     "@fontsource/noto-sans-sc": "^5.2.9",
     "@fontsource/noto-serif-sc": "^5.2.9",
-    "artalk": "^2.9.1",
     "astro": "^5.1.0",
     "clsx": "^2.1.1",
     "lxgw-wenkai-screen-webfont": "^1.7.0",

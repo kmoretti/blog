@@ -1,0 +1,187 @@
+---
+interface Props {
+  pageKey: string;
+  pageTitle: string;
+}
+
+const { pageKey, pageTitle } = Astro.props;
+
+const {
+  PUBLIC_GISCUS_REPO,
+  PUBLIC_GISCUS_REPO_ID,
+  PUBLIC_GISCUS_CATEGORY,
+  PUBLIC_GISCUS_CATEGORY_ID,
+  PUBLIC_GISCUS_MAPPING = "pathname",
+  PUBLIC_GISCUS_STRICT = "0",
+  PUBLIC_GISCUS_REACTIONS_ENABLED = "1",
+  PUBLIC_GISCUS_EMIT_METADATA = "0",
+  PUBLIC_GISCUS_INPUT_POSITION = "top",
+  PUBLIC_GISCUS_LANG = "zh-CN",
+} = import.meta.env;
+---
+
+<div class="giscus-container">
+  <p class="giscus-hint">来过，就留下你的足迹吧！</p>
+  <div
+    id="giscus-comments"
+    data-page-key={pageKey}
+    data-page-title={pageTitle}
+    data-repo={PUBLIC_GISCUS_REPO}
+    data-repo-id={PUBLIC_GISCUS_REPO_ID}
+    data-category={PUBLIC_GISCUS_CATEGORY}
+    data-category-id={PUBLIC_GISCUS_CATEGORY_ID}
+    data-mapping={PUBLIC_GISCUS_MAPPING}
+    data-strict={PUBLIC_GISCUS_STRICT}
+    data-reactions-enabled={PUBLIC_GISCUS_REACTIONS_ENABLED}
+    data-emit-metadata={PUBLIC_GISCUS_EMIT_METADATA}
+    data-input-position={PUBLIC_GISCUS_INPUT_POSITION}
+    data-lang={PUBLIC_GISCUS_LANG}
+  >
+  </div>
+</div>
+
+<script>
+  const GISCUS_PATH_KEY = "__giscusLastPath";
+  const globalWindow = window as typeof window & {
+    __giscusLastPath?: string;
+  };
+
+  function getGiscusTheme() {
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  }
+
+  function getConfig() {
+    const container = document.getElementById("giscus-comments");
+    if (!(container instanceof HTMLElement)) return null;
+
+    const {
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping,
+      strict,
+      reactionsEnabled,
+      emitMetadata,
+      inputPosition,
+      lang,
+      pageKey,
+      pageTitle,
+    } = container.dataset;
+
+    if (!repo || !repoId || !category || !categoryId) return null;
+
+    return {
+      container,
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping: mapping || "pathname",
+      strict: strict || "0",
+      reactionsEnabled: reactionsEnabled || "1",
+      emitMetadata: emitMetadata || "0",
+      inputPosition: inputPosition || "top",
+      lang: lang || "zh-CN",
+      pageKey: pageKey || window.location.pathname,
+      pageTitle: pageTitle || document.title,
+    };
+  }
+
+  function clearGiscus() {
+    const container = document.getElementById("giscus-comments");
+    if (!(container instanceof HTMLElement)) return;
+    container.innerHTML = "";
+  }
+
+  function initGiscus() {
+    const config = getConfig();
+    if (!config) {
+      const container = document.getElementById("giscus-comments");
+      if (container) {
+        container.innerHTML =
+          '<p class="text-sm text-zinc-500 dark:text-zinc-400">Giscus 尚未完成配置。</p>';
+      }
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    if (globalWindow[GISCUS_PATH_KEY] === currentPath) return;
+
+    clearGiscus();
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.setAttribute("data-repo", config.repo);
+    script.setAttribute("data-repo-id", config.repoId);
+    script.setAttribute("data-category", config.category);
+    script.setAttribute("data-category-id", config.categoryId);
+    script.setAttribute("data-mapping", config.mapping);
+    script.setAttribute("data-strict", config.strict);
+    script.setAttribute("data-reactions-enabled", config.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", config.emitMetadata);
+    script.setAttribute("data-input-position", config.inputPosition);
+    script.setAttribute("data-theme", getGiscusTheme());
+    script.setAttribute("data-lang", config.lang);
+    script.setAttribute("data-loading", "lazy");
+
+    if (config.mapping === "specific") {
+      script.setAttribute("data-term", config.pageKey);
+      script.setAttribute("data-title", config.pageTitle);
+    }
+
+    config.container.appendChild(script);
+    globalWindow[GISCUS_PATH_KEY] = currentPath;
+  }
+
+  function updateGiscusTheme() {
+    const frame = document.querySelector("iframe.giscus-frame");
+    if (!(frame instanceof HTMLIFrameElement) || !frame.contentWindow) return;
+
+    frame.contentWindow.postMessage(
+      {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(),
+          },
+        },
+      },
+      "https://giscus.app",
+    );
+  }
+
+  initGiscus();
+
+  const observer = new MutationObserver(() => {
+    updateGiscusTheme();
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+
+  document.addEventListener("astro:after-swap", initGiscus);
+  document.addEventListener("astro:page-load", updateGiscusTheme);
+</script>
+
+<style is:global>
+  .giscus-container {
+    margin-top: 2rem;
+  }
+
+  .giscus-hint {
+    margin-bottom: 0.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #71717a;
+  }
+
+  .dark .giscus-hint {
+    color: #a1a1aa;
+  }
+</style>

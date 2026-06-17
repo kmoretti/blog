@@ -71,7 +71,9 @@ const {
         });
 
         // 3) Re-apply after navigation just in case
-        document.addEventListener("astro:page-load", () => applyTheme(document));
+        document.addEventListener("astro:page-load", () =>
+          applyTheme(document),
+        );
 
         // 4) If user never chose a theme, follow system changes live
         const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -86,9 +88,12 @@ const {
     <meta name="description" content={description} />
     <link rel="canonical" href={Astro.url} />
     <script
+      is:inline
       defer
       src="https://umami.ohdragonboi.cn/analytics"
       data-website-id="20db53a2-22e0-4ed1-b379-8d1136fb40c8"></script>
+    <script is:inline defer src="/js/GmeekBSZ.js"></script>
+    <script is:inline defer src="/js/lightbox.js"></script>
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
@@ -122,7 +127,7 @@ const {
     </style>
   </head>
   <body
-    class="font-sans bg-white text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"
+    class="bg-white font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"
   >
     <div class={cn("max-w-xl mx-auto p-4", className)}>
       <Header />
