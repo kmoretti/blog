@@ -1,0 +1,364 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!-- Tell the browser we support both schemes (prevents UA auto-darkening + helps form controls/scrollbars) --><meta name="color-scheme" content="light dark"><link rel="icon" type="image/svg+xml" href="/favicon.png"><meta name="generator" content="Astro v5.16.6"><title>算法竞赛：拥有一个顺手的 IDE · Windows 篇 | Frederick&#39;s Blog</title><!-- Theme initialization - must run before paint to prevent dark-mode "white flash" --><script>
+      (() => {
+        const STORAGE_KEY = "theme";
+
+        function getStoredTheme() {
+          try {
+            const theme = localStorage.getItem(STORAGE_KEY);
+            return theme === "dark" || theme === "light" ? theme : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function getSystemTheme() {
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+
+        function resolveTheme() {
+          return getStoredTheme() ?? getSystemTheme();
+        }
+
+        function applyTheme(doc) {
+          const theme = resolveTheme();
+          doc.documentElement.classList.toggle("dark", theme === "dark");
+        }
+
+        // 1) First paint
+        applyTheme(document);
+
+        // 2) Astro View Transitions swaps <html> attributes from the next document.
+        //    Apply theme to `event.newDocument` so the swapped-in <html> keeps the "dark" class.
+        document.addEventListener("astro:before-swap", (event) => {
+          // Astro provides `newDocument` on the event object.
+          const newDocument = event?.newDocument;
+          if (newDocument) applyTheme(newDocument);
+        });
+
+        // 3) Re-apply after navigation just in case
+        document.addEventListener("astro:page-load", () =>
+          applyTheme(document),
+        );
+
+        // 4) If user never chose a theme, follow system changes live
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        media.addEventListener("change", () => {
+          if (getStoredTheme() === null) applyTheme(document);
+        });
+      })();
+    </script><meta name="title" content="算法竞赛：拥有一个顺手的 IDE · Windows 篇 | Frederick's Blog"><!-- Self-hosted fonts via @fontsource (imported in src/styles/global.css). Avoids Google Fonts and local system font reliance. --><meta name="description" content="Sublime Text了解一下？"><link rel="canonical" href="https://blog.081531.xyz/posts/algo-ide-windows/"><script defer src="https://umami.ohdragonboi.cn/analytics" data-website-id="20db53a2-22e0-4ed1-b379-8d1136fb40c8"></script><script defer src="/js/GmeekBSZ.js"></script><script defer src="/js/lightbox.js"></script><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://blog.081531.xyz/posts/algo-ide-windows/"><meta property="og:title" content="算法竞赛：拥有一个顺手的 IDE · Windows 篇 | Frederick's Blog"><meta property="og:description" content="Sublime Text了解一下？"><meta property="og:image" content="https://blog.081531.xyz/static/banner.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog.081531.xyz/posts/algo-ide-windows/"><meta property="twitter:title" content="算法竞赛：拥有一个顺手的 IDE · Windows 篇 | Frederick's Blog"><meta property="twitter:description" content="Sublime Text了解一下？"><meta property="twitter:image" content="https://blog.081531.xyz/static/banner.png"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><style>
+      :root {
+        --app-bg: #ffffff;
+        background-color: var(--app-bg);
+        color-scheme: light;
+      }
+      html.dark {
+        --app-bg: #18181b;
+        background-color: var(--app-bg);
+        color-scheme: dark;
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        background: var(--app-bg) !important;
+      }
+    </style><link rel="stylesheet" href="/_astro/about.O7njA0CK.css">
+<style>.giscus-container{margin-top:2rem}.giscus-hint{margin-bottom:.75rem;text-align:center;font-size:.875rem;color:#71717a}.dark .giscus-hint{color:#a1a1aa}
+</style>
+<link rel="stylesheet" href="/_astro/about.BMZUTpeN.css"><style>[data-astro-transition-scope="astro-l7r54iwe-1"] { view-transition-name: header; }@layer astro { ::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body class="bg-white font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"> <div class="mx-auto p-4 flex min-h-svh max-w-6xl flex-col"> <header class="mb-6 flex items-center justify-between" data-astro-cid-3ef6ksr2 data-astro-transition-scope="astro-l7r54iwe-1"> <nav class="flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>起始页</a> <a href="/posts/1/" data-astro-cid-3ef6ksr2>时间线</a> <a href="/friends/" data-astro-cid-3ef6ksr2>朋友们</a> <a href="/about/" data-astro-cid-3ef6ksr2>自言语</a> </nav> <div class="flex items-center gap-2" data-astro-cid-3ef6ksr2> <a href="mailto:mcy@kemiaosw.top" title="电子邮" aria-label="电子邮" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:alternate-email">   <symbol id="ai:material-symbols:alternate-email" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12v1.45q0 1.475-1.012 2.513T18.5 17q-.875 0-1.65-.375t-1.3-1.075q-.725.725-1.638 1.088T12 17q-2.075 0-3.537-1.463T7 12t1.463-3.537T12 7t3.538 1.463T17 12v1.45q0 .65.425 1.1T18.5 15t1.075-.45t.425-1.1V12q0-3.35-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20h5v2zm2.125-7.875Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875"/></symbol><use href="#ai:material-symbols:alternate-email"></use>  </svg> </a> <a href="https://www.travellings.cn/go.html" title="开往 · 友链接力" target="_blank" aria-label="开往 · 友链接力" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:train-outline">   <symbol id="ai:material-symbols:train-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M4 15.5V6q0-1.325.688-2.113t1.812-1.2t2.563-.55T12 2q1.65 0 3.113.138t2.55.55t1.712 1.2T20 6v9.5q0 1.475-1.012 2.488T16.5 19l1.5 1.5v.5h-2l-2-2h-4l-2 2H6v-.5L7.5 19q-1.475 0-2.488-1.012T4 15.5M12 4q-2.65 0-3.875.313T6.45 5h11.2q-.375-.425-1.612-.712T12 4m-6 6h5V7H6zm10.5 2H6h12zM13 10h5V7h-5zm-3.425 5.575Q10 15.15 10 14.5t-.425-1.075T8.5 13t-1.075.425T7 14.5t.425 1.075T8.5 16t1.075-.425m7 0Q17 15.15 17 14.5t-.425-1.075T15.5 13t-1.075.425T14 14.5t.425 1.075T15.5 16t1.075-.425M7.5 17h9q.65 0 1.075-.425T18 15.5V12H6v3.5q0 .65.425 1.075T7.5 17M12 5h5.65h-11.2z"/></symbol><use href="#ai:material-symbols:train-outline"></use>  </svg> </a> <button id="theme-toggle" class="inline-flex items-center border-0 bg-transparent p-0 text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100" aria-label="Toggle theme" data-astro-transition-persist="astro-wppfukqh-2"> <span class="sr-only">Toggle theme</span> <svg width="20" height="20" id="sun" class="hidden leading-none dark:block" data-icon="material-symbols:light-mode-outline">   <symbol id="ai:material-symbols:light-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M14.125 14.125Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875m-5.663 1.413Q7 14.075 7 12t1.463-3.537T12 7t3.538 1.463T17 12t-1.463 3.538T12 17t-3.537-1.463M5 13H1v-2h4zm18 0h-4v-2h4zM11 5V1h2v4zm0 18v-4h2v4zM6.4 7.75L3.875 5.325L5.3 3.85l2.4 2.5zm12.3 12.4l-2.425-2.525L17.6 16.25l2.525 2.425zM16.25 6.4l2.425-2.525L20.15 5.3l-2.5 2.4zM3.85 18.7l2.525-2.425L7.75 17.6l-2.425 2.525zM12 12"/></symbol><use href="#ai:material-symbols:light-mode-outline"></use>  </svg> <svg width="20" height="20" id="moon" class="leading-none dark:hidden" data-icon="material-symbols:dark-mode-outline">   <symbol id="ai:material-symbols:dark-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-3.75 0-6.375-2.625T3 12t2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21m0-2q2.2 0 3.95-1.213t2.55-3.162q-.5.125-1 .2t-1 .075q-3.075 0-5.238-2.163T9.1 7.5q0-.5.075-1t.2-1q-1.95.8-3.163 2.55T5 12q0 2.9 2.05 4.95T12 19m-.25-6.75"/></symbol><use href="#ai:material-symbols:dark-mode-outline"></use>  </svg> </button> <script type="module">function t(){const e=document.getElementById("theme-toggle");e&&(e instanceof HTMLElement&&e.dataset.bound==="1"||(e.addEventListener("click",()=>{const n=document.documentElement.classList.toggle("dark");localStorage.setItem("theme",n?"dark":"light"),document.dispatchEvent(new CustomEvent("theme-changed",{detail:{theme:n?"dark":"light"}}))}),e instanceof HTMLElement&&(e.dataset.bound="1")))}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",t,{once:!0}):t();document.addEventListener("astro:page-load",t);</script> </div> </header>   <main class="pb-16"> <header class="mx-auto mb-6 max-w-3xl space-y-3 text-center"> <h1 class="text-xl font-medium">算法竞赛：拥有一个顺手的 IDE · Windows 篇</h1> <p class="text-sm text-zinc-600 dark:text-zinc-400"> Sublime Text了解一下？ </p> <div class="mx-auto flex max-w-2xl flex-wrap justify-center gap-2.5 pt-1"> <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:calendar-month-rounded">   <symbol id="ai:material-symbols:calendar-month-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V3q0-.425.288-.712T7 2t.713.288T8 3v1h8V3q0-.425.288-.712T17 2t.713.288T18 3v1h1q.825 0 1.413.588T21 6v14q0 .825-.587 1.413T19 22zm0-2h14V10H5zm7-6q-.425 0-.712-.288T11 13t.288-.712T12 12t.713.288T13 13t-.288.713T12 14m-4.712-.288Q7 13.426 7 13t.288-.712T8 12t.713.288T9 13t-.288.713T8 14t-.712-.288M16 14q-.425 0-.712-.288T15 13t.288-.712T16 12t.713.288T17 13t-.288.713T16 14m-4 4q-.425 0-.712-.288T11 17t.288-.712T12 16t.713.288T13 17t-.288.713T12 18m-4.712-.288Q7 17.426 7 17t.288-.712T8 16t.713.288T9 17t-.288.713T8 18t-.712-.288M16 18q-.425 0-.712-.288T15 17t.288-.712T16 16t.713.288T17 17t-.288.713T16 18"/></symbol><use href="#ai:material-symbols:calendar-month-rounded"></use>  </svg> <span>2025年7月2日</span> </div> <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:auto-stories-rounded">   <symbol id="ai:material-symbols:auto-stories-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M11.463 19.475q-.263-.075-.488-.2q-1.025-.625-2.15-.95T6.5 18q-1.05 0-2.063.275T2.5 19.05q-.525.275-1.012-.025T1 18.15V6.1q0-.275.138-.525T1.55 5.2q1.15-.6 2.4-.9T6.5 4q1.45 0 2.838.375T12 5.5v12.1q1.275-.8 2.675-1.2T17.5 16q.9 0 1.763.15T21 16.6v-12q.375.125.738.263t.712.337q.275.125.413.375T23 6.1v12.05q0 .575-.487.875t-1.013.025q-.925-.5-1.937-.775T17.5 18q-1.2 0-2.325.325t-2.15.95q-.225.125-.488.2T12 19.55t-.537-.075m3.362-5.225q-.25.225-.537.088T14 13.875V5.7q0-.1.038-.188t.112-.162l4-4q.25-.25.55-.125t.3.475v8.575q0 .125-.05.213t-.125.162z"/></symbol><use href="#ai:material-symbols:auto-stories-rounded"></use>  </svg> <span>推荐阅读 6 分钟</span> </div> <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:article-rounded">   <symbol id="ai:material-symbols:article-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm3-4h5q.425 0 .713-.288T14 16t-.288-.712T13 15H8q-.425 0-.712.288T7 16t.288.713T8 17m0-4h8q.425 0 .713-.288T17 12t-.288-.712T16 11H8q-.425 0-.712.288T7 12t.288.713T8 13m0-4h8q.425 0 .713-.288T17 8t-.288-.712T16 7H8q-.425 0-.712.288T7 8t.288.713T8 9"/></symbol><use href="#ai:material-symbols:article-rounded"></use>  </svg> <span>1,755 字</span> </div> <div id="busuanzi_container_page_pv" data-busuanzi-item class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:visibility-rounded">   <symbol id="ai:material-symbols:visibility-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M15.188 14.688Q16.5 13.375 16.5 11.5t-1.312-3.187T12 7T8.813 8.313T7.5 11.5t1.313 3.188T12 16t3.188-1.312m-5.1-1.276Q9.3 12.625 9.3 11.5t.788-1.912T12 8.8t1.913.788t.787 1.912t-.787 1.913T12 14.2t-1.912-.787m-4.2 3.787q-2.763-1.8-4.363-4.75q-.125-.225-.187-.462t-.063-.488t.063-.488t.187-.462q1.6-2.95 4.363-4.75T12 4t6.113 1.8t4.362 4.75q.125.225.188.463t.062.487t-.062.488t-.188.462q-1.6 2.95-4.362 4.75T12 19t-6.113-1.8"/></symbol><use href="#ai:material-symbols:visibility-rounded"></use>  </svg> <span>浏览量</span> <span id="busuanzi_value_page_pv" class="font-semibold text-zinc-900 dark:text-zinc-100"></span> </div> <div id="busuanzi_container_site_uv" data-busuanzi-item class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:group-rounded">   <symbol id="ai:material-symbols:group-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M1 17.2q0-.85.438-1.562T2.6 14.55q1.55-.775 3.15-1.162T9 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T17 17.2v.8q0 .825-.587 1.413T15 20H3q-.825 0-1.412-.587T1 18zM18.45 20q.275-.45.413-.962T19 18v-1q0-1.1-.612-2.113T16.65 13.15q1.275.15 2.4.513t2.1.887q.9.5 1.375 1.112T23 17v1q0 .825-.587 1.413T21 20zM6.175 10.825Q5 9.65 5 8t1.175-2.825T9 4t2.825 1.175T13 8t-1.175 2.825T9 12t-2.825-1.175m11.65 0Q16.65 12 15 12q-.275 0-.7-.062t-.7-.138q.675-.8 1.038-1.775T15 8t-.362-2.025T13.6 4.2q.35-.125.7-.163T15 4q1.65 0 2.825 1.175T19 8t-1.175 2.825"/></symbol><use href="#ai:material-symbols:group-rounded"></use>  </svg> <span>观众数</span> <span id="busuanzi_value_site_uv" class="font-semibold text-zinc-900 dark:text-zinc-100"></span> </div> </div> <div class="flex flex-col gap-3 pt-2"> <div class="flex flex-wrap justify-center gap-2.5"><a href="/categories/技术/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-sky-200/80 bg-sky-50/85 text-sky-700 hover:border-sky-300 hover:bg-sky-100/90 hover:text-sky-900 dark:border-sky-900/70 dark:bg-sky-950/35 dark:text-sky-200 dark:hover:border-sky-800 dark:hover:bg-sky-900/50 dark:hover:text-sky-100">技术</a></div> <div class="flex flex-wrap justify-center gap-2.5"><a href="/tags/算法竞赛/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"># 算法竞赛</a><a href="/tags/windows/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"># Windows</a><a href="/tags/开发环境/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"># 开发环境</a></div> </div> </header> <div class="mx-auto max-w-3xl"> <article id="content" class="markdown-body" data-lightbox-root data-pagefind-body data-pagefind-sort="2025-07-02T00:00:00.000Z"> <div class="hidden"> <span data-pagefind-meta="title">算法竞赛：拥有一个顺手的 IDE · Windows 篇</span> <span data-pagefind-meta="description">Sublime Text了解一下？</span> <span data-pagefind-meta="date">2025年7月2日</span> <span data-pagefind-filter="categories:技术"> 技术 </span> <span data-pagefind-filter="tags:算法竞赛">算法竞赛</span><span data-pagefind-filter="tags:Windows">Windows</span><span data-pagefind-filter="tags:开发环境">开发环境</span> </div> <p>如果你第一次学习 OI，你一定会了解一个名为 Dev-C++ 的编辑器。</p>
+<p><img src="https://s2.loli.net/2025/09/06/5CFJbGOHijlUQv9.webp" alt="Dev-C++"></p>
+<p>▲ Dev-C++</p>
+<p>这的确是一个易于上手的编辑器，教练为我们安装的版本自带编译器、且不需要过多的配置就可以上手写代码。</p>
+<p>但是他的缺陷也暴露了出来：Dev-C++ 本质上作为一个开发编辑器，其开箱即用（不需要个性化设置）的特点已经局限了他（对于我们算法竞赛不是特别的方便）。那么，我们又该何从下手呢？</p>
+<h2 id="选择一个编辑器">选择一个编辑器</h2>
+<p>市面上的代码编辑器有很多，比如微软的 <a href="https://code.visualstudio.com/">Visual Studio Code</a>，<a href="https://cpeditor.org/zh/">CP Editor</a>、Sublime 公司的 <a href="https://sublimetext.com">Sublime Text</a>。</p>
+<p>这三款编辑器是非常适合作为 OIer 日常使用的，其中 CP Editor 是一款开箱即用的，支持导入测试点的编辑器，如果你不喜欢折腾，那么 CP Editor 一定是你的不二之选！</p>
+<h2 id="sublime-text">Sublime Text</h2>
+<p>Sublime Text 是一款轻量级编辑器，拥有许多可以个性化的内容。</p>
+<p>如果你想要尝试，请跟随本文操作、配置。</p>
+<p>注意：本教程为 Windows 教程！</p>
+<h2 id="下载-sublime-text">下载 Sublime Text</h2>
+<p>打开官网：<a href="https://sublimetext.com">sublimetext.com</a></p>
+<p><img src="https://s2.loli.net/2025/09/06/QUqSYRA5jiH8NyW.webp" alt="官方网站"></p>
+<p>▲ Sublime Text 官网</p>
+<p>打开之后不要被满屏的英文吓住，直接点击“DOWNLOAD FOR WINDOWS”下载。</p>
+<p>下载之后一路下一步安装，打开，你就可以继续跟着本文配置了！</p>
+<h2 id="可选插件安装器">（可选）插件安装器</h2>
+<p>首先按下 <code>Control</code> + <code>Shift</code> + <code>P</code> 打开操作面板，输入 <code>Install</code> 后点击“Install Package Control”安装插件安装器，等待一会会出现弹窗提示，然后就安装好了！</p>
+<h2 id="可选中文">（可选）中文</h2>
+<p>此操作需要安装插件安装器。</p>
+<p>在安装好插件安装器的情况下，按下 <code>Control</code> + <code>Shift</code> + <code>P</code> 打开操作面板，输入 <code>Install</code> 后选择 “Package Control: Install Package”。</p>
+<p><img src="https://s2.loli.net/2025/09/06/yWNjnizEwo8pUdT.webp" alt="操作 1"></p>
+<p>加载比较慢，不要着急，等他弹出来之后输入 <code>Chinese</code>，然后选择“ChineseLocalizations”</p>
+<p><img src="https://s2.loli.net/2025/09/06/kQtFT8lDZriYCWb.webp" alt="操作 2"></p>
+<p>安装的时候等待一下，会弹出来一个叫“Package Control Messages”的文件（会帮你打开），上面给出了方法。</p>
+<p><img src="https://s2.loli.net/2025/09/06/EqwOfvu698LdjY3.webp" alt="操作 3"></p>
+<p>好像最新版的插件会直接给你调好（雾）。</p>
+<p>你就可以愉快的使用中文了！</p>
+<h2 id="个性化">个性化</h2>
+<p>首先是编辑器设置，操作方法见下图：</p>
+<p><img src="https://s2.loli.net/2025/09/06/t1LVSqHCIvmDNBb.webp" alt="操作方法"></p>
+<p>打开之后的画面可能令你不解：为什么是一个我看不懂的代码？</p>
+<p>其实这是一个比较不错的优点，你可以很快地迁移配置在各个电脑之间。</p>
+<p>如果你熟悉英文，那么恭喜你，你可以通过参照左边的默认配置来自定义。如果你不熟悉，没有关系，我可以给你一个示范。</p>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">{</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">spell_check</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#FE640B;--shiki-dark:#FAB387"> true</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">indent_to_bracket</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#FE640B;--shiki-dark:#FAB387"> true</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">draw_white_space</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#7C7F93;--shiki-dark:#9399B2"> [</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">"selection"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "trailing"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "isolated"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">]</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">}</span></span></code></pre>
+<p>这个文件其实就只达到了一个目的：显示行尾空格、缩进。</p>
+<p>这有利于防止玄学错误，对于 OIer 来说已经够用了！</p>
+<p>如果你要调整颜色主题，没问题，按照下图操作即可：</p>
+<p><img src="https://s2.loli.net/2025/09/06/DEmA19vVWzTbM5Q.webp" alt="主题"></p>
+<p>这里的调整有一个优点，你可以直接在一个类似于之前命令面板的可视化模块中调整主题，并且支持实时预览，你可以使用上下键切换并查看效果。</p>
+<h2 id="编译与代码框架">编译与代码框架</h2>
+<p>如果说上方的教程帮助你有一个更舒适的代码撰写环境，那么接下来的配置则让你的编写与编译更加方便！</p>
+<p>接下来的内容相对无脑，小心你的 CtrlCV 键被按废。</p>
+<p>首先按下 <code>Control</code> + <code>Shift</code> + <code>P</code> 打开操作面板，输入 <code>Browse</code>，选择“Preferences: Browse Packages”，会打开一个文件夹。</p>
+<p>你也可以直接访问这个路径（理论上都在这个位置）：</p>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages</span></span></code></pre>
+<p>可能会出现一些文件夹，我们进入 <code>User</code> 文件夹。</p>
+<p>新建一个叫 <code>[名字随意].sublime-build</code> 的文件（请打开后缀名显示）。</p>
+<p>双击使用 Sublime Text 打开，粘贴这个文件：</p>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">{</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">encoding</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "utf-8"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">working_dir</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "$file_path"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">shell_cmd</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "g++ -Wall </span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">${file}</span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> -o </span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">${file_path}/${file_base_name}</span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">file_regex</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">selector</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "source.c++"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">variants</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#7C7F93;--shiki-dark:#9399B2"> [</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">    {</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">      "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">name</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "Run"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">      "</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">shell_cmd</span><span style="color:#7C7F93;--shiki-dark:#9399B2">"</span><span style="color:#7C7F93;--shiki-dark:#9399B2">:</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "g++ -Wall -std=c++14 -O2 </span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">${file}</span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> -o </span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">${file_base_name}</span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> &#x26;&#x26; start cmd /c </span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">${file_path}/${file_base_name}</span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> &#x26; pause</span><span style="color:#EA76CB;--shiki-dark:#F5C2E7">\"</span><span style="color:#40A02B;--shiki-dark:#A6E3A1">"</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">    }</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">  ]</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">}</span></span></code></pre>
+<p>保存退出，在正式编译之前我们还需要做一点事情。</p>
+<h3 id="安装编译器">安装编译器</h3>
+<p>由于笔者也忘了怎么安装 C++ 编译器了，请自行百度/必应：“C++编译器安装”</p>
+<h3 id="设置编译器环境变量">设置编译器环境变量</h3>
+<p>如果你是在网上搜的安装教程，他可能已经教你如何配置环境变量了，但如果你没有配置，请看这里。</p>
+<p>首先打开开始菜单，搜索“环境变量”，打开之后你需要在上方的“用户变量”进行如下操作：点击“新建” → 在“变量名”中输入 <code>PATH</code> → 在“变量值”中输入你的编译器目录，类似于 <code>C:\Program Files (x86)\[你所安装的编译器名字，比如 MinGW64]\bin</code> → 点击“确定” → 点击“确定”。</p>
+<p>当然如果你之前装过如 Python 等工具，你的 PATH 变量已经被占用，不用担心，按照这个步骤操作：双击“PATH”变量那一行 → 在“变量值”的原有内容后加一个英文分号（<code>;</code>） → 输入你的编译器目录，类似于 <code>C:\Program Files (x86)\[你所安装的编译器名字，比如 MinGW64]\bin</code> → 点击“确定” → 点击“确定”</p>
+<p>完成后打开命令提示符（cmd），输入 <code>g++ -v</code> ，只要能正确输出版本等信息就说明配置成功了！</p>
+<h3 id="写下你的第一个程序">写下你的第一个程序</h3>
+<p>回到 Sublime Text 中，写好一个带有输入输出功能的程序，按下 <code>Control + B</code> 开始运行，会弹出一个类似命令面板的界面。</p>
+<p><img src="https://s2.loli.net/2025/09/06/obkpsUwGrudVg8P.webp" alt="选择器"></p>
+<p>选择“[你刚刚创建的那个 <code>.sublime-build</code> 文件的文件名] - Run”那一个选项，就可以一键编译运行（会弹出来一个终端窗口供你输入输出），运行成功后就代表着编译系统的配置成功！</p>
+<h3 id="代码模板">代码模板</h3>
+<p>在 Dev-C++ 中，我们都知道可以通过设置使新建文件时能够为我们自动补全头文件。</p>
+<p>虽然 Sublime 不能够实现这个功能，对，不能够！但是我们仍然可以顺利偷懒！</p>
+<p>首先按下 <code>Control</code> + <code>Shift</code> + <code>P</code> 打开操作面板，输入 <code>Browse</code>，选择“Preferences: Browse Packages”，会打开一个文件夹。</p>
+<p>你也可以直接访问这个路径（理论上都在这个位置）：</p>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages</span></span></code></pre>
+<p>可能会出现一些文件夹，我们进入 <code>User</code> 文件夹。</p>
+<p>新建一个叫 <code>[名字随意].sublime-snippet</code> 的文件（请打开后缀名显示）。</p>
+<p>用 Sublime Text 打开，粘贴这个代码，然后修改其中的内容：</p>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">snippet</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">content</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#179299;--shiki-dark:#94E2D5"> &#x3C;![CDATA[</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> [你的代码框架] </span><span style="color:#179299;--shiki-dark:#94E2D5">]]></span><span style="color:#179299;--shiki-dark:#94E2D5"> &#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">content</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic">  &#x3C;!-- Optional: Set a tabTrigger to define how to trigger the snippet --></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">tabTrigger</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">[关键词]</span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">tabTrigger</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">description</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">[取名随意]</span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">description</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic">  &#x3C;!-- Optional: Set a scope to limit where the snippet will trigger --></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">scope</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">source.c, source.c++</span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">scope</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">snippet</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span></code></pre>
+<p>如果你不理解，你可以参考这个例子：</p>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">snippet</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">content</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">    &#x3C;![CDATA[</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> #include &#x3C;bits/stdc++.h> #define op if (debug) using namespace</span></span>
+<span class="line"><span style="color:#40A02B;--shiki-dark:#A6E3A1">    std; typedef long long lo; const bool debug = 0; int main() {</span></span>
+<span class="line"><span style="color:#40A02B;--shiki-dark:#A6E3A1">    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0;</span></span>
+<span class="line"><span style="color:#40A02B;--shiki-dark:#A6E3A1">    } </span><span style="color:#179299;--shiki-dark:#94E2D5">]]></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">content</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic">  &#x3C;!-- Optional: Set a tabTrigger to define how to trigger the snippet --></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">tabTrigger</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">_algo</span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">tabTrigger</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">description</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">竞赛模板</span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">description</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-light-font-style:italic;--shiki-dark:#9399B2;--shiki-dark-font-style:italic">  &#x3C;!-- Optional: Set a scope to limit where the snippet will trigger --></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">  &#x3C;</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">scope</span><span style="color:#179299;--shiki-dark:#94E2D5">></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">source.c, source.c++</span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">scope</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span>
+<span class="line"><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;/</span><span style="color:#1E66F5;--shiki-dark:#89B4FA">snippet</span><span style="color:#179299;--shiki-dark:#94E2D5">></span></span></code></pre>
+<p>这样，每当你新建一个 <code>.cpp</code> 的文件时，输入<code>上面代码的[关键词]</code> 然后在弹出的菜单中选择你的预设，就可以为你补全框架了！</p>
+<p><img src="https://s2.loli.net/2025/09/06/oAkSlebhF6Q8WPU.webp" alt="大概是这样"></p>
+<p>▲ 大概是这样的吧</p>
+<h2 id="总结">总结</h2>
+<p>至此，你应该已经配置好了一个完整的 Sublime Text 并且可以用于竞赛的调试代码，希望本篇文章可以为你提高效率。</p>
+<h2 id="彩蛋让你的-sublime-text-像-cp-editor-一样">彩蛋：让你的 Sublime Text 像 CP Editor 一样</h2>
+<p>在安装好插件安装器的情况下，按下 <code>Control</code> + <code>Shift</code> + <code>P</code> 打开操作面板，输入 <code>Install</code> 后选择 “Package Control: Install Package”。</p>
+<p><img src="https://s2.loli.net/2025/09/06/yWNjnizEwo8pUdT.webp" alt="操作 1"></p>
+<p>加载比较慢，不要着急，等他弹出来之后输入 <code>CppFastOly</code>，然后选择“CppFastOlympicCoding”安装，稍等一会安装完成。</p>
+<p><img src="https://s2.loli.net/2025/09/06/HsXRw2Jgpt9DLNa.webp" alt="操作 2"></p>
+<p>请注意左下角的安装状态，当显示安装完成之后你就可以愉快的使用了。</p>
+<p>由于篇幅原因，请各位自行前往官方 GitHub 学习使用：<a href="https://github.com/Jatana/FastOlympicCoding">https://github.com/Jatana/FastOlympicCoding</a></p>
+<p><strong>完结撒花！感谢各位阅读！</strong></p> </article> </div> <div class="mx-auto mt-10 max-w-3xl"> <div class="giscus-container"> <p class="giscus-hint">来过，就留下你的足迹吧！</p> <div id="giscus-comments"></div> </div> <script>(function(){const giscusConfig = {"repo":"kmoretti/blog","repoId":"R_kgDOS9I8wA","category":"评论","categoryId":"DIC_kwDOS9I8wM4C_VFM","mapping":"pathname","strict":"1","reactionsEnabled":"1","emitMetadata":"0","inputPosition":"top","lang":"zh-CN","pageKey":"/posts/algo-ide-windows/","pageTitle":"算法竞赛：拥有一个顺手的 IDE · Windows 篇"};
+
+  const GISCUS_PATH_KEY = "__giscusLastPath";
+  const GISCUS_CONFIG_KEY = "__giscusConfig";
+  const GISCUS_HANDLERS_BOUND_KEY = "__giscusHandlersBound";
+  const globalWindow = window;
+
+  globalWindow[GISCUS_CONFIG_KEY] = giscusConfig;
+
+  function getGiscusTheme() {
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  }
+
+  function getConfig() {
+    const container = document.getElementById("giscus-comments");
+    const config = globalWindow[GISCUS_CONFIG_KEY];
+
+    if (!(container instanceof HTMLElement) || !config) return null;
+
+    const {
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping,
+      strict,
+      reactionsEnabled,
+      emitMetadata,
+      inputPosition,
+      lang,
+      pageKey,
+      pageTitle,
+    } = config;
+
+    if (!repo || !repoId || !category || !categoryId) return null;
+
+    return {
+      container,
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping: mapping || "pathname",
+      strict: strict || "0",
+      reactionsEnabled: reactionsEnabled || "1",
+      emitMetadata: emitMetadata || "0",
+      inputPosition: inputPosition || "top",
+      lang: lang || "zh-CN",
+      pageKey: pageKey || window.location.pathname,
+      pageTitle: pageTitle || document.title,
+    };
+  }
+
+  function clearGiscus() {
+    const container = document.getElementById("giscus-comments");
+    if (!(container instanceof HTMLElement)) return;
+    container.innerHTML = "";
+  }
+
+  function initGiscus() {
+    const config = getConfig();
+    if (!config) {
+      const container = document.getElementById("giscus-comments");
+      if (container) {
+        container.innerHTML =
+          '<p class="text-sm text-zinc-500 dark:text-zinc-400">Giscus 评论未配置。</p>';
+      }
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    if (globalWindow[GISCUS_PATH_KEY] === currentPath) return;
+
+    clearGiscus();
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.setAttribute("data-repo", config.repo);
+    script.setAttribute("data-repo-id", config.repoId);
+    script.setAttribute("data-category", config.category);
+    script.setAttribute("data-category-id", config.categoryId);
+    script.setAttribute("data-mapping", config.mapping);
+    script.setAttribute("data-strict", config.strict);
+    script.setAttribute("data-reactions-enabled", config.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", config.emitMetadata);
+    script.setAttribute("data-input-position", config.inputPosition);
+    script.setAttribute("data-theme", getGiscusTheme());
+    script.setAttribute("data-lang", config.lang);
+    script.setAttribute("data-loading", "lazy");
+
+    if (config.mapping === "specific") {
+      script.setAttribute("data-term", config.pageKey);
+      script.setAttribute("data-title", config.pageTitle);
+    }
+
+    config.container.appendChild(script);
+    globalWindow[GISCUS_PATH_KEY] = currentPath;
+  }
+
+  function updateGiscusTheme() {
+    const frame = document.querySelector("iframe.giscus-frame");
+    if (!(frame instanceof HTMLIFrameElement) || !frame.contentWindow) return;
+
+    frame.contentWindow.postMessage(
+      {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(),
+          },
+        },
+      },
+      "https://giscus.app",
+    );
+  }
+
+  initGiscus();
+
+  if (!globalWindow[GISCUS_HANDLERS_BOUND_KEY]) {
+    const observer = new MutationObserver(() => {
+      updateGiscusTheme();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    document.addEventListener("astro:after-swap", initGiscus);
+    document.addEventListener("astro:page-load", updateGiscusTheme);
+    globalWindow[GISCUS_HANDLERS_BOUND_KEY] = true;
+  }
+})();</script>  </div> </main> <script defer src="/js/GmeekTOC.js"></script>  </div> </body></html>

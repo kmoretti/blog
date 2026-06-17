@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!-- Tell the browser we support both schemes (prevents UA auto-darkening + helps form controls/scrollbars) --><meta name="color-scheme" content="light dark"><link rel="icon" type="image/svg+xml" href="/favicon.png"><meta name="generator" content="Astro v5.16.6"><title>题解 | 字符串反转 | Frederick&#39;s Blog</title><!-- Theme initialization - must run before paint to prevent dark-mode "white flash" --><script>
+      (() => {
+        const STORAGE_KEY = "theme";
+
+        function getStoredTheme() {
+          try {
+            const theme = localStorage.getItem(STORAGE_KEY);
+            return theme === "dark" || theme === "light" ? theme : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function getSystemTheme() {
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+
+        function resolveTheme() {
+          return getStoredTheme() ?? getSystemTheme();
+        }
+
+        function applyTheme(doc) {
+          const theme = resolveTheme();
+          doc.documentElement.classList.toggle("dark", theme === "dark");
+        }
+
+        // 1) First paint
+        applyTheme(document);
+
+        // 2) Astro View Transitions swaps <html> attributes from the next document.
+        //    Apply theme to `event.newDocument` so the swapped-in <html> keeps the "dark" class.
+        document.addEventListener("astro:before-swap", (event) => {
+          // Astro provides `newDocument` on the event object.
+          const newDocument = event?.newDocument;
+          if (newDocument) applyTheme(newDocument);
+        });
+
+        // 3) Re-apply after navigation just in case
+        document.addEventListener("astro:page-load", () =>
+          applyTheme(document),
+        );
+
+        // 4) If user never chose a theme, follow system changes live
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        media.addEventListener("change", () => {
+          if (getStoredTheme() === null) applyTheme(document);
+        });
+      })();
+    </script><meta name="title" content="题解 | 字符串反转 | Frederick's Blog"><!-- Self-hosted fonts via @fontsource (imported in src/styles/global.css). Avoids Google Fonts and local system font reliance. --><meta name="description" content="一道简单的字符串操作题的解题思路"><link rel="canonical" href="https://blog.081531.xyz/posts/solution-lg330123/"><script defer src="https://umami.ohdragonboi.cn/analytics" data-website-id="20db53a2-22e0-4ed1-b379-8d1136fb40c8"></script><script defer src="/js/GmeekBSZ.js"></script><script defer src="/js/lightbox.js"></script><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://blog.081531.xyz/posts/solution-lg330123/"><meta property="og:title" content="题解 | 字符串反转 | Frederick's Blog"><meta property="og:description" content="一道简单的字符串操作题的解题思路"><meta property="og:image" content="https://blog.081531.xyz/static/banner.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog.081531.xyz/posts/solution-lg330123/"><meta property="twitter:title" content="题解 | 字符串反转 | Frederick's Blog"><meta property="twitter:description" content="一道简单的字符串操作题的解题思路"><meta property="twitter:image" content="https://blog.081531.xyz/static/banner.png"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><style>
+      :root {
+        --app-bg: #ffffff;
+        background-color: var(--app-bg);
+        color-scheme: light;
+      }
+      html.dark {
+        --app-bg: #18181b;
+        background-color: var(--app-bg);
+        color-scheme: dark;
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        background: var(--app-bg) !important;
+      }
+    </style><link rel="stylesheet" href="/_astro/about.O7njA0CK.css">
+<style>.giscus-container{margin-top:2rem}.giscus-hint{margin-bottom:.75rem;text-align:center;font-size:.875rem;color:#71717a}.dark .giscus-hint{color:#a1a1aa}
+</style>
+<link rel="stylesheet" href="/_astro/about.BMZUTpeN.css"><style>[data-astro-transition-scope="astro-l7r54iwe-1"] { view-transition-name: header; }@layer astro { ::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body class="bg-white font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"> <div class="mx-auto p-4 flex min-h-svh max-w-6xl flex-col"> <header class="mb-6 flex items-center justify-between" data-astro-cid-3ef6ksr2 data-astro-transition-scope="astro-l7r54iwe-1"> <nav class="flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>起始页</a> <a href="/posts/1/" data-astro-cid-3ef6ksr2>时间线</a> <a href="/friends/" data-astro-cid-3ef6ksr2>朋友们</a> <a href="/about/" data-astro-cid-3ef6ksr2>自言语</a> </nav> <div class="flex items-center gap-2" data-astro-cid-3ef6ksr2> <a href="mailto:mcy@kemiaosw.top" title="电子邮" aria-label="电子邮" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:alternate-email">   <symbol id="ai:material-symbols:alternate-email" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12v1.45q0 1.475-1.012 2.513T18.5 17q-.875 0-1.65-.375t-1.3-1.075q-.725.725-1.638 1.088T12 17q-2.075 0-3.537-1.463T7 12t1.463-3.537T12 7t3.538 1.463T17 12v1.45q0 .65.425 1.1T18.5 15t1.075-.45t.425-1.1V12q0-3.35-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20h5v2zm2.125-7.875Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875"/></symbol><use href="#ai:material-symbols:alternate-email"></use>  </svg> </a> <a href="https://www.travellings.cn/go.html" title="开往 · 友链接力" target="_blank" aria-label="开往 · 友链接力" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:train-outline">   <symbol id="ai:material-symbols:train-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M4 15.5V6q0-1.325.688-2.113t1.812-1.2t2.563-.55T12 2q1.65 0 3.113.138t2.55.55t1.712 1.2T20 6v9.5q0 1.475-1.012 2.488T16.5 19l1.5 1.5v.5h-2l-2-2h-4l-2 2H6v-.5L7.5 19q-1.475 0-2.488-1.012T4 15.5M12 4q-2.65 0-3.875.313T6.45 5h11.2q-.375-.425-1.612-.712T12 4m-6 6h5V7H6zm10.5 2H6h12zM13 10h5V7h-5zm-3.425 5.575Q10 15.15 10 14.5t-.425-1.075T8.5 13t-1.075.425T7 14.5t.425 1.075T8.5 16t1.075-.425m7 0Q17 15.15 17 14.5t-.425-1.075T15.5 13t-1.075.425T14 14.5t.425 1.075T15.5 16t1.075-.425M7.5 17h9q.65 0 1.075-.425T18 15.5V12H6v3.5q0 .65.425 1.075T7.5 17M12 5h5.65h-11.2z"/></symbol><use href="#ai:material-symbols:train-outline"></use>  </svg> </a> <button id="theme-toggle" class="inline-flex items-center border-0 bg-transparent p-0 text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100" aria-label="Toggle theme" data-astro-transition-persist="astro-wppfukqh-2"> <span class="sr-only">Toggle theme</span> <svg width="20" height="20" id="sun" class="hidden leading-none dark:block" data-icon="material-symbols:light-mode-outline">   <symbol id="ai:material-symbols:light-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M14.125 14.125Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875m-5.663 1.413Q7 14.075 7 12t1.463-3.537T12 7t3.538 1.463T17 12t-1.463 3.538T12 17t-3.537-1.463M5 13H1v-2h4zm18 0h-4v-2h4zM11 5V1h2v4zm0 18v-4h2v4zM6.4 7.75L3.875 5.325L5.3 3.85l2.4 2.5zm12.3 12.4l-2.425-2.525L17.6 16.25l2.525 2.425zM16.25 6.4l2.425-2.525L20.15 5.3l-2.5 2.4zM3.85 18.7l2.525-2.425L7.75 17.6l-2.425 2.525zM12 12"/></symbol><use href="#ai:material-symbols:light-mode-outline"></use>  </svg> <svg width="20" height="20" id="moon" class="leading-none dark:hidden" data-icon="material-symbols:dark-mode-outline">   <symbol id="ai:material-symbols:dark-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-3.75 0-6.375-2.625T3 12t2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21m0-2q2.2 0 3.95-1.213t2.55-3.162q-.5.125-1 .2t-1 .075q-3.075 0-5.238-2.163T9.1 7.5q0-.5.075-1t.2-1q-1.95.8-3.163 2.55T5 12q0 2.9 2.05 4.95T12 19m-.25-6.75"/></symbol><use href="#ai:material-symbols:dark-mode-outline"></use>  </svg> </button> <script type="module">function t(){const e=document.getElementById("theme-toggle");e&&(e instanceof HTMLElement&&e.dataset.bound==="1"||(e.addEventListener("click",()=>{const n=document.documentElement.classList.toggle("dark");localStorage.setItem("theme",n?"dark":"light"),document.dispatchEvent(new CustomEvent("theme-changed",{detail:{theme:n?"dark":"light"}}))}),e instanceof HTMLElement&&(e.dataset.bound="1")))}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",t,{once:!0}):t();document.addEventListener("astro:page-load",t);</script> </div> </header>   <main class="pb-16"> <header class="mx-auto mb-6 max-w-3xl space-y-3 text-center"> <h1 class="text-xl font-medium">题解 | 字符串反转</h1> <p class="text-sm text-zinc-600 dark:text-zinc-400"> 一道简单的字符串操作题的解题思路 </p> <div class="mx-auto flex max-w-2xl flex-wrap justify-center gap-2.5 pt-1"> <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:calendar-month-rounded">   <symbol id="ai:material-symbols:calendar-month-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V3q0-.425.288-.712T7 2t.713.288T8 3v1h8V3q0-.425.288-.712T17 2t.713.288T18 3v1h1q.825 0 1.413.588T21 6v14q0 .825-.587 1.413T19 22zm0-2h14V10H5zm7-6q-.425 0-.712-.288T11 13t.288-.712T12 12t.713.288T13 13t-.288.713T12 14m-4.712-.288Q7 13.426 7 13t.288-.712T8 12t.713.288T9 13t-.288.713T8 14t-.712-.288M16 14q-.425 0-.712-.288T15 13t.288-.712T16 12t.713.288T17 13t-.288.713T16 14m-4 4q-.425 0-.712-.288T11 17t.288-.712T12 16t.713.288T13 17t-.288.713T12 18m-4.712-.288Q7 17.426 7 17t.288-.712T8 16t.713.288T9 17t-.288.713T8 18t-.712-.288M16 18q-.425 0-.712-.288T15 17t.288-.712T16 16t.713.288T17 17t-.288.713T16 18"/></symbol><use href="#ai:material-symbols:calendar-month-rounded"></use>  </svg> <span>2024年7月2日</span> </div> <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:auto-stories-rounded">   <symbol id="ai:material-symbols:auto-stories-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M11.463 19.475q-.263-.075-.488-.2q-1.025-.625-2.15-.95T6.5 18q-1.05 0-2.063.275T2.5 19.05q-.525.275-1.012-.025T1 18.15V6.1q0-.275.138-.525T1.55 5.2q1.15-.6 2.4-.9T6.5 4q1.45 0 2.838.375T12 5.5v12.1q1.275-.8 2.675-1.2T17.5 16q.9 0 1.763.15T21 16.6v-12q.375.125.738.263t.712.337q.275.125.413.375T23 6.1v12.05q0 .575-.487.875t-1.013.025q-.925-.5-1.937-.775T17.5 18q-1.2 0-2.325.325t-2.15.95q-.225.125-.488.2T12 19.55t-.537-.075m3.362-5.225q-.25.225-.537.088T14 13.875V5.7q0-.1.038-.188t.112-.162l4-4q.25-.25.55-.125t.3.475v8.575q0 .125-.05.213t-.125.162z"/></symbol><use href="#ai:material-symbols:auto-stories-rounded"></use>  </svg> <span>推荐阅读 1 分钟</span> </div> <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:article-rounded">   <symbol id="ai:material-symbols:article-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm3-4h5q.425 0 .713-.288T14 16t-.288-.712T13 15H8q-.425 0-.712.288T7 16t.288.713T8 17m0-4h8q.425 0 .713-.288T17 12t-.288-.712T16 11H8q-.425 0-.712.288T7 12t.288.713T8 13m0-4h8q.425 0 .713-.288T17 8t-.288-.712T16 7H8q-.425 0-.712.288T7 8t.288.713T8 9"/></symbol><use href="#ai:material-symbols:article-rounded"></use>  </svg> <span>180 字</span> </div> <div id="busuanzi_container_page_pv" data-busuanzi-item class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:visibility-rounded">   <symbol id="ai:material-symbols:visibility-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M15.188 14.688Q16.5 13.375 16.5 11.5t-1.312-3.187T12 7T8.813 8.313T7.5 11.5t1.313 3.188T12 16t3.188-1.312m-5.1-1.276Q9.3 12.625 9.3 11.5t.788-1.912T12 8.8t1.913.788t.787 1.912t-.787 1.913T12 14.2t-1.912-.787m-4.2 3.787q-2.763-1.8-4.363-4.75q-.125-.225-.187-.462t-.063-.488t.063-.488t.187-.462q1.6-2.95 4.363-4.75T12 4t6.113 1.8t4.362 4.75q.125.225.188.463t.062.487t-.062.488t-.188.462q-1.6 2.95-4.362 4.75T12 19t-6.113-1.8"/></symbol><use href="#ai:material-symbols:visibility-rounded"></use>  </svg> <span>浏览量</span> <span id="busuanzi_value_page_pv" class="font-semibold text-zinc-900 dark:text-zinc-100"></span> </div> <div id="busuanzi_container_site_uv" data-busuanzi-item class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"> <svg width="18" height="18" data-icon="material-symbols:group-rounded">   <symbol id="ai:material-symbols:group-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M1 17.2q0-.85.438-1.562T2.6 14.55q1.55-.775 3.15-1.162T9 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T17 17.2v.8q0 .825-.587 1.413T15 20H3q-.825 0-1.412-.587T1 18zM18.45 20q.275-.45.413-.962T19 18v-1q0-1.1-.612-2.113T16.65 13.15q1.275.15 2.4.513t2.1.887q.9.5 1.375 1.112T23 17v1q0 .825-.587 1.413T21 20zM6.175 10.825Q5 9.65 5 8t1.175-2.825T9 4t2.825 1.175T13 8t-1.175 2.825T9 12t-2.825-1.175m11.65 0Q16.65 12 15 12q-.275 0-.7-.062t-.7-.138q.675-.8 1.038-1.775T15 8t-.362-2.025T13.6 4.2q.35-.125.7-.163T15 4q1.65 0 2.825 1.175T19 8t-1.175 2.825"/></symbol><use href="#ai:material-symbols:group-rounded"></use>  </svg> <span>观众数</span> <span id="busuanzi_value_site_uv" class="font-semibold text-zinc-900 dark:text-zinc-100"></span> </div> </div> <div class="flex flex-col gap-3 pt-2"> <div class="flex flex-wrap justify-center gap-2.5"><a href="/categories/题解/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-sky-200/80 bg-sky-50/85 text-sky-700 hover:border-sky-300 hover:bg-sky-100/90 hover:text-sky-900 dark:border-sky-900/70 dark:bg-sky-950/35 dark:text-sky-200 dark:hover:border-sky-800 dark:hover:bg-sky-900/50 dark:hover:text-sky-100">题解</a></div> <div class="flex flex-wrap justify-center gap-2.5"><a href="/tags/题解/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"># 题解</a><a href="/tags/算法/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"># 算法</a><a href="/tags/字符串/" class="inline-flex items-center rounded-2xl border px-3 py-1.5 text-sm font-medium tracking-tight no-underline shadow-sm transition duration-200 hover:-translate-y-0.5 border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"># 字符串</a></div> </div> </header> <div class="mx-auto max-w-3xl"> <article id="content" class="markdown-body" data-lightbox-root data-pagefind-body data-pagefind-sort="2024-07-02T00:00:00.000Z"> <div class="hidden"> <span data-pagefind-meta="title">题解 | 字符串反转</span> <span data-pagefind-meta="description">一道简单的字符串操作题的解题思路</span> <span data-pagefind-meta="date">2024年7月2日</span> <span data-pagefind-filter="categories:题解"> 题解 </span> <span data-pagefind-filter="tags:题解">题解</span><span data-pagefind-filter="tags:算法">算法</span><span data-pagefind-filter="tags:字符串">字符串</span> </div> <h2 id="题目">题目</h2>
+<p><img src="https://s2.loli.net/2025/09/06/ghIJ7HTtqrlAYCv.webp" alt="题目"></p>
+<h2 id="1题目分析">1.题目分析</h2>
+<p>一道简单的字符串操作题，直接套用C++中字符串对应的操作即可</p>
+<h2 id="2做题思路">2.做题思路</h2>
+<ul>
+<li>
+<p>使用 <code>while</code> 循环读入字符串 <code>inpt </code> 为 <code>.</code> 时停止读入</p>
+</li>
+<li>
+<p>对 <code>inpt</code> 字符串执行 <code>inpt.append(1,' ')</code> 意思是在读入的字符串后加一个空格，因为 <code>cin</code> 会排掉空格</p>
+</li>
+<li>
+<p>定义一个 <code>str</code> 字符串用来储存答案</p>
+</li>
+<li>
+<p>对 <code>str</code> 字符串执行 <code>str.insert(0, inpt)</code> 即将输入内容添加至 <code>str</code> 字符串最前面</p>
+</li>
+<li>
+<p>输出 <code>str</code> 即可</p>
+</li>
+</ul>
+<h2 id="3复杂度计算">3.复杂度计算</h2>
+<p>由于只需要循环长度次，所以时间复杂度为 $O(n)$ 是完全不会超的</p>
+<h2 id="4完整代码">4.完整代码</h2>
+<pre class="astro-code astro-code-themes catppuccin-latte catppuccin-mocha" style="background-color:#eff1f5;--shiki-dark-bg:#1e1e2e;color:#4c4f69;--shiki-dark:#cdd6f4; overflow-x: auto;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#DF8E1D;--shiki-dark:#F9E2AF">#include</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> &#x3C;bits/stdc++.h></span></span>
+<span class="line"><span style="color:#8839EF;--shiki-dark:#CBA6F7">using</span><span style="color:#8839EF;--shiki-dark:#CBA6F7"> namespace</span><span style="color:#DF8E1D;--shiki-dark:#F9E2AF"> std</span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#8839EF;--shiki-dark:#CBA6F7">int</span><span style="color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic"> main</span><span style="color:#7C7F93;--shiki-dark:#9399B2">()</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">{</span></span>
+<span class="line"><span style="color:#4C4F69;--shiki-dark:#CDD6F4">	string str</span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"><span style="color:#4C4F69;--shiki-dark:#CDD6F4">	string inpt</span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"><span style="color:#8839EF;--shiki-dark:#CBA6F7">	while</span><span style="color:#7C7F93;--shiki-dark:#9399B2">(</span><span style="color:#FE640B;--shiki-dark:#FAB387">true</span><span style="color:#7C7F93;--shiki-dark:#9399B2">)</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">	{</span></span>
+<span class="line"><span style="color:#4C4F69;--shiki-dark:#CDD6F4">		cin </span><span style="color:#179299;--shiki-dark:#94E2D5">>></span><span style="color:#4C4F69;--shiki-dark:#CDD6F4"> inpt </span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"><span style="color:#8839EF;--shiki-dark:#CBA6F7">		if</span><span style="color:#7C7F93;--shiki-dark:#9399B2">(</span><span style="color:#4C4F69;--shiki-dark:#CDD6F4">inpt </span><span style="color:#179299;--shiki-dark:#94E2D5">==</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> "."</span><span style="color:#7C7F93;--shiki-dark:#9399B2">)</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">		{</span></span>
+<span class="line"><span style="color:#8839EF;--shiki-dark:#CBA6F7">			break</span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">		}</span></span>
+<span class="line"><span style="color:#4C4F69;--shiki-dark:#CDD6F4">		inpt</span><span style="color:#7C7F93;--shiki-dark:#9399B2">.</span><span style="color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic">append</span><span style="color:#7C7F93;--shiki-dark:#9399B2">(</span><span style="color:#FE640B;--shiki-dark:#FAB387">1</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span><span style="color:#40A02B;--shiki-dark:#A6E3A1"> ' '</span><span style="color:#7C7F93;--shiki-dark:#9399B2">);</span></span>
+<span class="line"><span style="color:#4C4F69;--shiki-dark:#CDD6F4">		str</span><span style="color:#7C7F93;--shiki-dark:#9399B2">.</span><span style="color:#1E66F5;--shiki-light-font-style:italic;--shiki-dark:#89B4FA;--shiki-dark-font-style:italic">insert</span><span style="color:#7C7F93;--shiki-dark:#9399B2">(</span><span style="color:#FE640B;--shiki-dark:#FAB387">0</span><span style="color:#7C7F93;--shiki-dark:#9399B2">,</span><span style="color:#4C4F69;--shiki-dark:#CDD6F4"> inpt</span><span style="color:#7C7F93;--shiki-dark:#9399B2">);</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">	}</span></span>
+<span class="line"><span style="color:#4C4F69;--shiki-dark:#CDD6F4">	cout </span><span style="color:#179299;--shiki-dark:#94E2D5">&#x3C;&#x3C;</span><span style="color:#4C4F69;--shiki-dark:#CDD6F4"> str </span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"><span style="color:#8839EF;--shiki-dark:#CBA6F7">	return</span><span style="color:#FE640B;--shiki-dark:#FAB387"> 0</span><span style="color:#7C7F93;--shiki-dark:#9399B2">;</span></span>
+<span class="line"><span style="color:#7C7F93;--shiki-dark:#9399B2">}</span></span></code></pre>
+<h2 id="写在最后">写在最后</h2>
+<p>有问题请及时评论，我会做出对应的修改！</p> </article> </div> <div class="mx-auto mt-10 max-w-3xl"> <div class="giscus-container"> <p class="giscus-hint">来过，就留下你的足迹吧！</p> <div id="giscus-comments"></div> </div> <script>(function(){const giscusConfig = {"repo":"kmoretti/blog","repoId":"R_kgDOS9I8wA","category":"评论","categoryId":"DIC_kwDOS9I8wM4C_VFM","mapping":"pathname","strict":"1","reactionsEnabled":"1","emitMetadata":"0","inputPosition":"top","lang":"zh-CN","pageKey":"/posts/solution-lg330123/","pageTitle":"题解 | 字符串反转"};
+
+  const GISCUS_PATH_KEY = "__giscusLastPath";
+  const GISCUS_CONFIG_KEY = "__giscusConfig";
+  const GISCUS_HANDLERS_BOUND_KEY = "__giscusHandlersBound";
+  const globalWindow = window;
+
+  globalWindow[GISCUS_CONFIG_KEY] = giscusConfig;
+
+  function getGiscusTheme() {
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  }
+
+  function getConfig() {
+    const container = document.getElementById("giscus-comments");
+    const config = globalWindow[GISCUS_CONFIG_KEY];
+
+    if (!(container instanceof HTMLElement) || !config) return null;
+
+    const {
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping,
+      strict,
+      reactionsEnabled,
+      emitMetadata,
+      inputPosition,
+      lang,
+      pageKey,
+      pageTitle,
+    } = config;
+
+    if (!repo || !repoId || !category || !categoryId) return null;
+
+    return {
+      container,
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping: mapping || "pathname",
+      strict: strict || "0",
+      reactionsEnabled: reactionsEnabled || "1",
+      emitMetadata: emitMetadata || "0",
+      inputPosition: inputPosition || "top",
+      lang: lang || "zh-CN",
+      pageKey: pageKey || window.location.pathname,
+      pageTitle: pageTitle || document.title,
+    };
+  }
+
+  function clearGiscus() {
+    const container = document.getElementById("giscus-comments");
+    if (!(container instanceof HTMLElement)) return;
+    container.innerHTML = "";
+  }
+
+  function initGiscus() {
+    const config = getConfig();
+    if (!config) {
+      const container = document.getElementById("giscus-comments");
+      if (container) {
+        container.innerHTML =
+          '<p class="text-sm text-zinc-500 dark:text-zinc-400">Giscus 评论未配置。</p>';
+      }
+      return;
+    }
+
+    const currentPath = window.location.pathname;
+    if (globalWindow[GISCUS_PATH_KEY] === currentPath) return;
+
+    clearGiscus();
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.setAttribute("data-repo", config.repo);
+    script.setAttribute("data-repo-id", config.repoId);
+    script.setAttribute("data-category", config.category);
+    script.setAttribute("data-category-id", config.categoryId);
+    script.setAttribute("data-mapping", config.mapping);
+    script.setAttribute("data-strict", config.strict);
+    script.setAttribute("data-reactions-enabled", config.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", config.emitMetadata);
+    script.setAttribute("data-input-position", config.inputPosition);
+    script.setAttribute("data-theme", getGiscusTheme());
+    script.setAttribute("data-lang", config.lang);
+    script.setAttribute("data-loading", "lazy");
+
+    if (config.mapping === "specific") {
+      script.setAttribute("data-term", config.pageKey);
+      script.setAttribute("data-title", config.pageTitle);
+    }
+
+    config.container.appendChild(script);
+    globalWindow[GISCUS_PATH_KEY] = currentPath;
+  }
+
+  function updateGiscusTheme() {
+    const frame = document.querySelector("iframe.giscus-frame");
+    if (!(frame instanceof HTMLIFrameElement) || !frame.contentWindow) return;
+
+    frame.contentWindow.postMessage(
+      {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(),
+          },
+        },
+      },
+      "https://giscus.app",
+    );
+  }
+
+  initGiscus();
+
+  if (!globalWindow[GISCUS_HANDLERS_BOUND_KEY]) {
+    const observer = new MutationObserver(() => {
+      updateGiscusTheme();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    document.addEventListener("astro:after-swap", initGiscus);
+    document.addEventListener("astro:page-load", updateGiscusTheme);
+    globalWindow[GISCUS_HANDLERS_BOUND_KEY] = true;
+  }
+})();</script>  </div> </main> <script defer src="/js/GmeekTOC.js"></script>  </div> </body></html>

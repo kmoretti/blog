@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!-- Tell the browser we support both schemes (prevents UA auto-darkening + helps form controls/scrollbars) --><meta name="color-scheme" content="light dark"><link rel="icon" type="image/svg+xml" href="/favicon.png"><meta name="generator" content="Astro v5.16.6"><title>设计 | 标签</title><!-- Theme initialization - must run before paint to prevent dark-mode "white flash" --><script>
+      (() => {
+        const STORAGE_KEY = "theme";
+
+        function getStoredTheme() {
+          try {
+            const theme = localStorage.getItem(STORAGE_KEY);
+            return theme === "dark" || theme === "light" ? theme : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function getSystemTheme() {
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+
+        function resolveTheme() {
+          return getStoredTheme() ?? getSystemTheme();
+        }
+
+        function applyTheme(doc) {
+          const theme = resolveTheme();
+          doc.documentElement.classList.toggle("dark", theme === "dark");
+        }
+
+        // 1) First paint
+        applyTheme(document);
+
+        // 2) Astro View Transitions swaps <html> attributes from the next document.
+        //    Apply theme to `event.newDocument` so the swapped-in <html> keeps the "dark" class.
+        document.addEventListener("astro:before-swap", (event) => {
+          // Astro provides `newDocument` on the event object.
+          const newDocument = event?.newDocument;
+          if (newDocument) applyTheme(newDocument);
+        });
+
+        // 3) Re-apply after navigation just in case
+        document.addEventListener("astro:page-load", () =>
+          applyTheme(document),
+        );
+
+        // 4) If user never chose a theme, follow system changes live
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        media.addEventListener("change", () => {
+          if (getStoredTheme() === null) applyTheme(document);
+        });
+      })();
+    </script><meta name="title" content="设计 | 标签"><!-- Self-hosted fonts via @fontsource (imported in src/styles/global.css). Avoids Google Fonts and local system font reliance. --><meta name="description" content="标签 设计 下的 1 篇文章"><link rel="canonical" href="https://blog.081531.xyz/tags/%E8%AE%BE%E8%AE%A1/"><script defer src="https://umami.ohdragonboi.cn/analytics" data-website-id="20db53a2-22e0-4ed1-b379-8d1136fb40c8"></script><script defer src="/js/GmeekBSZ.js"></script><script defer src="/js/lightbox.js"></script><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://blog.081531.xyz/tags/%E8%AE%BE%E8%AE%A1/"><meta property="og:title" content="设计 | 标签"><meta property="og:description" content="标签 设计 下的 1 篇文章"><meta property="og:image" content="https://blog.081531.xyz/static/banner.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog.081531.xyz/tags/%E8%AE%BE%E8%AE%A1/"><meta property="twitter:title" content="设计 | 标签"><meta property="twitter:description" content="标签 设计 下的 1 篇文章"><meta property="twitter:image" content="https://blog.081531.xyz/static/banner.png"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><style>
+      :root {
+        --app-bg: #ffffff;
+        background-color: var(--app-bg);
+        color-scheme: light;
+      }
+      html.dark {
+        --app-bg: #18181b;
+        background-color: var(--app-bg);
+        color-scheme: dark;
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        background: var(--app-bg) !important;
+      }
+    </style><link rel="stylesheet" href="/_astro/about.O7njA0CK.css">
+<link rel="stylesheet" href="/_astro/about.BMZUTpeN.css"><style>[data-astro-transition-scope="astro-l7r54iwe-1"] { view-transition-name: header; }@layer astro { ::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body class="bg-white font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"> <div class="mx-auto p-4 flex min-h-svh max-w-4xl flex-col"> <header class="mb-6 flex items-center justify-between" data-astro-cid-3ef6ksr2 data-astro-transition-scope="astro-l7r54iwe-1"> <nav class="flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>起始页</a> <a href="/posts/1/" data-astro-cid-3ef6ksr2>时间线</a> <a href="/friends/" data-astro-cid-3ef6ksr2>朋友们</a> <a href="/about/" data-astro-cid-3ef6ksr2>自言语</a> </nav> <div class="flex items-center gap-2" data-astro-cid-3ef6ksr2> <a href="mailto:mcy@kemiaosw.top" title="电子邮" aria-label="电子邮" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:alternate-email">   <symbol id="ai:material-symbols:alternate-email" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12v1.45q0 1.475-1.012 2.513T18.5 17q-.875 0-1.65-.375t-1.3-1.075q-.725.725-1.638 1.088T12 17q-2.075 0-3.537-1.463T7 12t1.463-3.537T12 7t3.538 1.463T17 12v1.45q0 .65.425 1.1T18.5 15t1.075-.45t.425-1.1V12q0-3.35-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20h5v2zm2.125-7.875Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875"/></symbol><use href="#ai:material-symbols:alternate-email"></use>  </svg> </a> <a href="https://www.travellings.cn/go.html" title="开往 · 友链接力" target="_blank" aria-label="开往 · 友链接力" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:train-outline">   <symbol id="ai:material-symbols:train-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M4 15.5V6q0-1.325.688-2.113t1.812-1.2t2.563-.55T12 2q1.65 0 3.113.138t2.55.55t1.712 1.2T20 6v9.5q0 1.475-1.012 2.488T16.5 19l1.5 1.5v.5h-2l-2-2h-4l-2 2H6v-.5L7.5 19q-1.475 0-2.488-1.012T4 15.5M12 4q-2.65 0-3.875.313T6.45 5h11.2q-.375-.425-1.612-.712T12 4m-6 6h5V7H6zm10.5 2H6h12zM13 10h5V7h-5zm-3.425 5.575Q10 15.15 10 14.5t-.425-1.075T8.5 13t-1.075.425T7 14.5t.425 1.075T8.5 16t1.075-.425m7 0Q17 15.15 17 14.5t-.425-1.075T15.5 13t-1.075.425T14 14.5t.425 1.075T15.5 16t1.075-.425M7.5 17h9q.65 0 1.075-.425T18 15.5V12H6v3.5q0 .65.425 1.075T7.5 17M12 5h5.65h-11.2z"/></symbol><use href="#ai:material-symbols:train-outline"></use>  </svg> </a> <button id="theme-toggle" class="inline-flex items-center border-0 bg-transparent p-0 text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100" aria-label="Toggle theme" data-astro-transition-persist="astro-wppfukqh-2"> <span class="sr-only">Toggle theme</span> <svg width="20" height="20" id="sun" class="hidden leading-none dark:block" data-icon="material-symbols:light-mode-outline">   <symbol id="ai:material-symbols:light-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M14.125 14.125Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875m-5.663 1.413Q7 14.075 7 12t1.463-3.537T12 7t3.538 1.463T17 12t-1.463 3.538T12 17t-3.537-1.463M5 13H1v-2h4zm18 0h-4v-2h4zM11 5V1h2v4zm0 18v-4h2v4zM6.4 7.75L3.875 5.325L5.3 3.85l2.4 2.5zm12.3 12.4l-2.425-2.525L17.6 16.25l2.525 2.425zM16.25 6.4l2.425-2.525L20.15 5.3l-2.5 2.4zM3.85 18.7l2.525-2.425L7.75 17.6l-2.425 2.525zM12 12"/></symbol><use href="#ai:material-symbols:light-mode-outline"></use>  </svg> <svg width="20" height="20" id="moon" class="leading-none dark:hidden" data-icon="material-symbols:dark-mode-outline">   <symbol id="ai:material-symbols:dark-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-3.75 0-6.375-2.625T3 12t2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21m0-2q2.2 0 3.95-1.213t2.55-3.162q-.5.125-1 .2t-1 .075q-3.075 0-5.238-2.163T9.1 7.5q0-.5.075-1t.2-1q-1.95.8-3.163 2.55T5 12q0 2.9 2.05 4.95T12 19m-.25-6.75"/></symbol><use href="#ai:material-symbols:dark-mode-outline"></use>  </svg> </button> <script type="module">function t(){const e=document.getElementById("theme-toggle");e&&(e instanceof HTMLElement&&e.dataset.bound==="1"||(e.addEventListener("click",()=>{const n=document.documentElement.classList.toggle("dark");localStorage.setItem("theme",n?"dark":"light"),document.dispatchEvent(new CustomEvent("theme-changed",{detail:{theme:n?"dark":"light"}}))}),e instanceof HTMLElement&&(e.dataset.bound="1")))}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",t,{once:!0}):t();document.addEventListener("astro:page-load",t);</script> </div> </header>   <main class="flex flex-col gap-5 pb-16"> <section class="space-y-1"> <p class="text-sm text-zinc-500 dark:text-zinc-400"> <a href="/tags/" class="no-underline hover:underline">标签</a> <span class="mx-1">/</span> <span>设计</span> </p> <h1 class="text-xl font-semibold">设计</h1> <p class="text-sm text-zinc-500 dark:text-zinc-400">
+共 1 篇文章
+</p> </section> <ul class="flex flex-col gap-2"> <li> <a href="/posts/codesign/" class="group flex flex-col gap-1"> <div class="flex justify-between gap-3"> <span class="group-hover:underline">Codesign：高效设计的秘诀</span> <span class="text-nowrap text-zinc-500"> 2024年5月1日 </span> </div> <span class="text-sm text-zinc-400 dark:text-zinc-400"> 腾讯Codesign，设计师的好帮手 </span> </a> </li> </ul> </main>  </div> </body></html>

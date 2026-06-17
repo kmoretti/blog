@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!-- Tell the browser we support both schemes (prevents UA auto-darkening + helps form controls/scrollbars) --><meta name="color-scheme" content="light dark"><link rel="icon" type="image/svg+xml" href="/favicon.png"><meta name="generator" content="Astro v5.16.6"><title>喵洛阁</title><!-- Theme initialization - must run before paint to prevent dark-mode "white flash" --><script>
+      (() => {
+        const STORAGE_KEY = "theme";
+
+        function getStoredTheme() {
+          try {
+            const theme = localStorage.getItem(STORAGE_KEY);
+            return theme === "dark" || theme === "light" ? theme : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function getSystemTheme() {
+          return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+
+        function resolveTheme() {
+          return getStoredTheme() ?? getSystemTheme();
+        }
+
+        function applyTheme(doc) {
+          const theme = resolveTheme();
+          doc.documentElement.classList.toggle("dark", theme === "dark");
+        }
+
+        // 1) First paint
+        applyTheme(document);
+
+        // 2) Astro View Transitions swaps <html> attributes from the next document.
+        //    Apply theme to `event.newDocument` so the swapped-in <html> keeps the "dark" class.
+        document.addEventListener("astro:before-swap", (event) => {
+          // Astro provides `newDocument` on the event object.
+          const newDocument = event?.newDocument;
+          if (newDocument) applyTheme(newDocument);
+        });
+
+        // 3) Re-apply after navigation just in case
+        document.addEventListener("astro:page-load", () =>
+          applyTheme(document),
+        );
+
+        // 4) If user never chose a theme, follow system changes live
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        media.addEventListener("change", () => {
+          if (getStoredTheme() === null) applyTheme(document);
+        });
+      })();
+    </script><meta name="title" content="喵洛阁"><!-- Self-hosted fonts via @fontsource (imported in src/styles/global.css). Avoids Google Fonts and local system font reliance. --><meta name="description" content="克喵的博客我在这里记录我的日常生活、踩坑记录和资源分享。"><link rel="canonical" href="https://blog.081531.xyz/posts/3/"><script defer src="https://umami.ohdragonboi.cn/analytics" data-website-id="20db53a2-22e0-4ed1-b379-8d1136fb40c8"></script><script defer src="/js/GmeekBSZ.js"></script><script defer src="/js/lightbox.js"></script><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://blog.081531.xyz/posts/3/"><meta property="og:title" content="喵洛阁"><meta property="og:description" content="克喵的博客我在这里记录我的日常生活、踩坑记录和资源分享。"><meta property="og:image" content="https://blog.081531.xyz/static/banner.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://blog.081531.xyz/posts/3/"><meta property="twitter:title" content="喵洛阁"><meta property="twitter:description" content="克喵的博客我在这里记录我的日常生活、踩坑记录和资源分享。"><meta property="twitter:image" content="https://blog.081531.xyz/static/banner.png"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><style>
+      :root {
+        --app-bg: #ffffff;
+        background-color: var(--app-bg);
+        color-scheme: light;
+      }
+      html.dark {
+        --app-bg: #18181b;
+        background-color: var(--app-bg);
+        color-scheme: dark;
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        background: var(--app-bg) !important;
+      }
+    </style><link rel="stylesheet" href="/_astro/about.O7njA0CK.css">
+<style>.pagefind-search[data-astro-cid-shtuc55q]{--pagefind-ui-scale: .95;--pagefind-ui-primary: rgb(39 39 42);--pagefind-ui-text: rgb(39 39 42);--pagefind-ui-background: transparent;--pagefind-ui-border: rgb(212 212 216);--pagefind-ui-tag: rgb(244 244 245);--pagefind-ui-border-width: 1px;--pagefind-ui-border-radius: .9rem;--pagefind-ui-image-border-radius: .75rem;--pagefind-ui-font: "Noto Sans SC", sans-serif}.pagefind-search[data-astro-cid-shtuc55q][data-theme=dark]{--pagefind-ui-primary: rgb(244 244 245);--pagefind-ui-text: rgb(228 228 231);--pagefind-ui-border: rgb(82 82 91);--pagefind-ui-tag: rgb(39 39 42)}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input,.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__result,.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__button{background-color:#ffffffe6}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input:is(.dark *),.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__result:is(.dark *),.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__button:is(.dark *){background-color:#18181bcc}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input{--tw-text-opacity: 1;color:rgb(24 24 27 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input::-moz-placeholder{--tw-text-opacity: 1;color:rgb(161 161 170 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input::placeholder{--tw-text-opacity: 1;color:rgb(161 161 170 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input:is(.dark *){--tw-text-opacity: 1;color:rgb(244 244 245 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input:is(.dark *)::-moz-placeholder{--tw-text-opacity: 1;color:rgb(113 113 122 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__search-input:is(.dark *)::placeholder{--tw-text-opacity: 1;color:rgb(113 113 122 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__result-link{--tw-text-opacity: 1;color:rgb(24 24 27 / var(--tw-text-opacity, 1));text-decoration-line:none}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__result-link:is(.dark *){--tw-text-opacity: 1;color:rgb(244 244 245 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__result-excerpt,.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__message{--tw-text-opacity: 1;color:rgb(82 82 91 / var(--tw-text-opacity, 1))}.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__result-excerpt:is(.dark *),.pagefind-search[data-astro-cid-shtuc55q] .pagefind-ui__message:is(.dark *){--tw-text-opacity: 1;color:rgb(161 161 170 / var(--tw-text-opacity, 1))}
+</style>
+<link rel="stylesheet" href="/_astro/about.BMZUTpeN.css"><style>[data-astro-transition-scope="astro-l7r54iwe-1"] { view-transition-name: header; }@layer astro { ::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(header) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-l7r54iwe-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-l7r54iwe-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body class="bg-white font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"> <div class="max-w-xl mx-auto p-4 max-w-100px flex min-h-svh flex-col justify-center"> <header class="mb-6 flex items-center justify-between" data-astro-cid-3ef6ksr2 data-astro-transition-scope="astro-l7r54iwe-1"> <nav class="flex items-center gap-4" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2>起始页</a> <a href="/posts/1/" data-astro-cid-3ef6ksr2>时间线</a> <a href="/friends/" data-astro-cid-3ef6ksr2>朋友们</a> <a href="/about/" data-astro-cid-3ef6ksr2>自言语</a> </nav> <div class="flex items-center gap-2" data-astro-cid-3ef6ksr2> <a href="mailto:mcy@kemiaosw.top" title="电子邮" aria-label="电子邮" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:alternate-email">   <symbol id="ai:material-symbols:alternate-email" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12v1.45q0 1.475-1.012 2.513T18.5 17q-.875 0-1.65-.375t-1.3-1.075q-.725.725-1.638 1.088T12 17q-2.075 0-3.537-1.463T7 12t1.463-3.537T12 7t3.538 1.463T17 12v1.45q0 .65.425 1.1T18.5 15t1.075-.45t.425-1.1V12q0-3.35-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20h5v2zm2.125-7.875Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875"/></symbol><use href="#ai:material-symbols:alternate-email"></use>  </svg> </a> <a href="https://www.travellings.cn/go.html" title="开往 · 友链接力" target="_blank" aria-label="开往 · 友链接力" class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100" data-astro-cid-3ef6ksr2> <svg width="20" height="20" class="leading-none" data-astro-cid-3ef6ksr2="true" data-icon="material-symbols:train-outline">   <symbol id="ai:material-symbols:train-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M4 15.5V6q0-1.325.688-2.113t1.812-1.2t2.563-.55T12 2q1.65 0 3.113.138t2.55.55t1.712 1.2T20 6v9.5q0 1.475-1.012 2.488T16.5 19l1.5 1.5v.5h-2l-2-2h-4l-2 2H6v-.5L7.5 19q-1.475 0-2.488-1.012T4 15.5M12 4q-2.65 0-3.875.313T6.45 5h11.2q-.375-.425-1.612-.712T12 4m-6 6h5V7H6zm10.5 2H6h12zM13 10h5V7h-5zm-3.425 5.575Q10 15.15 10 14.5t-.425-1.075T8.5 13t-1.075.425T7 14.5t.425 1.075T8.5 16t1.075-.425m7 0Q17 15.15 17 14.5t-.425-1.075T15.5 13t-1.075.425T14 14.5t.425 1.075T15.5 16t1.075-.425M7.5 17h9q.65 0 1.075-.425T18 15.5V12H6v3.5q0 .65.425 1.075T7.5 17M12 5h5.65h-11.2z"/></symbol><use href="#ai:material-symbols:train-outline"></use>  </svg> </a> <button id="theme-toggle" class="inline-flex items-center border-0 bg-transparent p-0 text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100" aria-label="Toggle theme" data-astro-transition-persist="astro-wppfukqh-2"> <span class="sr-only">Toggle theme</span> <svg width="20" height="20" id="sun" class="hidden leading-none dark:block" data-icon="material-symbols:light-mode-outline">   <symbol id="ai:material-symbols:light-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M14.125 14.125Q15 13.25 15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15t2.125-.875m-5.663 1.413Q7 14.075 7 12t1.463-3.537T12 7t3.538 1.463T17 12t-1.463 3.538T12 17t-3.537-1.463M5 13H1v-2h4zm18 0h-4v-2h4zM11 5V1h2v4zm0 18v-4h2v4zM6.4 7.75L3.875 5.325L5.3 3.85l2.4 2.5zm12.3 12.4l-2.425-2.525L17.6 16.25l2.525 2.425zM16.25 6.4l2.425-2.525L20.15 5.3l-2.5 2.4zM3.85 18.7l2.525-2.425L7.75 17.6l-2.425 2.525zM12 12"/></symbol><use href="#ai:material-symbols:light-mode-outline"></use>  </svg> <svg width="20" height="20" id="moon" class="leading-none dark:hidden" data-icon="material-symbols:dark-mode-outline">   <symbol id="ai:material-symbols:dark-mode-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-3.75 0-6.375-2.625T3 12t2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21m0-2q2.2 0 3.95-1.213t2.55-3.162q-.5.125-1 .2t-1 .075q-3.075 0-5.238-2.163T9.1 7.5q0-.5.075-1t.2-1q-1.95.8-3.163 2.55T5 12q0 2.9 2.05 4.95T12 19m-.25-6.75"/></symbol><use href="#ai:material-symbols:dark-mode-outline"></use>  </svg> </button> <script type="module">function t(){const e=document.getElementById("theme-toggle");e&&(e instanceof HTMLElement&&e.dataset.bound==="1"||(e.addEventListener("click",()=>{const n=document.documentElement.classList.toggle("dark");localStorage.setItem("theme",n?"dark":"light"),document.dispatchEvent(new CustomEvent("theme-changed",{detail:{theme:n?"dark":"light"}}))}),e instanceof HTMLElement&&(e.dataset.bound="1")))}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",t,{once:!0}):t();document.addEventListener("astro:page-load",t);</script> </div> </header>   <main class="flex flex-col gap-4"> <section class="flex flex-col gap-3"> <div class="flex flex-wrap items-center gap-2"> <a href="/tags/" class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-sm font-medium text-zinc-700 no-underline transition hover:border-zinc-300 hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"> <svg width="18" height="18" data-icon="material-symbols:tag-rounded">   <symbol id="ai:material-symbols:tag-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="m9 16l-.825 3.275q-.075.325-.325.525t-.6.2q-.475 0-.775-.375T6.3 18.8L7 16H4.275q-.5 0-.8-.387T3.3 14.75q.075-.35.35-.55t.625-.2H7.5l1-4H5.775q-.5 0-.8-.387T4.8 8.75q.075-.35.35-.55t.625-.2H9l.825-3.275Q9.9 4.4 10.15 4.2t.6-.2q.475 0 .775.375t.175.825L11 8h4l.825-3.275q.075-.325.325-.525t.6-.2q.475 0 .775.375t.175.825L17 8h2.725q.5 0 .8.387t.175.863q-.075.35-.35.55t-.625.2H16.5l-1 4h2.725q.5 0 .8.388t.175.862q-.075.35-.35.55t-.625.2H15l-.825 3.275q-.075.325-.325.525t-.6.2q-.475 0-.775-.375T12.3 18.8L13 16zm.5-2h4l1-4h-4z"/></symbol><use href="#ai:material-symbols:tag-rounded"></use>  </svg>
+标签
+</a> <a href="/categories/" class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-sm font-medium text-zinc-700 no-underline transition hover:border-zinc-300 hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"> <svg width="18" height="18" data-icon="material-symbols:dashboard-rounded">   <symbol id="ai:material-symbols:dashboard-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M14 9q-.425 0-.712-.288T13 8V4q0-.425.288-.712T14 3h6q.425 0 .713.288T21 4v4q0 .425-.288.713T20 9zM4 13q-.425 0-.712-.288T3 12V4q0-.425.288-.712T4 3h6q.425 0 .713.288T11 4v8q0 .425-.288.713T10 13zm10 8q-.425 0-.712-.288T13 20v-8q0-.425.288-.712T14 11h6q.425 0 .713.288T21 12v8q0 .425-.288.713T20 21zM4 21q-.425 0-.712-.288T3 20v-4q0-.425.288-.712T4 15h6q.425 0 .713.288T11 16v4q0 .425-.288.713T10 21z"/></symbol><use href="#ai:material-symbols:dashboard-rounded"></use>  </svg>
+分类
+</a> <button type="button" id="search-toggle" class="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-sm font-medium text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-200 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700" aria-expanded="false" aria-controls="post-search-container"> <svg width="18" height="18" data-icon="material-symbols:search-rounded">   <symbol id="ai:material-symbols:search-rounded" viewBox="0 0 24 24"><path fill="currentColor" d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"/></symbol><use href="#ai:material-symbols:search-rounded"></use>  </svg>
+搜索
+</button> </div> <div id="post-search-container" class="hidden"> <div class="rounded-2xl border border-zinc-200 bg-zinc-50/90 p-3 dark:border-zinc-700 dark:bg-zinc-800/70" data-astro-cid-shtuc55q> <label for="post-search-panel" class="sr-only" data-astro-cid-shtuc55q>搜索文章</label> <div id="post-search-panel" class="pagefind-search" data-astro-cid-shtuc55q></div> </div> <script>
+  /** @type {Promise<any> | undefined} */
+  let pagefindUiPromise;
+  /** @type {Promise<boolean> | undefined} */
+  let pagefindAssetsPromise;
+
+  const PAGEFIND_UI_PATH = "/pagefind/pagefind-ui.js";
+  const PAGEFIND_UI_STYLE_PATH = "/pagefind/pagefind-ui.css";
+  const PAGEFIND_UI_STYLE_ID = "pagefind-ui-styles";
+
+  function renderUnavailableMessage(host) {
+    host.innerHTML =
+      '<p class="text-sm text-zinc-500 dark:text-zinc-400">搜索索引暂不可用，请先执行构建后再试。</p>';
+    host.dataset.ready = "1";
+  }
+
+  /**
+   * @param {any} module
+   */
+  function resolvePagefindUi(module) {
+    if (typeof window.PagefindUI === "function") return window.PagefindUI;
+    if (typeof module?.PagefindUI === "function") return module.PagefindUI;
+    if (typeof module?.default?.PagefindUI === "function") {
+      return module.default.PagefindUI;
+    }
+
+    throw new Error("Pagefind UI failed to initialize.");
+  }
+
+  async function hasPagefindAssets() {
+    if (!pagefindAssetsPromise) {
+      pagefindAssetsPromise = fetch(PAGEFIND_UI_PATH, { method: "HEAD" })
+        .then((response) => response.ok)
+        .catch(() => false);
+    }
+
+    return pagefindAssetsPromise;
+  }
+
+  function ensurePagefindStyles() {
+    if (document.getElementById(PAGEFIND_UI_STYLE_ID)) return;
+
+    const link = document.createElement("link");
+    link.id = PAGEFIND_UI_STYLE_ID;
+    link.rel = "stylesheet";
+    link.href = PAGEFIND_UI_STYLE_PATH;
+    document.head.append(link);
+  }
+
+  /**
+   * @param {HTMLElement} container
+   */
+  function syncTheme(container) {
+    const isDark = document.documentElement.classList.contains("dark");
+    container.dataset.theme = isDark ? "dark" : "light";
+  }
+
+  async function loadPagefind() {
+    if (!pagefindUiPromise) {
+      pagefindUiPromise = import(PAGEFIND_UI_PATH);
+    }
+
+    return pagefindUiPromise;
+  }
+
+  async function mountPagefind() {
+    const host = document.querySelector(".pagefind-search");
+    if (!(host instanceof HTMLElement) || host.dataset.ready === "1") return;
+
+    syncTheme(host);
+
+    if (!(await hasPagefindAssets())) {
+      renderUnavailableMessage(host);
+      return;
+    }
+
+    try {
+      ensurePagefindStyles();
+      const module = await loadPagefind();
+      const PagefindUI = resolvePagefindUi(module);
+
+      new PagefindUI({
+        element: host,
+        showImages: false,
+        showSubResults: true,
+        excerptLength: 18,
+        resetStyles: false,
+        translations: {
+          placeholder: "搜索文章、标签、分类",
+          clear_search: "清空搜索",
+          load_more: "加载更多",
+          search_label: "站内搜索",
+          filters_label: "筛选",
+          zero_results: "没有找到相关结果",
+          many_results: "找到 [COUNT] 条结果",
+          one_result: "找到 1 条结果",
+          alt_search: "搜索 [SEARCH_TERM]",
+        },
+      });
+
+      host.dataset.ready = "1";
+    } catch (error) {
+      console.error(error);
+      renderUnavailableMessage(host);
+    }
+  }
+
+  function onThemeChange() {
+    const host = document.querySelector(".pagefind-search");
+    if (host instanceof HTMLElement) syncTheme(host);
+  }
+
+  document.addEventListener("post-search:open", mountPagefind);
+  document.addEventListener("astro:page-load", onThemeChange);
+  document.addEventListener("theme-changed", onThemeChange);
+</script>  </div> </section> <ul class="flex flex-col gap-1.5"> <li> <a href="/posts/solution-lg330123/" class="group flex flex-col gap-1"> <div class="flex justify-between gap-3"> <span class="group-hover:underline">题解 | 字符串反转</span> <span class="text-nowrap text-zinc-500"> 2024年7月2日 </span> </div> <span class="text-sm text-zinc-400 dark:text-zinc-400"> 一道简单的字符串操作题的解题思路 </span> </a> </li><li> <a href="/posts/solution-uva524/" class="group flex flex-col gap-1"> <div class="flex justify-between gap-3"> <span class="group-hover:underline">题解 | 素数环</span> <span class="text-nowrap text-zinc-500"> 2024年6月27日 </span> </div> <span class="text-sm text-zinc-400 dark:text-zinc-400"> 使用深度优先搜索解决素数环问题的题解 </span> </a> </li><li> <a href="/posts/codesign/" class="group flex flex-col gap-1"> <div class="flex justify-between gap-3"> <span class="group-hover:underline">Codesign：高效设计的秘诀</span> <span class="text-nowrap text-zinc-500"> 2024年5月1日 </span> </div> <span class="text-sm text-zinc-400 dark:text-zinc-400"> 腾讯Codesign，设计师的好帮手 </span> </a> </li><li> <a href="/posts/github-2fa/" class="group flex flex-col gap-1"> <div class="flex justify-between gap-3"> <span class="group-hover:underline">Github：设置两步验证（2FA）</span> <span class="text-nowrap text-zinc-500"> 2024年4月26日 </span> </div> <span class="text-sm text-zinc-400 dark:text-zinc-400"> 两步验证，为你的账户安全保驾护航 </span> </a> </li> </ul> <nav class="flex items-center justify-center gap-2 text-sm"> <a href="/posts/2/" class="text-zinc-700 hover:underline dark:text-zinc-300">
+&larr; 上一页
+</a> <span class="text-zinc-500">
+第 3 / 3 页
+</span>  </nav> </main>  </div> </body></html> <script>
+  function setupPostSearch() {
+    const button = document.getElementById("search-toggle");
+    const container = document.getElementById("post-search-container");
+    if (
+      !(button instanceof HTMLButtonElement) ||
+      !(container instanceof HTMLElement)
+    )
+      return;
+    if (button.dataset.bound === "1") return;
+
+    button.addEventListener("click", () => {
+      const nextExpanded = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", String(nextExpanded));
+      container.classList.toggle("hidden", !nextExpanded);
+
+      if (nextExpanded) {
+        document.dispatchEvent(new CustomEvent("post-search:open"));
+      }
+    });
+
+    button.dataset.bound = "1";
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupPostSearch, {
+      once: true,
+    });
+  } else {
+    setupPostSearch();
+  }
+
+  document.addEventListener("astro:page-load", setupPostSearch);
+</script>

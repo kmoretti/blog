@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:feny="https://blog.081531.xyz/ns/rss"><channel><title>喵洛阁</title><description>克喵的博客我在这里记录我的日常生活、踩坑记录和资源分享。</description><link>https://blog.081531.xyz/</link><item><title>博客三周年：缝缝补补的过去</title><link>https://blog.081531.xyz/posts/3rd-celebrate/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/3rd-celebrate/</guid><description>袜，三周年了（迟到的文章）</description><pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;[!NOTE]&lt;/p&gt;
+&lt;p&gt;因为一些个人原因，这篇本应该在 2026 年 2 月 6 日发布的文章延期了两天，抱歉～&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;不知不觉，这个普通的小站来到了属于 TA 的第三年！&lt;/p&gt;
+&lt;p&gt;今年是一个充满探索的一年，我尝试了动态博客 &lt;a href=&quot;https://www.halo.run&quot;&gt;Halo&lt;/a&gt;、&lt;a href=&quot;https://typecho.org&quot;&gt;Typecho&lt;/a&gt;，也探索过 &lt;a href=&quot;https://nuxt.com&quot;&gt;Nuxt&lt;/a&gt; 等静态框架，最后我还是选择了自己最熟练的 &lt;a href=&quot;https://astro.build&quot;&gt;Astro&lt;/a&gt;。&lt;/p&gt;
+&lt;h2&gt;主题&lt;/h2&gt;
+&lt;p&gt;早些时候浏览到了&lt;a href=&quot;https://ttio.cc&quot;&gt;千绪&lt;/a&gt;的博客，他的站点给我的感觉主打一个&lt;strong&gt;禅&lt;/strong&gt;。让人阅读起来神清气爽，不过里面有很多功能我用不上，加上我没有太多时间做修改，所以放弃了。&lt;/p&gt;
+&lt;p&gt;后来在网上冲浪期间，我看到了 &lt;a href=&quot;https://joyqi.com&quot;&gt;Joyqi&lt;/a&gt; 的博客。相比千绪不同的是，他的博客更加精简，仅保留了文章、关于和友链。&lt;/p&gt;
+&lt;p&gt;只可惜大佬的主题不开源，无法让我这种懒人直接使用 &lt;s&gt;（bushi&lt;/s&gt;。&lt;/p&gt;
+&lt;p&gt;正好空下来了，写了这个主题。&lt;/p&gt;
+&lt;p&gt;只有纯色底、纯色字，去除了花里胡哨，只为了获得&lt;strong&gt;禅&lt;/strong&gt;一样的阅读体验。&lt;/p&gt;
+&lt;h2&gt;文章&lt;/h2&gt;
+&lt;p&gt;今年算是更新最多的一年了，各种各样的题解、感想充满了博客，许多冗余的文章也在一次次框架尝试的时候被淘汰掉，目前看下来，还要继续努力呢～&lt;/p&gt;
+&lt;p&gt;也希望今年会有更多的灵感涌现，让他们进入到博客当中。&lt;/p&gt;
+&lt;h2&gt;完&lt;/h2&gt;
+&lt;p&gt;2025 年的博客维护过程是充满挑战和探索的，希望在 2026 年，会有更多的新血液注入博客。&lt;/p&gt;
+</content:encoded><feny:category>博客</feny:category><feny:tag>博客</feny:tag><feny:tag>年度记录</feny:tag><category>博客</category><category>博客</category><category>年度记录</category></item><item><title>算法竞赛：为什么要写总结？</title><link>https://blog.081531.xyz/posts/algo-review/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/algo-review/</guid><description>为什么要总结，他有什么用</description><pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;别人AC如喝水，你WA到心碎？&lt;br /&gt;
+算法学完就忘，仿佛大脑装了自动清空程序？&lt;br /&gt;
+比赛犯的错，下次换套马甲又来了？&lt;br /&gt;
+——是时候聊聊总结这个“反直觉大招”了！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;别当人形刷题机！&lt;/h2&gt;
+&lt;p&gt;想象一下：你刚打完一场比赛，手指还在颤抖，有人已经开始狂刷下一套题，有人瘫着刷手机，而你在……&lt;strong&gt;写总结&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;“有这时间不如多肝两道题！”——这话是不是很耳熟？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;但真相是：不会总结的竞赛生，就像只存钱不取款的ATM机——看着努力，实际憋屈！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;今天咱们就撕开“总结”的朴素外衣，看看它如何让你从“题海溺水者”进化成“浪里白条”！&lt;/p&gt;
+&lt;h2&gt;一、学算法时：总结是专治“脑雾”的防忘咖啡&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;看看这是不是真实的你？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你看完 DP 教程，一拍大腿：“就这？太简单了！”&lt;/p&gt;
+&lt;p&gt;结果一写题——状态转移方程像被猫抓过的毛线团，乱成一坨。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为啥会这样？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;知识没嚼碎就往下咽，CPU直接过载！&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总结怎么救你？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;逼你当“人形翻译机”&lt;/strong&gt;：别抄讲义！用大白话写：
+&lt;em&gt;“这算法像快递分拣员，专治‘选不选’纠结症。关键绝招是把大包裹拆成小包裹递推，记得给仓库贴标签别搞混！”&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;灵魂画手上线&lt;/strong&gt;：在总结里画个火柴人流程图：画 Dijkstra 算法里那个“贪心选最小+松弛更新”的魔性循环
+画完醍醐灌顶：&lt;em&gt;“原来这货在玩贪心+动态更新的叠 Buff 啊！&lt;/em&gt;”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;搞关系小能手&lt;/strong&gt;：&lt;em&gt;“并查集？不就是朋友圈合并嘛！诶等等……那 Kruskal 最小生成树，不就是用并查集搞‘联谊省钱计划’？”&lt;/em&gt;
+&lt;strong&gt;把新知识和旧知识拉郎配，理解直接翻倍！&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;二、比赛/刷题后：总结是“榨干题目”的黄金榨汁机&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;看看这是不是真实的你&lt;/strong&gt;？&lt;/p&gt;
+&lt;p&gt;你怒肝 5 小时 AC 一道题，一周后遇到双胞胎题——又双叒叕卡住了！“上次咋做的来着？？”&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;亏在哪？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;AC 的狂喜/WA 的愤怒，掩盖了真正的&lt;strong&gt;经验值&lt;/strong&gt;！&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总结怎么榨出精华？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;给思路拍“X 光片”&lt;/strong&gt;：
+别只记答案！写下你卡壳时脑内的弹幕：
+&lt;em&gt;“当时想用暴力 DFS，但算了下会 TLE 成孙子…忽然想起昨天学的二分答案！等等，怎么 check 函数又写疵了？？”&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;把错误炖成“醒脑汤”&lt;/strong&gt;：
+别只写“WA了”，要写：
+&lt;em&gt;“WA因1：数组开小！——对策：下次用 vector 省心”&lt;/em&gt;
+&lt;em&gt;“WA因2：边界没判 i=0！——对策：默念三遍‘边界是爹’”&lt;/em&gt;
+&lt;strong&gt;把错误钉成标本，下次直接触发“肌肉记忆避坑”！&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;偷师优化指南&lt;/strong&gt;：
+看完别人代码后拍案叫绝？在总结里记：
+&lt;em&gt;“原解法：&lt;/em&gt; \Theta(n^2)&lt;em&gt;暴力枚举 → 神仙解法：&lt;/em&gt;\Theta(n)&lt;em&gt;单调栈！原来是把问题抽象成找‘下一个更大元素’！”&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;三、复习时：总结是专克“马冬梅”的记忆面包&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;看看这是不是真是的你：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上周学的 Tarjan？名字有点熟……代码长啥样？哦对，强连通分量……怎么用来着？？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;遗忘的锅谁来背？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;人脑不是 SSD！零散知识点≈沙滩写字——浪一打就没了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总结怎么锁住记忆？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;打造你的“竞赛兵器谱”&lt;/strong&gt;：
+把总结整理成目录：
+&lt;em&gt;“剑法·动态规划：破解子问题重叠必杀技”&lt;/em&gt;
+&lt;em&gt;“暗器·双指针：专治数组乱序纠缠症”&lt;/em&gt;
+&lt;strong&gt;比赛前翻一翻，宛如作弊（合法版）！&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;开启“扫雷复习法”&lt;/strong&gt;：
+定期翻看“错误集锦”板块：
+&lt;em&gt;“水题大作战：因没开 long long 含泪 WA”&lt;/em&gt;
+&lt;em&gt;“周末小测：BFS忘标记 visited 导致 MLE”&lt;/em&gt;
+&lt;strong&gt;专扫自己的知识雷区，效率飙升！&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;解锁“温故知新”彩蛋&lt;/strong&gt;：
+三个月前死活看不懂的线段树，现在再看总结——&lt;em&gt;“我去！当时觉得是天书，现在看不就是拆解成区间修改+懒标记嘛！”&lt;/em&gt;
+&lt;strong&gt;这种顿悟爽感，堪比游戏通关！&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;AI 手把手教你：写出“会呼吸”的总结&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;内容来源于 Deepseek&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;&lt;strong&gt;什么时候写？&lt;/strong&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;学新算法&lt;/strong&gt;：理解后立刻写（别拖到忘光！）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;AC/WA 后&lt;/strong&gt;：趁情绪还在，把灵感/怒火凝固成文字！&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;每周日晚上&lt;/strong&gt;：翻翻本周总结，给大脑“磁盘整理”&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;&lt;strong&gt;写什么？（万能小抄版）&lt;/strong&gt;&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;核心一句话&lt;/strong&gt;：&lt;em&gt;“这玩意儿解决啥问题？牛在哪？”&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;思路流水账&lt;/strong&gt;：&lt;em&gt;“当时咋想的？卡在哪？咋突破的？”&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;WCM 灵魂三问&lt;/strong&gt;：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Why?&lt;/em&gt; （为啥这算法能work？）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Connection?&lt;/em&gt; （跟以前学的 XX 算法像吗？）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Mistakes?&lt;/em&gt; （踩了啥坑？怎么填坑？）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;代码高光&lt;/strong&gt;：贴关键代码段+注释*“此处精妙：用位运算省空间”*&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;同类题传送门&lt;/strong&gt;：附上 n 道同类经典题号&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;说人话&lt;/strong&gt;：别堆术语！想象你在教同桌做题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;玩梗无罪&lt;/strong&gt;：&lt;em&gt;“SPFA 算法？哦~就是那个‘关于我死了但还没完全死’的传说！”&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;善用表情包&lt;/strong&gt;：在错误分析旁贴个裂开表情？&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;工具任选&lt;/strong&gt;：Notion/博客/甚至纸质手账——&lt;strong&gt;能坚持的才是神器！&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;拒绝借口指北：&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Q：“写总结太花时间！”&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;A：&lt;strong&gt;用模板！每次只写核心三点，5分钟搞定！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Q：&lt;em&gt;“不知道写啥啊！”&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;A：&lt;strong&gt;只写今天最痛的领悟！比如‘long long 救我狗命’&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Q：&lt;em&gt;“感觉没用…”&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;A：&lt;strong&gt;坚持1个月！当你发现同类型题秒出思路时——真香！&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;让总结成为你的“作弊器”&lt;/h2&gt;
+&lt;p&gt;写总结像给思维“健身”——短期酸爽，长期塑形。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;它不能让你一夜AK全场，但能让你：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;少踩80%的重复坑&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;把模糊的“好像会了”变成扎实的“绝对拿手”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从“题库人柱力”进阶成“解法发明家”&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下次比赛前，当别人还在焦虑翻题解，你淡定打开自己的总结宝典——&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;那感觉，就像带着攻略打Boss，稳得一批！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;所以现在，是时候对你说：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;别刷了！先给你刚AC的那道题，写个总结去！&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;烤肉熟了，我写完了&lt;/p&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>算法竞赛</feny:tag><feny:tag>学习方法</feny:tag><feny:tag>总结</feny:tag><category>技术</category><category>算法竞赛</category><category>学习方法</category><category>总结</category></item><item><title>博客两周年，换框架？</title><link>https://blog.081531.xyz/posts/blog-2nd/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/blog-2nd/</guid><description>时间真快，不知不觉两周年了</description><pubDate>Sat, 05 Apr 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;是的，我的博客又又又又换框架了……&lt;/p&gt;
+&lt;p&gt;不管你细不细心，你应该都会发现这个问题。&lt;/p&gt;
+&lt;p&gt;如果你访问本站比较勤快且很早开始访问本站，你应该发现这是今年的第 2 版，本博的第 5 版。&lt;/p&gt;
+&lt;p&gt;不知道各位想不想问一个问题：为什么换？&lt;/p&gt;
+&lt;h2&gt;博客变化&lt;/h2&gt;
+&lt;h3&gt;2023&lt;/h3&gt;
+&lt;p&gt;使用了一个二级域名，用 Hexo + Anzhiyu 主题，0 篇文章。&lt;/p&gt;
+&lt;h3&gt;2024（上半年）&lt;/h3&gt;
+&lt;p&gt;域名 ohdragonboi.cn 注册，使用 Hexo + Solitude 主题，写了 3 篇文章。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://jsd.onmicrosoft.cn/gh/fenychn0206/picx-images-hosting@master/blog2024-1.JPG&quot; alt=&quot;blog2024-1&quot; style=&quot;zoom: 33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;▲ 2024 上半年博客状态，这里因为 Wayback Machine 没有爬到，放了张当时手机的截图&lt;/p&gt;
+&lt;h3&gt;2024（下半年）&lt;/h3&gt;
+&lt;p&gt;换了一个域名 setbun.com，使用 Hexo + Redefine 主题，文章多了些许、访客多了几个。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://jsd.onmicrosoft.cn/gh/fenychn0206/picx-images-hosting@master/setimg-%E6%88%AA%E5%B1%8F2025-04-05-%E4%B8%8B%E5%8D%8810.32.20.45v2158oi.webp&quot; alt=&quot;blog2024&quot; /&gt;&lt;/p&gt;
+&lt;h3&gt;2024（年底）&lt;/h3&gt;
+&lt;p&gt;这属于一个半成品，废了，使用 Astro。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://jsd.onmicrosoft.cn/gh/fenychn0206/picx-images-hosting@master/%E6%88%AA%E5%B1%8F2025-04-05-%E4%B8%8B%E5%8D%8810.35.29.8l09lopgxq.webp&quot; alt=&quot;blog2024&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ 其实这个做出来效果是不错的，但是因为配置复杂被我放弃了&lt;/p&gt;
+&lt;h3&gt;2025（1-3 月博客重构计划开始）&lt;/h3&gt;
+&lt;p&gt;域名换回 ohdragonboi.cn，使用 Hexo + Redefine 主题，基本可以说只写了配置文件，其他什么也没干。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://jsd.onmicrosoft.cn/gh/fenychn0206/picx-images-hosting@master/%E6%88%AA%E5%B1%8F2025-04-05-%E4%B8%8B%E5%8D%8810.38.32.99tj5pgwol.webp&quot; alt=&quot;blog-2025start&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ 该死的 Wayback Machine 把样式表吃的差不多了&lt;/p&gt;
+&lt;h3&gt;2025（4 月愚人节重生）&lt;/h3&gt;
+&lt;p&gt;就是你现在看到的这个东西，采用 Astro 构建。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://jsd.onmicrosoft.cn/gh/fenychn0206/picx-images-hosting@master/%E6%88%AA%E5%B1%8F2025-04-05-%E4%B8%8B%E5%8D%8810.40.35.7egyd373a2.webp&quot; alt=&quot;blog-2025respawnqwq&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;我想说的&lt;/h2&gt;
+&lt;p&gt;多次更换博客框架，主要是为了提现个人认为的个人博客的特点：简单、个性、记录为主&lt;/p&gt;
+&lt;p&gt;前些阵子用的 Anzhiyu 和 Solitude 主题，配置文件比较复杂。虽然好看花哨，但对于我这种学业为主的学生来说，配置、维护一个这样的博客还是挺麻烦的。特别是开源社区更新频繁，如果你能够抽出来维护博客的时间很少，那么你很有可能无法专注于写作而是配置花里胡哨的博客。&lt;/p&gt;
+&lt;p&gt;换成 Redefine 主题，一是因为喜欢，而是因为作者也是个大忙人。大忙人对于项目的 Release 发布自然是频率比较慢的，而且我也能适应。&lt;/p&gt;
+&lt;p&gt;但是是我放弃的原因，是因为 Hexo 主题的页面模板。其实也不是怎么怎么样吧，反正我觉得 Hexo 和类似适用主题驱动的&lt;strong&gt;静态框架&lt;/strong&gt;这麻烦那麻烦。&lt;/p&gt;
+&lt;p&gt;这时候聪明的你可能会问：动态框架呢？&lt;/p&gt;
+&lt;p&gt;相比起动态，静态框架还是省心的多。因为动态牵扯服务器，服务器又牵扯到更多安全问题等等。&lt;/p&gt;
+&lt;p&gt;最后我换成了 Astro，因为 Astro 我可以不因为主题更新而烦恼，甚至我还可以通过大佬的东西进行修改。而且 Typography 这个主题就非常适合我的所需。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对于博客，我仅仅需要一个能放文章、友链和简单页面的东西。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;毕竟你建了一个博客，更多的是自娱自乐，因为现在许多人喜欢在知乎等平台写文章、答疑问题，博客在你不是知名人物或 SEO 做得特别棒，你是不会有什么人来看的对吧。&lt;/p&gt;
+&lt;h3&gt;对于评论&lt;/h3&gt;
+&lt;p&gt;评论我也是换了又换，线路如下&lt;/p&gt;
+&lt;p&gt;Waline + LeanCloud → Twikoo + MongoDB → Artalk → Waline + Deta → Waline + Postgres → Giscus&lt;/p&gt;
+&lt;p&gt;毕竟是个人博客，我认为其实没有必要用很复杂的评论系统。自部署更没必要了，数据库啥的也不重要，现成的最棒！&lt;/p&gt;
+&lt;p&gt;最后选择 Giscus，这款评论系统简洁、开源、使用 GitHub API（只要 GitHub 不倒闭，数据就不会丢），就没有什么不香的。&lt;/p&gt;
+&lt;h2&gt;博客接下来的发展&lt;/h2&gt;
+&lt;p&gt;现在新博客基本迁移完了，还差的内容如下：&lt;/p&gt;
+&lt;p&gt;项目
+解决方案&lt;/p&gt;
+&lt;p&gt;截止今天，还需搬迁 6 篇文章（废了部分烂稿）
+字面意思&lt;/p&gt;
+&lt;p&gt;统一所有题解格式
+字面意思&lt;/p&gt;
+&lt;p&gt;友链页面处理
+先用一个 Markdown 列表凑合，后续准备写一个页面或者独立出单独的站点&lt;/p&gt;
+&lt;p&gt;博客关联项目
+开往、无聊湾、十年之约、萌备（好像要换域名）、Kegongteng 的友链&lt;/p&gt;
+&lt;h2&gt;感谢有你&lt;/h2&gt;
+&lt;p&gt;在建博 2 年中，我认识了你们：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://ohevan.com&quot;&gt;EvanNotFound（开发方面问题解决、Redefine 作者）&lt;/a&gt;、&lt;a href=&quot;https://kegongteng.cn/&quot;&gt;Kegongteng（邮箱问题反馈）&lt;/a&gt;、&lt;a href=&quot;https://dusays.com/&quot;&gt;杜老师（博客活跃用户、运维大佬）&lt;/a&gt;、&lt;a href=&quot;https://cx330.tw/&quot;&gt;CX330（使用 Redefine 主题时认识的）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;感谢你们在本博客的成长路上相伴！&lt;/p&gt;
+</content:encoded><feny:category>博客</feny:category><feny:tag>博客</feny:tag><feny:tag>周年</feny:tag><feny:tag>建站</feny:tag><category>博客</category><category>博客</category><category>周年</category><category>建站</category></item><item><title>数据备份太重要了</title><link>https://blog.081531.xyz/posts/backup-is-important/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/backup-is-important/</guid><description>照片差点没，快备份！</description><pubDate>Wed, 28 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;过程记录&lt;/h2&gt;
+&lt;p&gt;最近不是从新加坡回来了吗，整理照片的时候照片都备份在了 iCloud 上，然后整理的时候不小心删了一部分，急了一晚上。&lt;/p&gt;
+&lt;p&gt;第二天早上起来花钱预约个数据恢复，准备去找照片。&lt;/p&gt;
+&lt;p&gt;结果当我在中午无意中打开 iCloud 的时候，发现我的照片都在里面。&lt;/p&gt;
+&lt;p&gt;你不知道我当时的心情真的是有多那啥。&lt;/p&gt;
+&lt;p&gt;（然后灰溜溜的把钱退了）&lt;/p&gt;
+&lt;p&gt;所以提醒了大家：数据无价，备份无忧&lt;/p&gt;
+&lt;p&gt;找一个靠谱的、性价比较高的、传输较快的云盘，备份、储存都非常方便，关键时刻可以帮到你！&lt;/p&gt;
+&lt;h2&gt;顺便提一嘴&lt;/h2&gt;
+&lt;p&gt;由于太高兴了，创建文章的时候手抖写了个这&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/JCN8cLhQOeu72qp.webp&quot; alt=&quot;命令行输了很多 o&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/b7TK5gyaiX3kYj4.webp&quot; alt=&quot;结果文件名长这样（真的，没有改）&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;今天就这样啦，水了一篇，拜拜👋&lt;/p&gt;
+</content:encoded><feny:category>生活</feny:category><feny:tag>备份</feny:tag><feny:tag>数据安全</feny:tag><feny:tag>生活</feny:tag><category>生活</category><category>备份</category><category>数据安全</category><category>生活</category></item><item><title>Codesign：高效设计的秘诀</title><link>https://blog.081531.xyz/posts/codesign/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/codesign/</guid><description>腾讯Codesign，设计师的好帮手</description><pubDate>Wed, 01 May 2024 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;引入：之前发现了腾讯的许多新的产品，其中有AiLogo、Codesign等系列。然后发现Codesign是一个不错的设计师工具，可以用来制作图标库，于是便欣然尝试……&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;简介&lt;/h2&gt;
+&lt;p&gt;类似 Codesign 工具不少人应该用过，比如 figma。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/UO6mbF1Ssh7anzN.webp&quot; alt=&quot;Codesign产品设计页&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;素材板块&lt;/h2&gt;
+&lt;p&gt;这一块我用的不多，不过Solitude团队会用它来分享主题素材，还是非常方便的！！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/FGdQOYIqZs4VX3v.webp&quot; alt=&quot;Solitude素材分享&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;图标板块&lt;/h2&gt;
+&lt;p&gt;这一块是我重磅推荐的，因为之前我想在博客里用自己的图标库，但是太太太麻烦了，而Codesign却解决了我的燃眉之急。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/uHlgNOdMbDLhZoV.webp&quot; alt=&quot;图标板块&quot; /&gt;图标工具中有自带的CDN地址和自定义iconfont前缀，非常方便！&lt;/p&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;总而言之，如果你是一个设计师，那么你一定会喜欢Codesign！&lt;/p&gt;
+</content:encoded><feny:category>设计</feny:category><feny:tag>设计</feny:tag><feny:tag>工具</feny:tag><feny:tag>Codesign</feny:tag><category>设计</category><category>设计</category><category>工具</category><category>Codesign</category></item><item><title>Github：设置两步验证（2FA）</title><link>https://blog.081531.xyz/posts/github-2fa/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/github-2fa/</guid><description>两步验证，为你的账户安全保驾护航</description><pubDate>Fri, 26 Apr 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;今天准备上Github传项目，结果收到要求两步验证的提示。于是我翻了一下Github博客&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/clK9VkvNhiYGmDT.webp&quot; alt=&quot;Github官方博客指明了必须添加两步验证&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.blog/2023-03-09-raising-the-bar-for-software-security-github-2fa-begins-march-13/&quot;&gt;博客链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这篇新闻总的意思来说就是要求用户必须添加“两步验证”方式，否则无法访问某些功能&lt;/p&gt;
+&lt;p&gt;这里给大家出了一个设置Github两步验证的教程，希望大家喜欢！&lt;/p&gt;
+&lt;h2&gt;1. 找到Github设置“两步验证”的地方&lt;/h2&gt;
+&lt;p&gt;在Github设置可以找到，不过你可以通过下面的链接👇快速进入&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/settings/two_factor_authentication/setup/intro&quot;&gt;https://github.com/settings/two_factor_authentication/setup/intro&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;进入后应该会看到这样的界面&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/nUaADWLFt9Ymdfi.webp&quot; alt=&quot;Github“两步验证（2FA）“设置中心&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;2. 使用“两步验证”App进行验证&lt;/h2&gt;
+&lt;p&gt;这里先把电脑放一边，拿出移动设备（手机或平板，为了排版好看我使用的是iPad），下载一个两步验证App（推荐1Password和Microsoft Authenticator，我比较喜欢用Microsoft Authenticator）。下载完成后，打开你的两步验证App：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/2Bfwpq9EbUum7MQ.webp&quot; alt=&quot;Microsoft Authenticator主界面&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;这里以Microsoft Authenticator为例，进入后点击右上角加号会看到如下界面&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/tAvJqsMP7469OFm.webp&quot; alt=&quot;Microsoft Authenticator账户选择页面&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;点击“其他”（另外的是Microsoft帐户，如果使用了Microsoft365订阅，应该用过这个），会出现一个扫码界面，只需扫描刚刚Github出现的二维码就可以了！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/7A2V8Meqf1zhQyj.webp&quot; alt=&quot;扫描红框里的二维码&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;扫描之后你的两步验证App应该会出现以下界面&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/Dax9F5TLy2n6AZB.webp&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;可以看到两步验证App中已经添加了Github了&lt;/p&gt;
+&lt;p&gt;这时候你会得到一串数字，将其填入刚刚Github页面的输入框中（在30秒内，否则数字会更换，这时候如果没有及时填入就只能填新的了）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/PcTwHB3xZVGNviS.webp&quot; alt=&quot;在红框内填入那串数字&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;3. 备份“两步验证数据”&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里我操作的时候忘截图了，遇到问题的可以问题评论一下&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;首先点击Download按钮，下载一个txt文件，请将此文件妥善保管，这是很重要的备份信息！！&lt;/p&gt;
+&lt;p&gt;然后会发现下面激活“下一步”按钮，点击它进行下一步&lt;/p&gt;
+&lt;h2&gt;4. VOILA!&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/y6E7sqTF8enM5CS.webp&quot; alt=&quot;成功设置“两步验证”页面&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;看到这个界面，就说明成功啦！！那么本次教程也就进入尾声啦～&lt;/p&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;本次教程主要是说明了在Github上设置“两步验证”的方法～新人作者，烦请各位大佬指点！有任何问题欢迎评论，虽然很忙，但一定会看的！&lt;/p&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>GitHub</feny:tag><feny:tag>安全</feny:tag><feny:tag>2FA</feny:tag><category>技术</category><category>GitHub</category><category>安全</category><category>2FA</category></item><item><title>观影 |《南京照相馆》</title><link>https://blog.081531.xyz/posts/movie-dead-to-rights-reveiw/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/movie-dead-to-rights-reveiw/</guid><description>庆祝抗战胜利80周年！</description><pubDate>Thu, 31 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;引&lt;/h2&gt;
+&lt;p&gt;月初的时候听说了有几部抗战的电影要上映了，离我最近的星轶影城刚好上映了《南京照相馆》，于是在 7 月 30 日买票决定去看看。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;下面的内容全凭我记忆输出，如有问题还请见谅&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;始&lt;/h2&gt;
+&lt;p&gt;电影以战争场面为开头，展现出南京的一片慌乱，其中一个叫阿昌的邮差为了保命，到处逃窜。最后逃到了一个照相馆假扮冲洗工为日军冲洗照片。&lt;/p&gt;
+&lt;h2&gt;中&lt;/h2&gt;
+&lt;p&gt;一名叫伊藤秀夫的皇军中尉是一名摄影爱好者，~~长得也是非常的可爱（可爱【脏话屏蔽】），在皇军疯狂追杀阿昌的时候请求将他留下来为自己洗那些无法过审的（稍后提到 [1]）~~照片。&lt;/p&gt;
+&lt;p&gt;由于阿昌是个假的冲洗工，不会任何冲洗技术，于是非常的苦恼。好在照相馆老板&lt;strong&gt;金承宗&lt;/strong&gt;还在照相馆内，阿昌才得以在他的帮助下洗照片。&lt;/p&gt;
+&lt;p&gt;在冲洗照片的过程当中，金承宗认为如果一直冲洗这样的照片，在抗战胜利后会被当作汉奸。于是决定调换底片，将战争爆发前照相馆的底片替换掉伊藤秀夫的底片。&lt;/p&gt;
+&lt;h2&gt;高&lt;/h2&gt;
+&lt;p&gt;中间有很让人泪目的场景，也有很让人气愤的场景，这里细说几个。&lt;/p&gt;
+&lt;h3&gt;外国记者的一试&lt;/h3&gt;
+&lt;p&gt;在有一次阿昌逃跑的过程当中，一名外国人拿出相机在一边拍摄，想要记录证据，在日本人发现他时大喊：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;你们这样是违反国际法的！他是平民，你们没有资格杀他！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;两张“假”通行证&lt;/h3&gt;
+&lt;p&gt;在前面伊藤秀夫向阿昌保证，只要阿昌帮助伊藤秀夫洗照片，伊藤秀夫就会给阿昌开“南京通行证”。但是咱善良的中国人有感恩之心，阿昌为了报答金承宗，决定把自己手中的两张通行证给金承宗一家的其中两人（是的，两张，因为还有一个收留的演员）。&lt;/p&gt;
+&lt;p&gt;结果伊藤秀夫是个【脏话屏蔽】，给了个假的通行证，导致得到通行证的两个可怜人被害了。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;内容被屏蔽了，因为又是小龙的脏话屏蔽器。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;仁义礼智信&lt;/h3&gt;
+&lt;p&gt;仁义礼智信，此为中国五常之道。这是某军官对于伊藤秀夫猎奇操作的理解。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;不杀苏柳昌——仁&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;与苏柳昌做朋友——义&lt;/p&gt;
+&lt;p&gt;为他提供食物是——礼&lt;/p&gt;
+&lt;p&gt;借刀杀人是——智&lt;/p&gt;
+&lt;p&gt;为阿昌夫妇提供通行证——信&lt;/p&gt;
+&lt;p&gt;我就一个字：6&lt;/p&gt;
+&lt;p&gt;电影里面还有一个仁义礼智信，真该让这群狗逼崽子看看：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;金承宗一家、苏柳昌、林毓秀（那个收留的演员）、宋班长（一个警卫队的，被拉去加入与日军的抗争，在战争中弟弟牺牲）困于吉祥照相馆，为了大家能活命，金承宗把照相的手艺交给苏柳昌，苏柳昌、金太太把食物分给大家一起吃，绝境求生，相互帮扶，与人为善，这是中国人的“仁”。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;苏柳昌两次把生还的机会拱手相让给别人，这是义，是舍生取义的义。&lt;/p&gt;
+&lt;p&gt;宋班长最后既为亲弟报仇，又向照相馆众人报恩，挺身而出杀死了对照相馆众人生存产生威胁的冲洗照片的日本人，拼了性命，舍生取义。&lt;/p&gt;
+&lt;p&gt;林毓秀险遭日本兵凌辱，关键时刻宋班长拉下电闸，救了林毓秀（那个收留的演员），这是急中生智的“智”，后林毓秀把人藏在装电影器械的箱子里，掩护救出了宋班长，胆大果决，救人性命，这是大智。&lt;/p&gt;
+&lt;p&gt;照相馆藏身的众人决定不再印日本人营造和睦假象的照片，这是身为国人的诚信，他们每一个都把记录日本人罪行的底片缝制在衣服里，谁有机会出去，就把这些真相公之于众，最后只有林毓秀一个人生还，找到国际记者，让这些真相大白于天下，这是大信。&lt;/p&gt;
+&lt;h3&gt;插入了重庆&lt;/h3&gt;
+&lt;p&gt;由于当时重庆市作为陪都，所以有很多国家的大使馆，当时林毓秀将证据传给了外国记者，所以这件事在重庆疯传。消息传到南京之后直接给伊藤秀夫搞崩溃了，直接自尽了。&lt;/p&gt;
+&lt;h2&gt;终&lt;/h2&gt;
+&lt;p&gt;插了点老片子，就是日本投降了。当时在法庭上展示了那个本子，全是无法过审的照片，那个【脏话屏蔽】军官死不承认诶。&lt;/p&gt;
+&lt;h3&gt;枪决？枪决！&lt;/h3&gt;
+&lt;p&gt;轮到狗逼崽子们了，这一次，我们打出了干脆的一枪。&lt;/p&gt;
+&lt;p&gt;而在之前，日本新兵杀我们的人的时候还是犹豫不决，很害怕，嗯。&lt;/p&gt;
+&lt;h2&gt;真实事件&lt;/h2&gt;
+&lt;p&gt;这部电影改编自一次真实事件，真实事件为一个洗照片实习生帮日本人洗照片，然后历经周折保留到了最后&lt;/p&gt;
+&lt;p&gt;[1] 这些照片都是一些暴力血腥涉黄的内容，所以各位懂的。&lt;/p&gt;
+&lt;h2&gt;下&lt;/h2&gt;
+&lt;p&gt;没了，后面看看我们这里有没有 731。&lt;/p&gt;
+</content:encoded><feny:category>观影</feny:category><feny:tag>电影</feny:tag><feny:tag>影评</feny:tag><feny:tag>历史</feny:tag><category>观影</category><category>电影</category><category>影评</category><category>历史</category></item><item><title>通过 1Panel 部署 Astro 站点到服务器——公开仓库篇</title><link>https://blog.081531.xyz/posts/depoly-an-public-repo-astro-site-to-server-by-1panel/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/depoly-an-public-repo-astro-site-to-server-by-1panel/</guid><description>部署平台太拉垮？那就上服务器！</description><pubDate>Fri, 13 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;碎碎念&lt;/h2&gt;
+&lt;p&gt;之前博客一直用的 Vercel 部署，然后为了提速就让服务器反代了一下。&lt;/p&gt;
+&lt;p&gt;结果发现 Vercel 的防火墙他太离谱了，用几下就给我拦截/质询。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260218/20260218114150083.png&quot; alt=&quot;截止文章发布的前一天数据&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ 截止 2026/2/18 的质询数据，其中下午已经切换服务器部署，故无数据。&lt;/p&gt;
+&lt;p&gt;然后我尝试关掉 Vercel Firewall，结果发现他压根没有关闭入口🤪。好好好，那我设置一个 bypass 规则呗～&lt;/p&gt;
+&lt;p&gt;结果他的 Bypass 规则要 Pro Plan 才能用，玩我呢🤮。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260218/20260218114445364.png&quot; alt=&quot;可恶的 bypass 要 pro&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;好好好，你不让我绕过你的防火墙，那我就不要你了呗。我服务器摆在那里不是吃素的谢谢，直接上！&lt;/p&gt;
+&lt;p&gt;参考六神的 &lt;a href=&quot;https://blog.liushen.fun/posts/327826ac/&quot;&gt;1Panel自动同步Github仓库&lt;/a&gt;，然后手搓了一个 Action 并让 Gemini 修了修一些问题，现在已经是完全的服务器部署啦～&lt;/p&gt;
+&lt;h2&gt;准备工作：创建站点&lt;/h2&gt;
+&lt;p&gt;本片教程适用于 GitHub 中设置为 &lt;code&gt;public&lt;/code&gt; 的朋友，如果你是 &lt;code&gt;private&lt;/code&gt; 仓库，请耐心等待另一篇教程😅～&lt;/p&gt;
+&lt;p&gt;首先在 1Panel 上创建一个&lt;strong&gt;静态网站&lt;/strong&gt;，根据自己的需要配置好域名代号端口 HTTPS 这些内容，确认。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260313/20260313225341365.png&quot; alt=&quot;1panel创建网站&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;然后进入网站详细信息，找到 &lt;code&gt;网站目录&lt;/code&gt;，记下 &lt;code&gt;root 目录&lt;/code&gt; 这一参数。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260313/20260313230321048.png&quot; alt=&quot;网站目录页面&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;然后在侧边栏找到 &lt;code&gt;系统&lt;/code&gt; - &lt;code&gt;SSH管理&lt;/code&gt;，创建一个 SSH 密钥并记下&lt;strong&gt;私钥&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260313/20260313231020764.png&quot; alt=&quot;创建密钥&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260313/20260313231110085.png&quot; alt=&quot;存下私钥&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;h2&gt;配置仓库 Secrets&lt;/h2&gt;
+&lt;p&gt;当这些准备完成之后，就可以开始着手配置 GitHub 的仓库 Secrets 了。&lt;/p&gt;
+&lt;p&gt;在你的 Astro 项目 GitHub 仓库中，进入 &lt;code&gt;Settings&lt;/code&gt; - &lt;code&gt;Secrets and variables&lt;/code&gt; - &lt;code&gt;Actions&lt;/code&gt;，添加以下变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;SERVER_IP&lt;/code&gt;: 服务器公网 IP。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;USERNAME&lt;/code&gt;: SSH 用户名（通常为 &lt;code&gt;root&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PORT&lt;/code&gt;: SSH 端口（默认 &lt;code&gt;22&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;KEY&lt;/code&gt;: 你的 SSH 私钥（刚刚存下的私钥）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PASSPHRASE&lt;/code&gt;: 如果私钥设置了密码则填入，否则留空&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260313/20260313231337323.png&quot; alt=&quot;仓库密钥设置页面&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;创建 Action 文件&lt;/h2&gt;
+&lt;p&gt;回到仓库根目录，创建一个 &lt;code&gt;.github/workflows/build.yml&lt;/code&gt;（其中 &lt;code&gt;build&lt;/code&gt; 可以是你喜欢的任何英文文件名），内容如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;name: Astro 1Panel Depoly
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检查
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: &quot;20&quot;
+
+      - name: 安装依赖
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+      - name: 构建
+        run: npm run build
+
+      - name: 构建静态产物到 deploy 分支
+        run: |
+          cd dist
+          git init
+          git config --global user.name &apos;github-actions[bot]&apos;
+          git config --global user.email &apos;github-actions[bot]@users.noreply.github.com&apos;
+          git add .
+          git commit -m &quot;Deploy: ${{ github.event.head_commit.message }} [$(date +&apos;%Y-%m-%d %H:%M:%S&apos;)]&quot;
+          # 强制推送到仓库的 deploy 分支
+          git push --force --quiet &quot;https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git&quot; master:deploy
+      - name: 推送至服务器
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          port: ${{ secrets.PORT }}
+          script: |
+          	# 请将 SITE_DIR 设置为你的站点目录
+            SITE_DIR=&quot;&quot;
+            mkdir -p $SITE_DIR
+            cd $SITE_DIR
+            git config --global --add safe.directory $SITE_DIR
+            if [ ! -d &quot;.git&quot; ]; then
+              git init
+              git remote add origin https://github.com/${{ github.repository }}.git
+            else
+              git remote set-url origin https://github.com/${{ github.repository }}.git
+            fi
+            git fetch origin deploy --depth=1
+            git reset --hard origin/deploy
+            git checkout -f deploy
+            git clean -fd
+            chown -R 1000:1000 $SITE_DIR
+            echo &quot;Build successfully deployed to server at $(date +&apos;%Y-%m-%d %H:%M:%S&apos;)!&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其中，在推送部分的 script 中，你需要将 &lt;code&gt;SITE_DIR&lt;/code&gt; 这一变量设置为刚刚存下的 1Panel 站点目录，比如 &lt;code&gt;/opt/1panel/www/sites/www.example.com/index&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;保存文件，推送。当以上内容完成之后，恭喜你🎉，你已经可以成功的将你的 Astro 站点部署至服务器上！&lt;/p&gt;
+&lt;p&gt;每当出现新的推送时，这个 Action 会自动触发运行，不需要人为的任何干预，不过需要注意在构建中出现的报错！&lt;/p&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>Astro</feny:tag><feny:tag>部署</feny:tag><feny:tag>1Panel</feny:tag><feny:tag>GitHub Actions</feny:tag><category>技术</category><category>Astro</category><category>部署</category><category>1Panel</category><category>GitHub Actions</category></item><item><title>《南京照相馆》：在战争的废墟上，显影人性的底片</title><link>https://blog.081531.xyz/posts/thinking-of-movie-dead-to-rights/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/thinking-of-movie-dead-to-rights/</guid><description>真假底片之争，「南京照相馆」告诉我们了什么？</description><pubDate>Fri, 22 Aug 2025 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;[!WARNING]
+本文包含严重剧透内容&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;影片《南京照相馆》的故事发生在南京大屠杀之后的恐怖岁月。六朝古都南京已沦为一片人间炼狱，街道满目疮痍，尸横遍野。在这片废墟之中，一家照相馆却奇迹般地保存下来。年迈的馆主与年轻徒弟阿昌不得不依靠为侵略者冲洗照片来苟延残喘。日本军官伊藤受命在此拍摄所谓&quot;仁义之师&quot;的宣传影像，虚伪的镜头与真实的血腥形成强烈对比。一组无意间记录下大屠杀铁证的底片，使这间小小的照相馆成为见证真相与谎言、人性与兽性的特殊战场。&lt;/p&gt;
+&lt;h2&gt;被窃取与扭曲的“五常”&lt;/h2&gt;
+&lt;p&gt;影片最震撼之处，在于深刻揭示了侵略者如何系统地窃取并扭曲儒家核心价值&quot;五常&quot;。伊藤不断高谈“仁义礼智信”，但每一个道德理念都在其手中遭到彻底的异化与背叛。他口中的&quot;仁&quot;只是一种冷酷的功利算计，放过阿昌并非仁义礼智信出于怜悯，而是需要他的冲洗技术来完成宣传任务，那句&quot;暂不处死&quot;的背后，是&quot;两天之内&quot;的明确死亡期限。仁爱之心，本应是对他人痛苦的恻隐与关怀，在这里却沦为延长恐惧与折磨的残忍手段。&lt;/p&gt;
+&lt;h2&gt;废墟中守护真正的五常&lt;/h2&gt;
+&lt;p&gt;然而，影片的真正力量来自于与之形成鲜明对比的、在废墟中顽强存续的真正&quot;五常&quot;。照相馆中的中国人在绝境中彼此守护、分食互济，那是在极端环境下显现的人性中最本真的“仁”。阿昌数次将生存机会让予他人，体现的是舍己为人的崇高之“义”。那位中国军人挺身而出击毙日军，以牺牲回报同胞照顾之“礼”。军人临危不乱智救险遭凌辱的演员，展现的是危难中闪耀的人性之“智”。而众人共同守护记录大屠杀真相的底片，誓死不再为侵略者洗印虚假宣传，最终将铁证交由国际记者公之于世——这是对历史、民族与人类的庄严承诺，是至死不渝的&quot;信&quot;。&lt;/p&gt;
+&lt;h2&gt;光影中的见证&lt;/h2&gt;
+&lt;p&gt;《南京照相馆》没有采用宏大的战争叙事，却透过一间小小照相馆的方寸之地，折射出人类最深刻的人性撕裂与道德坚守。暗房之中，显影的不仅是历史的底片，更是善恶的分明分野。侵略者精心伪造的&quot;五常&quot;终将暴露于真相之光下，而中国人民以生命践行的仁、义、礼、智、信，才真正跨越了战争的废墟，成为不会被任何黑暗吞没的永恒光芒。这部电影以独特的视角提醒着我们：守护记忆就是守护人性，唯有真实的道德才能照亮人类未来的道路。在这显影液微微荡漾的方寸之间，我们看到了一个民族最珍贵的道德底片，也在战争的废墟上，找到了人性永不泯灭的光亮。&lt;/p&gt;
+</content:encoded><feny:category>观影</feny:category><feny:tag>电影</feny:tag><feny:tag>随笔</feny:tag><feny:tag>历史</feny:tag><category>观影</category><category>电影</category><category>随笔</category><category>历史</category></item><item><title>用违背道德的行为，抨击合理的事实？</title><link>https://blog.081531.xyz/posts/using-unethical-behavior-to-attack-reasonable-facts/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/using-unethical-behavior-to-attack-reasonable-facts/</guid><description>你的开源，你的原创，还有……你的认知？</description><pubDate>Sat, 14 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;[!WARNING]&lt;/p&gt;
+&lt;p&gt;本人及社区人员已经对涉事人员作了对应的处理（举报等），本篇文章已经将涉事人员作隐藏处理，请勿在评论区乱点名！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;早些时候，我加入了 &lt;a href=&quot;https://modrinth.com/mod/minecraft-transit-railway&quot;&gt;Minecraft Transit Railway Mod&lt;/a&gt; 圈子，同时加入了该模组官方服务器的交流群。&lt;/p&gt;
+&lt;p&gt;寒假期间，部分低龄群体获得了电脑、手机后，开始创作一些令人深思的奇怪内容。&lt;/p&gt;
+&lt;h2&gt;神秘材质包&lt;/h2&gt;
+&lt;p&gt;先放图片：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214111843901.png&quot; alt=&quot;某人的第一个视频&quot; style=&quot;zoom: 33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;说实话，当这个视频出现在我的B站首页时，我并无观看欲望。&lt;/p&gt;
+&lt;p&gt;直到有人在Discord讨论此事，我才决定查看。&lt;/p&gt;
+&lt;p&gt;查看后发现，情况远超预期。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214113106765.png&quot; alt=&quot;视频详细信息&quot; style=&quot;zoom: 33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;该视频中将大量劣质贴图贴在模组原版车辆上，甚至抠图都未处理干净。&lt;/p&gt;
+&lt;p&gt;官方服务器与您比拼的核心并非车辆本身，我实在无法理解您想表达的含义。&lt;/p&gt;
+&lt;p&gt;以下是该视频的简介：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214113907371.png&quot; alt=&quot;视频简介&quot; style=&quot;zoom: 50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;在此我想请问：您所说的究竟是何种迷惑性语言？&lt;/p&gt;
+&lt;p&gt;何为“拉垮某人，不配”？简介中多次出现的&lt;strong&gt;首个&lt;/strong&gt;，更是格外引人注意。&lt;/p&gt;
+&lt;p&gt;各位应当知晓，许多影像素材若要用于模组、视频创作，需向对应公司申请版权授权。但该UP主显然并不了解这一点，其内容仅是将来源不明的截图随意粘贴，甚至遮挡住了车辆的窗户。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214114832718.png&quot; alt=&quot;神秘贴图-1&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214115120784.png&quot; alt=&quot;神秘贴图-2&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;此外，所谓的“头等”设计，仅是添加了几块黄色色块？&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214180416559.png&quot; alt=&quot;视频详情&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;这是Modrinth平台上的头等模组：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214180754754.png&quot; alt=&quot;Modrinth上面的头等模组&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;建议您认真学习相关创作知识，踏实提升能力。&lt;/p&gt;
+&lt;h2&gt;真假“爱发电”&lt;/h2&gt;
+&lt;p&gt;若说前述行为仅是认知不足的低龄群体做出的迷惑举动，那么下述内容则令人啼笑皆非。&lt;/p&gt;
+&lt;p&gt;该UP主发布了一篇专栏：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214115949664.png&quot; alt=&quot;image-20260214上午115949574&quot; style=&quot;zoom: 33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;查看内容后，我已经笑得不行，具体内容如下：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214115654560.png&quot; alt=&quot;文章&quot; style=&quot;zoom: 50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;请问，何为《国际我的世界玩家公约》？&lt;/p&gt;
+&lt;p&gt;我特地进行了搜索：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214120344600.png&quot; alt=&quot;image-20260214下午120344484&quot; style=&quot;zoom: 33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;搜索结果显示，该公约并不存在，显然是您胡编乱造而来。更令人发笑的是，您认为使用爱发电、网易平台是&lt;strong&gt;绕过检查&lt;/strong&gt;的行为。&lt;/p&gt;
+&lt;p&gt;众所周知，网易是经Mojang官方授权的《我的世界》中国版运营方，尽管其部分行为令人不满，但至少代表着正版授权。此外，《我的世界》基岩版本身就设有“Minecoin”商城货币，您这般言论实在令人无法理解。爱发电作为知名赞助平台，用户可自由选择是否购买创作者的作品，所有作品评价均来自社区，能够帮助用户做出更全面的选择。&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;简单点说，Modrinth 其实是非官方平台而网易是官方，诶？&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;该UP主发布了大量低质量追加内容，自视甚高，声称自身具备开源精神。&lt;/p&gt;
+&lt;p&gt;更令人不解的是：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214122154044.png&quot; alt=&quot;爱发电回报&quot; style=&quot;zoom: 50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;我们必须明确，为爱发电并不等同于必须获得物质回报，但这并不意味着创作者不能获得任何回报。创作者怀着热爱创作优质内容，获得合理报酬无可厚非，您无权指责他们单纯追求金钱，况且他们也从未将“为爱发电”与“必须获得回报”划等号。此外，您提及西方开发者的相关言论，不知是崇洋媚外还是认知偏差？Notch开发了《我的世界》这一经典游戏，官网上的明确定价，您难道真的视而不见？&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214172103187.png&quot; alt=&quot;创作报酬&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;您既然意识到自愿捐赠是一种&lt;strong&gt;非强制性&lt;/strong&gt;的支持方式，就不应偷换概念，指责他人将支持等同于商业化。能说出如此矛盾的言论，实在令人佩服。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214172536271.png&quot; alt=&quot;商用与自愿付费&quot; style=&quot;zoom: 50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;我想请问，您有何依据认为中国开发者对Modrinth平台的本质存在严重误解？又为何觉得国内开发者将Modrinth与爱发电类APP混淆？他们并未改动他人作品分毫，您又凭何指责他们挪用他人劳动成果？&lt;/p&gt;
+&lt;p&gt;此外，我十分好奇，究竟是谁会闲到将免费内容包装成付费商品，这样的商品又会有人购买吗？反观您自身，盗用未经版权许可的素材发布内容，又何尝尊重过创作者的劳动成果？&lt;/p&gt;
+&lt;p&gt;更为双标的是，您前文抵制爱发电，后文却推崇Patreon、Ko-fi等平台，这无疑是在针对国内开发者。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214173807058.png&quot; alt=&quot;谁告诉你一定可以无偿获取别人的劳动成果了&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;我请问您，凭什么认为自己可以无偿获得他人的劳动成果？获得他人免费分享的内容是您的权益，而非创作者的义务，您无权对他人进行道德绑架。创作者有权利用自己的劳动成果换取合理报酬。&lt;/p&gt;
+&lt;p&gt;再者，是谁规定《我的世界》社区的共享与互助精神，就等同于必须发布免费内容？您所说的“&lt;strong&gt;也可能引发版权纠纷与玩家不满&lt;/strong&gt;”，难道不是在自我描述吗？您盗用影视公司的图像制作低质量材质包，本身就是在引发版权纠纷和玩家不满，甚至可能让更多不知情的人卷入其中。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214174714641.png&quot; alt=&quot;开源不是漏洞？&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;我请问您，真的清楚开源的定义吗？&lt;strong&gt;开源不等于免费&lt;/strong&gt;，这一点可参考&lt;a href=&quot;https://xingwangzhe.fun/posts/2da95e5f/&quot;&gt;姓王者&lt;/a&gt;的亲身经历。此外，您认为谁将“为爱发电”当作“为钱收割”的工具？您呼吁大家&lt;strong&gt;尊重原创、遵守规则&lt;/strong&gt;，可您自身做到了吗？您尊重过他人的原创成果吗？您通过合法合规的方式回馈社区了吗？&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214175408722.png&quot; alt=&quot;毒评论&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;我再次进行了搜索，结果依旧令人震惊，请问这又是您胡编乱造的内容吗？&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214175546961.png&quot; alt=&quot;搜索结果&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!IMPORTANT]&lt;/p&gt;
+&lt;p&gt;下面的内容资料来源于网络，不一定准确，请辩证阅读&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我找到了一份西南政法大学博士研究生的研究报告：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214175730820.png&quot; alt=&quot;西政报告&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;仔细查阅后发现，报告中并无任何与商业相关的关键词。&lt;/p&gt;
+&lt;p&gt;政府相关资料中也未提及相关内容：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214175808319.png&quot; alt=&quot;政府资料&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214175856945.png&quot; alt=&quot;政府资料&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ 这里唯一搜索到的「商业」仅仅是页脚的禁止商用，请勿与正文混淆！&lt;/p&gt;
+&lt;p&gt;对此，我已无话可说。&lt;/p&gt;
+&lt;h2&gt;自相矛盾，您说的话真的是自己说的吗？&lt;/h2&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214181237578.png&quot; alt=&quot;这话是人&quot; style=&quot;zoom: 33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214181508226.png&quot; alt=&quot;搞推销都没你会玩&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;暂且不论其他，即便是推销人员，也未必有您这般手段。您在此处肆意编造言论，随后便推销自己的二次修改劣质作品，实在令人不齿。&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214181729723.png&quot; alt=&quot;用现有车改写颜色画点劣质线条告诉我这是某个城市的地铁……&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;此外，您用C-Train修改后，竟称其为西安地铁？恳请您尊重事实，认真创作。&lt;/p&gt;
+&lt;p&gt;最后，请看其头像和个性签名：&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;https://blog-assets.ooowl.net/images/20260214/20260214181903960.png&quot; alt=&quot;头像和个签&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;您难道真的认为，大家都和您一样缺乏基本认知吗？&lt;/p&gt;
+</content:encoded><feny:category>随笔</feny:category><feny:tag>随笔</feny:tag><feny:tag>开源</feny:tag><feny:tag>观点</feny:tag><category>随笔</category><category>随笔</category><category>开源</category><category>观点</category></item><item><title>观纪录片《苏轼》（上）</title><link>https://blog.081531.xyz/posts/watching-the-documentary-sushi-part1/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/watching-the-documentary-sushi-part1/</guid><description>其实是，国庆作业？</description><pubDate>Thu, 02 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;纪录片总共六集太长了，今天只看了三集捏～&lt;/p&gt;
+&lt;p&gt;好吧摊牌了，这是一个学校作业……&lt;/p&gt;
+&lt;h2&gt;第一集&lt;/h2&gt;
+&lt;p&gt;苏东坡出生于眉山，相传他出生之时，眉山当地花草凋零、树木枯萎，为他的人生开篇添上了一抹传奇色彩。他的一生始终与不幸的命运相抗争，却在困顿中书写了不朽的人生篇章：二十岁时，他便凭借出众才学高中进士，崭露头角；到了四十岁，已成为当时文坛声名赫赫的大文豪。不过，苏东坡才华外露的同时，有时难免未顾及他人感受；对于王安石变法，他并非持反对态度，仅仅是不认同变法推行过程中的过于急躁，可王安石与宋神宗却不容忍任何不同意见，这也成为他人生波折的重要诱因。心怀百姓的苏东坡，在目睹老百姓的痛苦后，将对民生的关切融入笔墨，写下了许多反映民间疾苦的诗篇；同时，他在多地担任地方官期间，始终以 “为民利民” 为念，主持修建了众多惠及百姓的利民工程。在情感世界里，苏东坡与弟弟苏辙之间的感情堪称天下独一无二，这份兄弟情成为他逆境中的重要慰藉。而改变他人生轨迹的 “乌台诗案”，本质上是一场残酷的文字狱，即便身陷险境，当时仍有很多人挺身而出为苏轼求情，足见其人格魅力与社会声望。&lt;/p&gt;
+&lt;h2&gt;第二集&lt;/h2&gt;
+&lt;p&gt;苏东坡被贬安置到黄州后，所任官职不过是挂名而已，并无实际职权，生活也随之陷入拮据。为了维持生计，他不得不对每一笔开支精打细算，甚至给自己定下了 “每天只用一百五十文钱” 的规矩，饮食上也格外简朴 —— 一天只吃两顿饭，且每顿饭仅有一份主食、一杯酒。好在友人马梦得感念他的处境，主动从官府为他争取到了一块土地，这片承载着他后续生活与心境的土地，便是后来为人熟知的 “东坡”。面对这般困顿，苏东坡从未被困境所压迫，反而以豁达的姿态自由舒展心性，努力让自己的日子过得轻松些；他始终怀揣着对人的大爱，放下文人的身段主动融入当地百姓的生活，在与寻常人的相处中寻得慰藉。此外，身为非常资深的美食家，他也在黄州的简朴日常里发掘着食物的本真滋味，为平淡的生活添了几分烟火气。于苏东坡而言，黄州远不止是一段贬谪岁月的停留地，更是他人生境界得以提升、个人心智愈发成熟的重要成长之地。&lt;/p&gt;
+&lt;h2&gt;第三集&lt;/h2&gt;
+&lt;p&gt;公元 1082 年，苏东坡在黄州写下《念奴娇・赤壁怀古》与《前后赤壁赋》两篇传世佳作，其文辞豪迈、意蕴深沉，自此流传千古，成为中国文学史上难以逾越的经典。黄州岁月对苏东坡而言，更是一场深刻的命运转折 —— 他被迫从官场的纷扰中抽离，沉下心来直面人生、细致剖析自己的前半生过往。在此过程中，他亦保有难得的自省，坦诚反思自身缺点，甚至清醒地意识到，自己曾误将身上的某些不足当作优点去炫耀，这份通透让他的心境愈发沉淀。一次与客人论词时，他曾主动问及自己的词作与柳永相比如何，客人的回答生动道出二者差异：柳永之词需二八年华的女子浅吟低唱，而苏东坡的词却可让关西大汉执铁板高声唱诵 “大江东去”，这番对比恰如其分地展现了他词作风格的多样性。事实上，苏东坡的词风本就兼具豪放与婉约，历经世事变迁后，他的创作更突破了技巧的束缚，进入 “自有天真” 的境界，为厚重的历史增添了一抹动人的青春之美。更具开创性的是，他打破了词坛此前多聚焦男女之情的题材局限，将政治、经济、军事、怀古等多元内容纳入词的创作范畴，极大地丰富了词的内涵与表现空间。纵观苏东坡的文学生涯，黄州时期无疑是他文学艺术创作的巅峰阶段，此间的思考与作品不仅成就了他个人的文学高度，更对后世文学发展产生了极为深远的影响。&lt;/p&gt;
+</content:encoded><feny:category>观影</feny:category><feny:tag>纪录片</feny:tag><feny:tag>观后感</feny:tag><feny:tag>寿司</feny:tag><category>观影</category><category>纪录片</category><category>观后感</category><category>寿司</category></item><item><title>观纪录片《苏轼》（下）</title><link>https://blog.081531.xyz/posts/watching-the-documentary-sushi-part2/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/watching-the-documentary-sushi-part2/</guid><description>接上篇</description><pubDate>Thu, 09 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;之前看完但忘发了，补一个……&lt;/p&gt;
+&lt;h2&gt;第四集&lt;/h2&gt;
+&lt;p&gt;纵观中国文化史，苏东坡始终是一位深受世人喜爱的文人 —— 不仅寻常百姓感念他的豁达通透，无数后世文人更对他倾心着迷，为其融才情、风骨与温度于一身的人格深深折服。在艺术领域，苏东坡亦留下开创性贡献，他率先提出文人画的核心美学标准，明确主张绘画应重 “意趣” 而非拘于 “形似”，打破了此前绘画一味追求写实的传统桎梏，为中国传统绘画注入了更浓郁的文人精神与思想深度。&lt;/p&gt;
+&lt;p&gt;人生际遇的起伏中，苏东坡的豁达在黄州时期尤为鲜明：彼时他因 “乌台诗案” 谪居于此，曾亲自养蚕耕作，一心想做个安然自足的农夫，在田园劳作的质朴中安放颠沛的身心；然而命运的浪潮从不停歇，他尚未能久享这份平静，便又一次面临人生的重大转折。&lt;/p&gt;
+&lt;p&gt;而在朝堂与私交的维度里，苏东坡与王安石的交集更显君子之风 —— 二人曾因变法政见不同展开 “君子之争”，虽立场相悖，却始终恪守文人底线，从未将分歧演变为私怨；即便到了晚年，王安石早已退居金陵、淡出朝堂，仍时常默默关注着苏东坡的人生动向，这份超越立场的敬重，已然胜过许多寻常情谊。最终，二人晚年在金陵的相会，更成为千古流传的文化佳话：过往的政见分歧早已在时光中消解，他们围坐一堂，畅谈诗文典故，共话人生感悟，那份坦荡相知、超越纷争的画面，至今仍是中国文化史上 “和而不同” 的典范，定格成令人心折的千古一遇之景。&lt;/p&gt;
+&lt;h2&gt;第五集&lt;/h2&gt;
+&lt;p&gt;苏东坡的一生，始终在仕途起伏与精神求索中坚守本心，既未因朝堂风波磨去棱角，亦未因境遇困顿失却民生关怀。自外放后重返朝廷，他依旧难改刚直本性，面对掌权者的主张，始终以 “实事求是” 为为政原则，不愿为迎合权势而妥协，最终再次陷入对立的境地。面对这般不被世俗接纳的境遇，他索性以 “一肚皮的不合时宜” 自嘲，话语间没有怨怼，反倒透着不趋炎附势的天真淳朴，将人格中的纯粹展现得淋漓尽致。&lt;/p&gt;
+&lt;p&gt;而当他走出朝堂，在地方任职的岁月里，这份坚守更化作了切实的民生担当。此前在黄州时，他曾主持修建遗爱湖，以一汪碧水为载体，深情赞美知州徐君猷 “润物细无声” 般的仁政，将对善政的推崇悄然融入山水之间。两度赴杭州任职的经历，更将他的地方治理才华与务实精神推向极致：首次任太守时，他目睹西湖淤塞、百姓受困的景象，立刻将民生放在首位，全力调研整治之策，用实际行动展现出卓越的治理能力；待第二次重返杭州，即便好友黄庭坚曾劝阻他过多卷入地方事务，他仍坚持以政务需求为先，无视劝阻选拔合适的地方官员，那份不徇私情的政治务实，尽显为官担当。随后，他亲自主持西湖疏浚工程，挖除淤泥、加固湖岸，更筑起横贯西湖的长堤（后世称 “苏堤”），既让西湖重现碧波荡漾的景致，又解决了百姓灌溉、出行的难题，实实在在改善了民生。&lt;/p&gt;
+&lt;p&gt;仕途的颠簸与地方的实践，也悄然重塑着他的精神世界。他渐渐察觉，自己的内心并非如早年诗句中所写的那般洒脱无挂，禅宗佛教的智慧开始渗透进他的思考，为他消解失意、抚平心绪；但即便精神受释家影响，他的底色始终是儒家的家国情怀，对朝廷兴衰、国家安危的牵挂从未淡去，内心的复杂恰是理想与现实碰撞的印记。而这份在沉浮中沉淀的通透，最终让他的理想主义完成了向人间情怀的转化 —— 他热爱自己亲手创造的苏堤烟柳、遗爱湖光这般人间之美，更以温柔的目光注视着世间百姓的悲欢，将文人的才情与士大夫的责任，稳稳落在了民生疾苦的实处，成为跨越千年仍让人感念的 “人间东坡”。&lt;/p&gt;
+&lt;h2&gt;第六集&lt;/h2&gt;
+&lt;p&gt;苏东坡的人生轨迹，总在仕途起伏与情感跌宕中交织，却始终透着向光而行的力量。自杭州任满调离后，他曾被召回京城，因高太后的赏识而得重用，本以为能在朝堂之上多践民生之志，然命运的转折再度袭来 —— 宋哲宗即位后，新党之争重起，政治风波裹挟着他再次被贬，此前的朝堂期许又一次落空。&lt;/p&gt;
+&lt;p&gt;仕途的失意之外，生活更给予他沉重一击：相伴多年的朝云因病离世，这份猝不及防的离别让苏东坡深陷悲痛，那份失去知己的怅惘，也成了他人生中难以磨灭的印记。所幸低谷之中，亲情成了温暖的慰藉 —— 他与弟弟苏辙得以相遇，久别重逢的兄弟二人形影不离，朝夕相伴间消解了不少漂泊的孤苦。林语堂曾言，这般深厚的兄弟情，正是苏东坡诸多诗作的灵感之源，而他早年为苏辙所作的《水调歌头》，便是这份情谊的绝佳见证。这首词不仅以 “但愿人长久，千里共婵娟” 的豁达穿透时空，更展现出超乎想象的生命力：它被翻译成多种语言传遍世界，美国合唱团曾以歌声演绎其意境，旧金山合唱团更用原汁原味的中文演唱，让东方文人的家国情怀与手足之思，在异域舞台上焕发光彩。&lt;/p&gt;
+&lt;p&gt;或许正是半生的苦痛与动荡，让苏东坡更懂得如何在岁月里留住欢愉 —— 他渐渐学会从生活细微处捕捉美好，在困顿中寻得安然。晚年的他，迎来了人生的又一次转折：被朝廷重新启用后，他从荒远的海南岛渡海北归，路过大禹岭时，望着眼前的山川景致，想起半生的颠沛与坚守，感慨万千间写下诗篇，将一路的风霜与归乡的期许都融进字句里。&lt;/p&gt;
+&lt;p&gt;回望一生，苏东坡始终在理想与现实的矛盾中跋涉，直到北归途中的这一刻，他才真正实现了精神上的超越。那些曾让他饱受磨难的黄州、惠州与儋州岁月，此刻再回首，早已不是单纯的苦难印记，而是化为了生命里温润的 “琉璃岁月”—— 正是这些历经打磨的时光，铸就了他的通透与豁达，也让他成为跨越千年，依旧能让世人感受到生活力量的 “人间东坡”。&lt;/p&gt;
+</content:encoded><feny:category>观影</feny:category><feny:tag>纪录片</feny:tag><feny:tag>观后感</feny:tag><feny:tag>寿司</feny:tag><category>观影</category><category>纪录片</category><category>观后感</category><category>寿司</category></item><item><title>WeChat（微信国际服务）与微信（国内服务）的《隐私协议》的天壤之别（其中最让人愤怒的）</title><link>https://blog.081531.xyz/posts/wechat-privacy-comparison/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/wechat-privacy-comparison/</guid><description>聚焦令人关注的隐私问题</description><pubDate>Sat, 13 Jul 2024 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;本文仅代表个人观点，请勿使用言论攻击本观点，如有错误请合理指出，谢谢支持！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在《微信隐私协议》的1.2条中写道：同时，为了预防病毒、木马程序或其他恶意程序、网站，我们可能会收集你设备安装的应用信息、正在运行的进程信息或设备内存中寄存的数据，以防止你的个人信息泄露。&lt;/p&gt;
+&lt;p&gt;“手机设备安装的应用信息、正在运行的进程信息或设备内存中寄存的数据”这听着有点刁钻，我来分析一下：&lt;/p&gt;
+&lt;p&gt;简单来说，就是相当于监视你的设备&lt;/p&gt;
+&lt;p&gt;等等，监视👀&lt;/p&gt;
+&lt;p&gt;这……&lt;/p&gt;
+&lt;p&gt;也就是说，你不管在干啥，只要微信在后台，腾讯都看的一清二楚！&lt;/p&gt;
+&lt;p&gt;比如：打游戏输了，在干什么工作&lt;/p&gt;
+&lt;p&gt;那么，只能说明了一个点：&lt;/p&gt;
+&lt;p&gt;据不精确，国内微信用户数量共580亿，就相当于腾讯共监视者580亿台设备！&lt;/p&gt;
+&lt;p&gt;580亿台设备，你说腾讯拿这些东西来干什么呢（此问题只是单纯题问，并无恶意）&lt;/p&gt;
+&lt;p&gt;回归正题，WeChat（微信国际服务）与微信（国内服务）的《隐私协议》的天壤之别，就单单上文所描述的这一“变态”的协议在WeChat是没有的。还是那个问题，腾讯为什么要在中国微信中干这种事，我们不得而知！&lt;/p&gt;
+&lt;p&gt;关键是现在隐私安全问题还要你操心吗，你确定你的协议真的是说了实话（单纯发问，并无他意）？&lt;/p&gt;
+&lt;p&gt;所以说，对于这个点，你有什么看法？&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/jcIADXzVQ9LfJC8.webp&quot; alt=&quot;《微信隐私保护指引》中提到上文内容的部分（高亮）直达链接：https://arc.net/l/quote/rfcrcgqz）&quot; /&gt;&lt;/p&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>微信</feny:tag><feny:tag>隐私</feny:tag><feny:tag>对比</feny:tag><category>技术</category><category>微信</category><category>隐私</category><category>对比</category></item><item><title>Windows 7 终端开启右键粘贴</title><link>https://blog.081531.xyz/posts/windows-7-terminal-rightclick/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/windows-7-terminal-rightclick/</guid><description>什么，你的 Windows 7 电脑不支持右键粘贴？我来帮你</description><pubDate>Thu, 17 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;暑假集训的时候我们搬到了蔡家，由于蔡家没钱，使用的是 1GB 内存的 Windows 7 电脑。&lt;/p&gt;
+&lt;p&gt;但是这个问题有个奇怪的问题：终端不支持右键粘贴，甚至连 &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;Insert&lt;/code&gt; 都用不了太垃圾了。&lt;/p&gt;
+&lt;p&gt;这对于需要频繁粘贴样例的题目极其的不友好，需要手动的点击标题栏选择粘贴。所以我们应该做点什么让他方便点。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/07/26/XQGnWCk4Y9H1OgJ.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ 未设置时粘贴的步骤&lt;/p&gt;
+&lt;p&gt;好在这只是一个 Windows 的设置问题，所以很好解决。&lt;/p&gt;
+&lt;h2&gt;解决方案&lt;/h2&gt;
+&lt;p&gt;很简单，首先随意打开一个终端或者跑一个程序（用 Windows 控制台运行的那种）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：当运行不同的控制台程序时（如 cmd 或你自编译的东西）可能需要重新设置&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;然后右键单击标题栏，点击“属性”&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/07/26/cSEXzmqeQta3Rbi.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;勾选“快速编辑模式”&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/07/26/BiSyIKhVuYL7Co8.png&quot; alt=&quot;3DE54223-DB67-4029-B051-A9F4E0E2DDCA.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;完成，现在你就可以在终端里右键粘贴啦！&lt;/p&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>Windows</feny:tag><feny:tag>终端</feny:tag><feny:tag>技巧</feny:tag><category>技术</category><category>Windows</category><category>终端</category><category>技巧</category></item><item><title>算法竞赛：拥有一个顺手的 IDE · Windows 篇</title><link>https://blog.081531.xyz/posts/algo-ide-windows/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/algo-ide-windows/</guid><description>Sublime Text了解一下？</description><pubDate>Wed, 02 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;如果你第一次学习 OI，你一定会了解一个名为 Dev-C++ 的编辑器。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/5CFJbGOHijlUQv9.webp&quot; alt=&quot;Dev-C++&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ Dev-C++&lt;/p&gt;
+&lt;p&gt;这的确是一个易于上手的编辑器，教练为我们安装的版本自带编译器、且不需要过多的配置就可以上手写代码。&lt;/p&gt;
+&lt;p&gt;但是他的缺陷也暴露了出来：Dev-C++ 本质上作为一个开发编辑器，其开箱即用（不需要个性化设置）的特点已经局限了他（对于我们算法竞赛不是特别的方便）。那么，我们又该何从下手呢？&lt;/p&gt;
+&lt;h2&gt;选择一个编辑器&lt;/h2&gt;
+&lt;p&gt;市面上的代码编辑器有很多，比如微软的 &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt;，&lt;a href=&quot;https://cpeditor.org/zh/&quot;&gt;CP Editor&lt;/a&gt;、Sublime 公司的 &lt;a href=&quot;https://sublimetext.com&quot;&gt;Sublime Text&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;这三款编辑器是非常适合作为 OIer 日常使用的，其中 CP Editor 是一款开箱即用的，支持导入测试点的编辑器，如果你不喜欢折腾，那么 CP Editor 一定是你的不二之选！&lt;/p&gt;
+&lt;h2&gt;Sublime Text&lt;/h2&gt;
+&lt;p&gt;Sublime Text 是一款轻量级编辑器，拥有许多可以个性化的内容。&lt;/p&gt;
+&lt;p&gt;如果你想要尝试，请跟随本文操作、配置。&lt;/p&gt;
+&lt;p&gt;注意：本教程为 Windows 教程！&lt;/p&gt;
+&lt;h2&gt;下载 Sublime Text&lt;/h2&gt;
+&lt;p&gt;打开官网：&lt;a href=&quot;https://sublimetext.com&quot;&gt;sublimetext.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/QUqSYRA5jiH8NyW.webp&quot; alt=&quot;官方网站&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ Sublime Text 官网&lt;/p&gt;
+&lt;p&gt;打开之后不要被满屏的英文吓住，直接点击“DOWNLOAD FOR WINDOWS”下载。&lt;/p&gt;
+&lt;p&gt;下载之后一路下一步安装，打开，你就可以继续跟着本文配置了！&lt;/p&gt;
+&lt;h2&gt;（可选）插件安装器&lt;/h2&gt;
+&lt;p&gt;首先按下 &lt;code&gt;Control&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;P&lt;/code&gt; 打开操作面板，输入 &lt;code&gt;Install&lt;/code&gt; 后点击“Install Package Control”安装插件安装器，等待一会会出现弹窗提示，然后就安装好了！&lt;/p&gt;
+&lt;h2&gt;（可选）中文&lt;/h2&gt;
+&lt;p&gt;此操作需要安装插件安装器。&lt;/p&gt;
+&lt;p&gt;在安装好插件安装器的情况下，按下 &lt;code&gt;Control&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;P&lt;/code&gt; 打开操作面板，输入 &lt;code&gt;Install&lt;/code&gt; 后选择 “Package Control: Install Package”。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/yWNjnizEwo8pUdT.webp&quot; alt=&quot;操作 1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;加载比较慢，不要着急，等他弹出来之后输入 &lt;code&gt;Chinese&lt;/code&gt;，然后选择“ChineseLocalizations”&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/kQtFT8lDZriYCWb.webp&quot; alt=&quot;操作 2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;安装的时候等待一下，会弹出来一个叫“Package Control Messages”的文件（会帮你打开），上面给出了方法。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/EqwOfvu698LdjY3.webp&quot; alt=&quot;操作 3&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;好像最新版的插件会直接给你调好（雾）。&lt;/p&gt;
+&lt;p&gt;你就可以愉快的使用中文了！&lt;/p&gt;
+&lt;h2&gt;个性化&lt;/h2&gt;
+&lt;p&gt;首先是编辑器设置，操作方法见下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/t1LVSqHCIvmDNBb.webp&quot; alt=&quot;操作方法&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;打开之后的画面可能令你不解：为什么是一个我看不懂的代码？&lt;/p&gt;
+&lt;p&gt;其实这是一个比较不错的优点，你可以很快地迁移配置在各个电脑之间。&lt;/p&gt;
+&lt;p&gt;如果你熟悉英文，那么恭喜你，你可以通过参照左边的默认配置来自定义。如果你不熟悉，没有关系，我可以给你一个示范。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;spell_check&quot;: true,
+  &quot;indent_to_bracket&quot;: true,
+  &quot;draw_white_space&quot;: [&quot;selection&quot;, &quot;trailing&quot;, &quot;isolated&quot;]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个文件其实就只达到了一个目的：显示行尾空格、缩进。&lt;/p&gt;
+&lt;p&gt;这有利于防止玄学错误，对于 OIer 来说已经够用了！&lt;/p&gt;
+&lt;p&gt;如果你要调整颜色主题，没问题，按照下图操作即可：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/DEmA19vVWzTbM5Q.webp&quot; alt=&quot;主题&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;这里的调整有一个优点，你可以直接在一个类似于之前命令面板的可视化模块中调整主题，并且支持实时预览，你可以使用上下键切换并查看效果。&lt;/p&gt;
+&lt;h2&gt;编译与代码框架&lt;/h2&gt;
+&lt;p&gt;如果说上方的教程帮助你有一个更舒适的代码撰写环境，那么接下来的配置则让你的编写与编译更加方便！&lt;/p&gt;
+&lt;p&gt;接下来的内容相对无脑，小心你的 CtrlCV 键被按废。&lt;/p&gt;
+&lt;p&gt;首先按下 &lt;code&gt;Control&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;P&lt;/code&gt; 打开操作面板，输入 &lt;code&gt;Browse&lt;/code&gt;，选择“Preferences: Browse Packages”，会打开一个文件夹。&lt;/p&gt;
+&lt;p&gt;你也可以直接访问这个路径（理论上都在这个位置）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可能会出现一些文件夹，我们进入 &lt;code&gt;User&lt;/code&gt; 文件夹。&lt;/p&gt;
+&lt;p&gt;新建一个叫 &lt;code&gt;[名字随意].sublime-build&lt;/code&gt; 的文件（请打开后缀名显示）。&lt;/p&gt;
+&lt;p&gt;双击使用 Sublime Text 打开，粘贴这个文件：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{
+  &quot;encoding&quot;: &quot;utf-8&quot;,
+  &quot;working_dir&quot;: &quot;$file_path&quot;,
+  &quot;shell_cmd&quot;: &quot;g++ -Wall \&quot;${file}\&quot; -o \&quot;${file_path}/${file_base_name}\&quot;&quot;,
+  &quot;file_regex&quot;: &quot;^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$&quot;,
+  &quot;selector&quot;: &quot;source.c++&quot;,
+
+  &quot;variants&quot;: [
+    {
+      &quot;name&quot;: &quot;Run&quot;,
+      &quot;shell_cmd&quot;: &quot;g++ -Wall -std=c++14 -O2 \&quot;${file}\&quot; -o \&quot;${file_base_name}\&quot; &amp;amp;&amp;amp; start cmd /c \&quot;\&quot;${file_path}/${file_base_name}\&quot; &amp;amp; pause\&quot;&quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;保存退出，在正式编译之前我们还需要做一点事情。&lt;/p&gt;
+&lt;h3&gt;安装编译器&lt;/h3&gt;
+&lt;p&gt;由于笔者也忘了怎么安装 C++ 编译器了，请自行百度/必应：“C++编译器安装”&lt;/p&gt;
+&lt;h3&gt;设置编译器环境变量&lt;/h3&gt;
+&lt;p&gt;如果你是在网上搜的安装教程，他可能已经教你如何配置环境变量了，但如果你没有配置，请看这里。&lt;/p&gt;
+&lt;p&gt;首先打开开始菜单，搜索“环境变量”，打开之后你需要在上方的“用户变量”进行如下操作：点击“新建” → 在“变量名”中输入 &lt;code&gt;PATH&lt;/code&gt; → 在“变量值”中输入你的编译器目录，类似于 &lt;code&gt;C:\Program Files (x86)\[你所安装的编译器名字，比如 MinGW64]\bin&lt;/code&gt; → 点击“确定” → 点击“确定”。&lt;/p&gt;
+&lt;p&gt;当然如果你之前装过如 Python 等工具，你的 PATH 变量已经被占用，不用担心，按照这个步骤操作：双击“PATH”变量那一行 → 在“变量值”的原有内容后加一个英文分号（&lt;code&gt;;&lt;/code&gt;） → 输入你的编译器目录，类似于 &lt;code&gt;C:\Program Files (x86)\[你所安装的编译器名字，比如 MinGW64]\bin&lt;/code&gt; → 点击“确定” → 点击“确定”&lt;/p&gt;
+&lt;p&gt;完成后打开命令提示符（cmd），输入 &lt;code&gt;g++ -v&lt;/code&gt; ，只要能正确输出版本等信息就说明配置成功了！&lt;/p&gt;
+&lt;h3&gt;写下你的第一个程序&lt;/h3&gt;
+&lt;p&gt;回到 Sublime Text 中，写好一个带有输入输出功能的程序，按下 &lt;code&gt;Control + B&lt;/code&gt; 开始运行，会弹出一个类似命令面板的界面。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/obkpsUwGrudVg8P.webp&quot; alt=&quot;选择器&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;选择“[你刚刚创建的那个 &lt;code&gt;.sublime-build&lt;/code&gt; 文件的文件名] - Run”那一个选项，就可以一键编译运行（会弹出来一个终端窗口供你输入输出），运行成功后就代表着编译系统的配置成功！&lt;/p&gt;
+&lt;h3&gt;代码模板&lt;/h3&gt;
+&lt;p&gt;在 Dev-C++ 中，我们都知道可以通过设置使新建文件时能够为我们自动补全头文件。&lt;/p&gt;
+&lt;p&gt;虽然 Sublime 不能够实现这个功能，对，不能够！但是我们仍然可以顺利偷懒！&lt;/p&gt;
+&lt;p&gt;首先按下 &lt;code&gt;Control&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;P&lt;/code&gt; 打开操作面板，输入 &lt;code&gt;Browse&lt;/code&gt;，选择“Preferences: Browse Packages”，会打开一个文件夹。&lt;/p&gt;
+&lt;p&gt;你也可以直接访问这个路径（理论上都在这个位置）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;C:\Users\[你的电脑用户名]\AppData\Roaming\Sublime Text\Packages
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可能会出现一些文件夹，我们进入 &lt;code&gt;User&lt;/code&gt; 文件夹。&lt;/p&gt;
+&lt;p&gt;新建一个叫 &lt;code&gt;[名字随意].sublime-snippet&lt;/code&gt; 的文件（请打开后缀名显示）。&lt;/p&gt;
+&lt;p&gt;用 Sublime Text 打开，粘贴这个代码，然后修改其中的内容：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;snippet&amp;gt;
+  &amp;lt;content&amp;gt; &amp;lt;![CDATA[ [你的代码框架] ]]&amp;gt; &amp;lt;/content&amp;gt;
+  &amp;lt;!-- Optional: Set a tabTrigger to define how to trigger the snippet --&amp;gt;
+  &amp;lt;tabTrigger&amp;gt;[关键词]&amp;lt;/tabTrigger&amp;gt;
+  &amp;lt;description&amp;gt;[取名随意]&amp;lt;/description&amp;gt;
+  &amp;lt;!-- Optional: Set a scope to limit where the snippet will trigger --&amp;gt;
+  &amp;lt;scope&amp;gt;source.c, source.c++&amp;lt;/scope&amp;gt;
+&amp;lt;/snippet&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果你不理解，你可以参考这个例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;snippet&amp;gt;
+  &amp;lt;content&amp;gt;
+    &amp;lt;![CDATA[ #include &amp;lt;bits/stdc++.h&amp;gt; #define op if (debug) using namespace
+    std; typedef long long lo; const bool debug = 0; int main() {
+    ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr); return 0;
+    } ]]&amp;gt;
+  &amp;lt;/content&amp;gt;
+  &amp;lt;!-- Optional: Set a tabTrigger to define how to trigger the snippet --&amp;gt;
+  &amp;lt;tabTrigger&amp;gt;_algo&amp;lt;/tabTrigger&amp;gt;
+  &amp;lt;description&amp;gt;竞赛模板&amp;lt;/description&amp;gt;
+  &amp;lt;!-- Optional: Set a scope to limit where the snippet will trigger --&amp;gt;
+  &amp;lt;scope&amp;gt;source.c, source.c++&amp;lt;/scope&amp;gt;
+&amp;lt;/snippet&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样，每当你新建一个 &lt;code&gt;.cpp&lt;/code&gt; 的文件时，输入&lt;code&gt;上面代码的[关键词]&lt;/code&gt; 然后在弹出的菜单中选择你的预设，就可以为你补全框架了！&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/oAkSlebhF6Q8WPU.webp&quot; alt=&quot;大概是这样&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;▲ 大概是这样的吧&lt;/p&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;至此，你应该已经配置好了一个完整的 Sublime Text 并且可以用于竞赛的调试代码，希望本篇文章可以为你提高效率。&lt;/p&gt;
+&lt;h2&gt;彩蛋：让你的 Sublime Text 像 CP Editor 一样&lt;/h2&gt;
+&lt;p&gt;在安装好插件安装器的情况下，按下 &lt;code&gt;Control&lt;/code&gt; + &lt;code&gt;Shift&lt;/code&gt; + &lt;code&gt;P&lt;/code&gt; 打开操作面板，输入 &lt;code&gt;Install&lt;/code&gt; 后选择 “Package Control: Install Package”。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/yWNjnizEwo8pUdT.webp&quot; alt=&quot;操作 1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;加载比较慢，不要着急，等他弹出来之后输入 &lt;code&gt;CppFastOly&lt;/code&gt;，然后选择“CppFastOlympicCoding”安装，稍等一会安装完成。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/HsXRw2Jgpt9DLNa.webp&quot; alt=&quot;操作 2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;请注意左下角的安装状态，当显示安装完成之后你就可以愉快的使用了。&lt;/p&gt;
+&lt;p&gt;由于篇幅原因，请各位自行前往官方 GitHub 学习使用：https://github.com/Jatana/FastOlympicCoding&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;完结撒花！感谢各位阅读！&lt;/strong&gt;&lt;/p&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>算法竞赛</feny:tag><feny:tag>Windows</feny:tag><feny:tag>开发环境</feny:tag><category>技术</category><category>算法竞赛</category><category>Windows</category><category>开发环境</category></item><item><title>题解 | 字符串反转</title><link>https://blog.081531.xyz/posts/solution-lg330123/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/solution-lg330123/</guid><description>一道简单的字符串操作题的解题思路</description><pubDate>Tue, 02 Jul 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;题目&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/09/06/ghIJ7HTtqrlAYCv.webp&quot; alt=&quot;题目&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;1.题目分析&lt;/h2&gt;
+&lt;p&gt;一道简单的字符串操作题，直接套用C++中字符串对应的操作即可&lt;/p&gt;
+&lt;h2&gt;2.做题思路&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;使用 &lt;code&gt;while&lt;/code&gt; 循环读入字符串 &lt;code&gt;inpt &lt;/code&gt; 为 &lt;code&gt;.&lt;/code&gt; 时停止读入&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对 &lt;code&gt;inpt&lt;/code&gt; 字符串执行 &lt;code&gt;inpt.append(1,&apos; &apos;)&lt;/code&gt; 意思是在读入的字符串后加一个空格，因为 &lt;code&gt;cin&lt;/code&gt; 会排掉空格&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;定义一个 &lt;code&gt;str&lt;/code&gt; 字符串用来储存答案&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对 &lt;code&gt;str&lt;/code&gt; 字符串执行 &lt;code&gt;str.insert(0, inpt)&lt;/code&gt; 即将输入内容添加至 &lt;code&gt;str&lt;/code&gt; 字符串最前面&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;输出 &lt;code&gt;str&lt;/code&gt; 即可&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;3.复杂度计算&lt;/h2&gt;
+&lt;p&gt;由于只需要循环长度次，所以时间复杂度为 $O(n)$ 是完全不会超的&lt;/p&gt;
+&lt;h2&gt;4.完整代码&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+using namespace std;
+
+int main()
+{
+	string str;
+	string inpt;
+	while(true)
+	{
+		cin &amp;gt;&amp;gt; inpt ;
+		if(inpt == &quot;.&quot;)
+		{
+			break;
+		}
+		inpt.append(1, &apos; &apos;);
+		str.insert(0, inpt);
+	}
+	cout &amp;lt;&amp;lt; str ;
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;写在最后&lt;/h2&gt;
+&lt;p&gt;有问题请及时评论，我会做出对应的修改！&lt;/p&gt;
+</content:encoded><feny:category>题解</feny:category><feny:tag>题解</feny:tag><feny:tag>算法</feny:tag><feny:tag>字符串</feny:tag><category>题解</category><category>题解</category><category>算法</category><category>字符串</category></item><item><title>题解 | 素数环</title><link>https://blog.081531.xyz/posts/solution-uva524/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/solution-uva524/</guid><description>使用深度优先搜索解决素数环问题的题解</description><pubDate>Thu, 27 Jun 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;前言：&lt;/h2&gt;
+&lt;p&gt;在学校信息队训练的时候布置了这一道题目，但是只求一次。然后上洛谷发现UVA题库求多次，因为方法一样只需嵌套，所以就做了一下（没有账号提交不了=m=）&lt;/p&gt;
+&lt;h2&gt;信息队原题&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/fenychn0206/upyun-rhimgcdn@img/upload/202406272146771.png&quot; alt=&quot;原题图片&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;1.题目分析&lt;/h2&gt;
+&lt;p&gt;题目要求将整数 $1$ 到 $n$ 组成一个环，使得相邻的两个整数之和均为素数。&lt;/p&gt;
+&lt;p&gt;我们需要找到所有满足条件的素数环，并按照要求输出。&lt;/p&gt;
+&lt;p&gt;由于 $n$ 的值不超过 $16$ ，我们可以使用回溯法来尝试所有可能的组合。&lt;/p&gt;
+&lt;h2&gt;2.做题思路&lt;/h2&gt;
+&lt;p&gt;判断当前取出的数字是否和前一个组成素数，这一步可以用一个 &lt;code&gt;check&lt;/code&gt;函数来解决（num的值为两个数字的和）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;bool check(int num)
+{
+    if (num &amp;lt; 2)
+    {
+        return false;
+    }
+    for (int i = 2; i * i &amp;lt;= num; i++)
+    {
+        if (num % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;再创建一个 &lt;code&gt;back&lt;/code&gt; 函数用于回溯：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;void back(int cur)  // cur 表示当前位置
+{
+    if (cur == n)  // 检查最后一个数字和第一个数字之和是否为素数
+    {
+        if (check(arr[0] + arr[n - 1]))
+        {
+            for (int i = 0; i &amp;lt; n; i++)
+            {
+                cout &amp;lt;&amp;lt; arr[i] &amp;lt;&amp;lt; &quot; &quot;;
+            }
+            cout &amp;lt;&amp;lt; endl;
+        }
+        return;
+    }
+    for (int i = 2; i &amp;lt;= n; i++)
+    {
+        if (!vis[i] &amp;amp;&amp;amp; check(arr[cur - 1] + i))
+        {
+            vis[i] = true;
+            arr[cur] = i;
+            back(cur + 1);
+            vis[i] = false;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在back函数中，首先判断是否已经放置了 $n$ 个数字。如果是，则检查最后一个数字和第一个数字之和是否为素数。如果是素数，则输出这个环。&lt;/p&gt;
+&lt;p&gt;然后，从数字 $2$ 到 $n$ 依次尝试将每个数字放在环的下一个位置。如果该数字没有被使用过，并且与前一个数字之和为素数，就将其放在环的下一个位置，并标记为已使用，然后继续递归放置下一个数字。&lt;/p&gt;
+&lt;p&gt;如果放置过程中出现相邻两个数字之和不是素数的情况，就回溯到上一个数字，重新选择下一个数字。&lt;/p&gt;
+&lt;p&gt;最后是 &lt;code&gt;main&lt;/code&gt; 函数，在main函数中，读取输入的 $n$ ，初始化标记数组和环的第一个数字，然后调用 &lt;code&gt;back&lt;/code&gt; 函数从数字 $1$ 开始回溯。&lt;/p&gt;
+&lt;h2&gt;3.复杂度计算&lt;/h2&gt;
+&lt;p&gt;时间复杂度：由于需要尝试所有可能的组合，时间复杂度为 $O(n!)$ ，其中 n 是输入的数字个数&lt;/p&gt;
+&lt;p&gt;空间复杂度：主要是使用了标记数组和环数组，空间复杂度为 $O(n)$&lt;/p&gt;
+&lt;h2&gt;4.完整代码&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+using namespace std;
+
+const int MAXN = 16;
+int n;
+int arr[MAXN];
+bool vis[MAXN];
+
+// 判断一个数是否为素数
+bool check(int num)
+{
+    if (num &amp;lt; 2)
+    {
+        return false;
+    }
+    for (int i = 2; i * i &amp;lt;= num; i++)
+    {
+        if (num % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 回溯
+// cur表示当前位置
+void back(int cur)
+{
+    if (cur == n)  // 检查最后一个数字和第一个数字之和是否为素数
+    {
+        if (check(arr[0] + arr[n - 1]))
+        {
+            for (int i = 0; i &amp;lt; n; i++)
+            {
+                cout &amp;lt;&amp;lt; arr[i] &amp;lt;&amp;lt; &quot; &quot;;
+            }
+            cout &amp;lt;&amp;lt; endl;
+        }
+        return;
+    }
+    for (int i = 2; i &amp;lt;= n; i++)
+    {
+        if (!vis[i] &amp;amp;&amp;amp; check(arr[cur - 1] + i))
+        {
+            vis[i] = true;
+            arr[cur] = i;
+            back(cur + 1);
+            vis[i] = false;
+        }
+    }
+}
+
+int main()
+{
+    cin &amp;gt;&amp;gt; n;
+    memset(vis, false, sizeof(vis));
+    vis[1] = true;
+    arr[0] = 1;
+    back(1);
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;洛谷UVA题库版&lt;/h2&gt;
+&lt;p&gt;前面不是说了吗，UVA也有一个版本，是给出多个值，这里给出题目：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/fenychn0206/upyun-rhimgcdn@img/upload/202406272200565.png&quot; alt=&quot;洛谷UVA题目&quot; /&gt;&lt;/p&gt;
+&lt;h3&gt;样例组&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;INPUT #1&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;`6
+8
+`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;OUTPUT #1&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;`Case 1:
+1 4 3 2 5 6
+1 6 5 2 3 4
+
+Case 2:
+1 2 3 8 5 6 7 4
+1 2 5 8 3 4 7 6
+1 4 7 6 5 8 3 2
+1 6 7 4 3 8 5 2
+`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其实就是多次输入，用 &lt;code&gt;while&lt;/code&gt; 循环解决，终止条件为 &lt;code&gt;n == EOF&lt;/code&gt;，所以可以这样写。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;`while(n != EOF)
+    {
+        cin &amp;gt;&amp;gt; n;
+        memset(vis, false, sizeof(vis));
+        vis[1] = true;
+        arr[0] = 1;
+        back(1);
+    }
+`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;现在是把刚才信息队版本的输入和操作套在了循环里，这就完了，是不是很简单？&lt;/p&gt;
+&lt;p&gt;其实没完，题目中说要在第 &lt;code&gt;i&lt;/code&gt; 行添加上 &lt;code&gt;Case i&lt;/code&gt; ，所以再搞一个变量就完事了！&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;`int idx = 1;  // 此处 idx 变量即 i 变量
+while(n != EOF)
+{
+    cin &amp;gt;&amp;gt; n;
+    cout &amp;lt;&amp;lt; &quot;Case &quot; &amp;lt;&amp;lt; idx++ &amp;lt;&amp;lt; &quot;:&quot; &amp;lt;&amp;lt; endl;  // 输出 Case i 因为 &quot;++&quot; 在后是先赋值再运算，所以可以这么写，就相当于先输出 idx 当前值再加
+    memset(vis, false, sizeof(vis));
+    vis[1] = true;
+    arr[0] = 1;
+    back(1);
+}
+`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;最终代码&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;`#include &amp;lt;bits/stdc++.h&amp;gt;
+using namespace std;
+
+const int MAXN = 16;
+int n;
+int arr[MAXN];
+bool vis[MAXN];
+
+// 判断一个数是否为素数
+bool check(int num)
+{
+    if (num &amp;lt; 2)
+    {
+        return false;
+    }
+    for (int i = 2; i * i &amp;lt;= num; i++)
+    {
+        if (num % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 回溯
+// cur表示当前位置
+void back(int cur)
+{
+    if (cur == n)  // 检查最后一个数字和第一个数字之和是否为素数
+    {
+        if (check(arr[0] + arr[n - 1]))
+        {
+            for (int i = 0; i &amp;lt; n; i++)
+            {
+                cout &amp;lt;&amp;lt; arr[i] &amp;lt;&amp;lt; &quot; &quot;;
+            }
+            cout &amp;lt;&amp;lt; endl;
+        }
+        return;
+    }
+    for (int i = 2; i &amp;lt;= n; i++)
+    {
+        if (!vis[i] &amp;amp;&amp;amp; check(arr[cur - 1] + i))
+        {
+            vis[i] = true;
+            arr[cur] = i;
+            back(cur + 1);
+            vis[i] = false;
+        }
+    }
+}
+
+int main()
+{
+    int idx = 1;
+    while(n != EOF)
+    {
+        cin &amp;gt;&amp;gt; n;
+        cout &amp;lt;&amp;lt; &quot;Case &quot; &amp;lt;&amp;lt; idx++ &amp;lt;&amp;lt; &quot;:&quot; &amp;lt;&amp;lt; endl;
+        memset(vis, false, sizeof(vis));
+        vis[1] = true;
+        arr[0] = 1;
+        back(1);
+    }
+    return 0;
+}
+`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;写在最后&lt;/h2&gt;
+&lt;p&gt;到这里本片题解就结束了，UVA版本没提交，前面说了注册不起账号，但是代码应该没问题，有问题评论告知，谢谢支持🙏&lt;/p&gt;
+</content:encoded><feny:category>题解</feny:category><feny:tag>题解</feny:tag><feny:tag>算法</feny:tag><feny:tag>搜索</feny:tag><category>题解</category><category>题解</category><category>算法</category><category>搜索</category></item><item><title>OI 赛制的实用工具</title><link>https://blog.081531.xyz/posts/oi-contest-tools/</link><guid isPermaLink="true">https://blog.081531.xyz/posts/oi-contest-tools/</guid><description>没有大测点？自己造！</description><pubDate>Wed, 09 Jul 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;最近考试比较频繁，自己在代码检查方面也是写了很多工具，这里汇总一下。&lt;/p&gt;
+&lt;h2&gt;数据机&lt;/h2&gt;
+&lt;p&gt;有的时候我们可能写了一些奇怪的算法，这些算法可能会超出时间复杂度，我们可以通过数据机来看看他们的极限。&lt;/p&gt;
+&lt;p&gt;我将这种数据机器分为两种类型：随机型 / 爆炸型&lt;/p&gt;
+&lt;p&gt;但是再分别将这两种类型之前，我需要声明一点。&lt;/p&gt;
+&lt;p&gt;在大部分 OI 赛制的比赛中，会要求使用文件读写 &lt;code&gt;freopen&lt;/code&gt;，这就这就导致我们代码的框架是这样的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	freopen(&quot;[problemName].in&quot;, &quot;r&quot;, stdin);
+	freopen(&quot;[problemName].out&quot;, &quot;w&quot;, stdout);
+
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里的 &lt;code&gt;[problemName]&lt;/code&gt; 代表着你的文件名称，所以数据机的模板头应该有语句。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;freopen(&quot;[problemName].in&quot;, &quot;w&quot;, stdout);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;与我们的解决程序不同的是，我们的 &lt;code&gt;.in&lt;/code&gt; 文件在这里是被写入，而不是被读入。&lt;/p&gt;
+&lt;p&gt;所以，我们的数据机框架为：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#define pname [problemName]  // 把 [problemName] 改成你题目对应的名字
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	freopen(&quot;pname.in&quot;, &quot;w&quot;, stdout);
+	/* 制造程序在这里写 */
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们还可以再优化一下，因为每次手动运行、打开很麻烦，所以我们可以偷个懒。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意，这里有的会用到 Windows 命令，Linux 的使用我还不太清楚，如果有知道的可以评论留言。&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#include &amp;lt;windows.h&amp;gt;  //  导入 Windows 库来执行 start 命令
+
+#define pname [problemName]  // 把 [problemName] 改成你题目对应的名字
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	freopen(&quot;pname.in&quot;, &quot;w&quot;, stdout);
+	/* 制造程序在这里写 */
+	fclose(stdout);
+	system(&quot;start pname.exe&quot;);
+	system(&quot;start pname.out&quot;);
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;你可能会问：为什么没有编译。&lt;/p&gt;
+&lt;p&gt;问就是我背不到那个死长的编译命令（逃&lt;/p&gt;
+&lt;h3&gt;随机型&lt;/h3&gt;
+&lt;p&gt;随机型主要应用于一些不太适合重复的测试数据。&lt;/p&gt;
+&lt;p&gt;但是因为我们只是想测极限数据，所以可以用不着毫秒随机数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#include &amp;lt;windows.h&amp;gt;
+
+#define pname [problemName]  // 把 [problemName] 改成你题目对应的名字
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	freopen(&quot;pname.in&quot;, &quot;w&quot;, stdout);
+	srand(time(0));  // 随机数种子，一秒变换一次
+	int n = 1e5;  // 一般是最大值，这里如果有多个变量请根据题目更改
+	for (int i = 1; i &amp;lt;= n; i++) {
+		int mod = 1e5;  // 这里用于限制 a, b 大小
+		int a = rand() % (mod + 1), b = rand() % (mod + 1);
+		cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; b &amp;lt;&amp;lt; &quot;\n&quot;;  // 按照题目的输入格式完善
+	}
+	fclose(stdout);
+	system(&quot;start pname.exe&quot;);
+	system(&quot;start pname.out&quot;);
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;但是如果你真的想用毫秒级随机数，可以看 Edison 大佬的文章：&lt;/p&gt;
+&lt;p&gt;https://www.cnblogs.com/EdisonBa/p/17589796.html&lt;/p&gt;
+&lt;p&gt;但是这就增加了你背代码的负担，如果你没有办法驾驭这个背诵量，还是背简单版本吧。&lt;/p&gt;
+&lt;h3&gt;爆炸型&lt;/h3&gt;
+&lt;p&gt;爆炸型就是在随机性的基础上，改成极大值就好了，这个我用的比较多。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#include &amp;lt;windows.h&amp;gt;
+
+#define pname [problemName]  // 把 [problemName] 改成你题目对应的名字
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	freopen(&quot;pname.in&quot;, &quot;w&quot;, stdout);
+	int n = 1e5;  // 一般是最大值，这里如果有多个变量请根据题目更改
+	for (int i = 1; i &amp;lt;= n; i++) {
+		int maxx = 1e5;  // 这里用于表示 a, b 的最大值
+		cout &amp;lt;&amp;lt; maxx &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; maxx &amp;lt;&amp;lt; &quot;\n&quot;;  // 按照题目的输入格式完善
+	}
+	fclose(stdout);
+	system(&quot;start pname.exe&quot;);
+	system(&quot;start pname.out&quot;);
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;操作方法&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;编译源文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更改数据机的 &lt;code&gt;[problemName]&lt;/code&gt; 为你的题目名字（一般比赛题面会给）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行数据机&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;你可以通过打开的输出数据查看是否炸空间、时间、数据范围&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;对拍&lt;/h2&gt;
+&lt;p&gt;什么是对拍：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;对拍，是一个比较实用的工具。它能够非常方便地对于两个程序的输出文件进行比较，可以帮助我们实现一些自动化的比较输出结果的问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;众所周知，几乎每一道编程题目，都会有某种正解能拿到满分；当我们想不出正解时，我们往往可以打暴力代码来获取部分分数。&lt;/p&gt;
+&lt;p&gt;但是，当我们觉得有思路写正解，但又担心自己正解写的不对，而恰好，我们又有一个能够暴力骗分的代码。这个时候就可以用到对拍。 暴力骗分代码必须保证正确性，只是超出时间限制，不能出现答案错误的情况。&lt;/p&gt;
+&lt;p&gt;这样，我们可以造多组数据，让暴力骗分的程序跑一遍，再让我们自己写的正解跑一遍，二者进行多次对比。如果多组数据都显示二者的输出结果一样，那么这个正解大概率没问题。相反地，如果两组数据不同，我们就找到了一组错误数据，方便调试，找到正解哪里出了问题。&lt;/p&gt;
+&lt;p&gt;——引自 &lt;a href=&quot;https://www.cnblogs.com/EdisonBa&quot;&gt;EdisonBa&apos;s Blog&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;对拍，我们可以拆解为三个步骤：造数据 → 运行存疑代码（正解） → 运行保证正确的代码（暴力） → 比对输出数据&lt;/p&gt;
+&lt;p&gt;当然做这些工作会耗费许多时间，请保证你在时间充裕的情况下完成。&lt;/p&gt;
+&lt;h3&gt;先是数据机&lt;/h3&gt;
+&lt;p&gt;直接参考上面的数据机代码就好，只是我们不需要运行和打开输出文件文件的操作，所以删掉就好了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#include &amp;lt;windows.h&amp;gt;  //  导入 Windows 库来执行 start 命令
+
+#define pname [problemName]  // 把 [problemName] 改成你题目对应的名字
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	freopen(&quot;pname.in&quot;, &quot;w&quot;, stdout);
+	/* 制造数据程序在这里写 */
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;不过这里最好用毫秒级随机数。&lt;/p&gt;
+&lt;h3&gt;然后是运行&lt;/h3&gt;
+&lt;p&gt;首先得保证你的两个程序都写了文件读写。&lt;/p&gt;
+&lt;p&gt;直接 &lt;code&gt;system&lt;/code&gt; 一下文件名：&lt;/p&gt;
+&lt;p&gt;这里的 &lt;code&gt;baoli.exe&lt;/code&gt; 是你的暴力代码可执行文件名，&lt;code&gt;std.exe&lt;/code&gt; 是你的正解代码可执行文件名。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;system(&quot;baoli.exe&quot;);
+system(&quot;std.exe&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后使用 Windows 自带的 &lt;code&gt;fc&lt;/code&gt; 命令比较一下就好了。&lt;/p&gt;
+&lt;h3&gt;完整代码&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#include &amp;lt;windows.h&amp;gt;
+
+#define pname [problemName]
+
+using namespace std;
+typedef long long lo;
+
+int main() {
+	system(&quot;dataMaker.exe&quot;);
+	system(&quot;baoli.exe&quot;);
+	system(&quot;std.exe&quot;);
+	system(&quot;fc baoli.out std.out&quot;)  // 会输出你的对比结果，其中 baoli.out 是暴力代码的输出文件，std.out 是正解代码的输出文件
+	return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;当然你可以一直生成数据，直到找到问题数据（一定要用毫秒级随机数！！！）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;bits/stdc++.h&amp;gt;
+#include &amp;lt;windows.h&amp;gt;
+
+#define pname [problemName]
+
+using namespace std;
+typedef long long lo;
+
+int main()
+{
+    while (1) //一直循环，直到找到不一样的数据
+    {
+        system(&quot;dataMaker.exe&quot;);
+        system(&quot;baoli.exe&quot;);
+		system(&quot;std.exe&quot;);
+        if (system(&quot;fc baoli.out std.out&quot;)) //当 fc 返回 1 时，说明这时数据不一样
+            break;
+    }
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;本次介绍了数据机与对拍两种考试工具，如果需要使用可以理解他们极其简单的实现过程，然后在考试中用上。&lt;/p&gt;
+&lt;h3&gt;参考资料&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.cnblogs.com/EdisonBa/p/13509379.html&quot;&gt;C++ 对拍详解 - EdisonBa - 博客园 (cnblogs.com)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded><feny:category>技术</feny:category><feny:tag>算法竞赛</feny:tag><feny:tag>工具</feny:tag><feny:tag>OI</feny:tag><category>技术</category><category>算法竞赛</category><category>工具</category><category>OI</category></item></channel></rss>
