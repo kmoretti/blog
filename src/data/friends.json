@@ -1,77 +1,62 @@
 [
   {
-    "name": "AirTouch",
-    "url": "https://xsl.im",
-    "avatar": "https://xsl.im/avatar.webp"
-  },
-  {
-    "name": "杜老师说",
-    "url": "https://dusays.com",
-    "avatar": "https://cdn.dusays.com/avatar.png"
-  },
-  {
-    "name": "伍柒柒",
-    "url": "https://blog.efu.me/",
-    "avatar": "https://cdn.lightxi.com/cloudreve/uploads/2025/08/01/tT8ILteu_logo.avif"
-  },
-  {
-    "name": "EvanNotFound",
-    "url": "https://ohevan.com",
-    "avatar": "https://evan.beee.top/avatar.png"
-  },
-  {
-    "name": "浩瀚星河",
-    "url": "https://www.golangblog.com",
-    "avatar": "https://cdn.codepzj.cn/image/20250529174726187.jpeg"
-  },
-  {
     "name": "张洪Heo",
     "url": "https://blog.zhheo.com/",
-    "avatar": "https://img.zhheo.com/i/67d8fa75943e4.webp"
+    "avatar": "https://img.zhheo.com/i/67d8fa75943e4.webp",
+    "snapshot": "https://img.zhheo.com/i/67d8fb3c51399.webp",
+    "desc": "分享设计与科技生活",
+    "feed": "https://blog.zhheo.com/atom.xml",
+    "tags": "推荐,设计",
+    "links": "https://blog.zhheo.com/link/"
   },
   {
-    "name": "Kegongteng",
-    "url": "https://kegongteng.cn/",
-    "avatar": "https://weavatar.com/avatar/0b01396273cca253aa6876c020449b655a9cc12e75f921b38ac088569e814b5e"
+    "name": "清羽飞扬",
+    "url": "https://blog.liushen.fun/",
+    "avatar": "https://blog.liushen.fun/info/avatar.ico",
+    "snapshot": "https://blog.liushen.fun/info/siteshot.jpg",
+    "desc": "柳影曳曳，清酒孤灯，扬笔撒墨，心境如霜",
+    "feed": "https://blog.liushen.fun/atom.xml",
+    "tags": "推荐",
+    "links": "https://blog.liushen.fun/link/"
   },
   {
-    "name": "陆小启",
-    "url": "https://blog.zonox.top",
-    "avatar": "https://bu.dusays.com/2025/03/14/67d3fbedaa1c6.webp"
+    "name": "二叉树树",
+    "url": "https://2x.nz/",
+    "avatar": "https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0",
+    "snapshot": "https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/2xnz.webp",
+    "desc": "Protect What You Love.",
+    "feed": "https://2x.nz/rss.xml",
+    "tags": "推荐",
+    "links": "https://2x.nz/friends/"
   },
   {
-    "name": "xaoxuu",
-    "url": "https://xaoxuu.com",
-    "avatar": "https://bu.dusays.com/2021/09/24/2f74810ceb3d3.png"
+    "name": "纸鹿摸鱼处",
+    "url": "https://blog.zhilu.site/",
+    "avatar": "https://www.zhilu.site/api/avatar.png",
+    "snapshot": "https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/screenshot-zhilu.webp",
+    "desc": "纸鹿至麓不知路，支炉制露不止漉",
+    "feed": "https://blog.zhilu.site/atom.xml",
+    "tags": "推荐",
+    "links": "https://blog.zhilu.site/link"
   },
   {
-    "name": "PYM博客",
-    "url": "https://pym.plus",
-    "avatar": "https://pan.pym.plus/f/kOtY/PYMbk.png"
+    "name": "CWorld Site",
+    "url": "https://cworld0.com/",
+    "avatar": "https://gravatar.loli.net/avatar/1ffe42aa45a6b1444a786b1f32dfa8aa?s=200",
+    "snapshot": "https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/screenshot-cworld0.webp",
+    "desc": "求知若愚，虚怀若谷",
+    "feed": "https://cworld0.com/rss.xml",
+    "tags": "推荐",
+    "links": "https://cworld0.com/links"
   },
   {
-    "name": "Pinpe",
-    "url": "https://pinpe.top/",
-    "avatar": "https://pinpe.top/head.jpg"
-  },
-  {
-    "name": "LeonXieの小窝",
-    "url": "https://www.leonxie.cn",
-    "avatar": "https://www.leonxie.cn/upload/avatar.jpg"
-  },
-  {
-    "name": "姓王者的博客",
-    "url": "https://xingwangzhe.fun",
-    "avatar": "https://xingwangzhe.fun/avatar.webp"
-  },
-  {
-    "name": "彬红茶日记",
-    "url": "https://note.redcha.cn",
-    "avatar": "https://note.redcha.cn/upload/favicon-256x256.png"
-  },
-  {
-    "name": "Liseezn's blog",
-    "url": "https://blog.liseezn.top",
-    "avatar": "https://blog.liseezn.top/logo.webp"
+    "name": "虹墨空间站",
+    "url": "https://www.imaegoo.com/",
+    "avatar": "https://cdn.jsdelivr.net/npm/imaegoo/avatar.jpg",
+    "snapshot": "https://jsd.268682.xyz/gh/Kemeow0815/img@main/img/iMaeGoo.webp",
+    "desc": "虹墨空间站",
+    "feed": "https://www.imaegoo.com/atom.xml",
+    "tags": "推荐",
+    "links": "https://www.imaegoo.com/friends/"
   }
 ]

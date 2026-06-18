@@ -13,36 +13,35 @@ const heatmapData = await getHeatmapData(
   Math.max(desktopCellCount, mobileCellCount),
 );
 const maxWordCount = Math.max(...heatmapData.map((d) => d.wordCount));
-const grid = heatmapData;
+const grid = heatmapData.map((day) => ({
+  ...day,
+  colorClass: getColorIntensity(day.wordCount, maxWordCount),
+  dateStr: day.date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }),
+}));
 ---
 
 <div class="heatmap-container relative space-y-2">
   <div class="heatmap-grid grid gap-1.5">
     {
-      grid.map((day) => {
-        const colorClass = getColorIntensity(day.wordCount, maxWordCount);
-        const dateStr = day.date.toLocaleDateString("zh-CN", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-
-        return (
-          <div
-            class:list={["group relative aspect-square", colorClass]}
-            data-date={dateStr}
-            data-count={day.wordCount}
-          >
-            {day.wordCount > 0 && (
-              <div class="tooltip absolute -top-10 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap bg-gray-900 px-2 py-1 text-xs text-white group-hover:block dark:bg-gray-200 dark:text-gray-800">
-                <div class="font-medium">{dateStr}</div>
-                <div>{day.wordCount} 字</div>
-                <div class="absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900 dark:bg-gray-200" />
-              </div>
-            )}
-          </div>
-        );
-      })
+      grid.map((day) => (
+        <div
+          class:list={["group relative aspect-square", day.colorClass]}
+          data-date={day.dateStr}
+          data-count={day.wordCount}
+        >
+          {day.wordCount > 0 && (
+            <div class="tooltip absolute -top-10 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap bg-gray-900 px-2 py-1 text-xs text-white group-hover:block dark:bg-gray-200 dark:text-gray-800">
+              <div class="font-medium">{day.dateStr}</div>
+              <div>{day.wordCount} 字</div>
+              <div class="absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900 dark:bg-gray-200" />
+            </div>
+          )}
+        </div>
+      ))
     }
   </div>
 </div>

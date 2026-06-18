@@ -1,0 +1,163 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const pageTitle = "朋友圈 | 喵洛阁";
+const pageDescription = "友链朋友圈，看看朋友们最近在写什么。";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  className="flex min-h-svh max-w-4xl flex-col"
+>
+  <main class="pb-16">
+    <header class="mb-6 space-y-2">
+      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
+        <a href="/" class="hover:underline">喵洛阁</a>
+        <span class="mx-1">/</span>
+        <a href="/friends/" class="hover:underline">朋友们</a>
+        <span class="mx-1">/</span>
+      </nav>
+      <div class="flex items-start justify-between gap-4">
+        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+          朋友圈
+        </h1>
+        <div class="flex shrink-0 gap-2">
+          <a
+            href="/friends/"
+            class="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
+          >
+            朋友们
+          </a>
+          <a
+            href="/friends/friends/"
+            class="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
+          >
+            详细
+          </a>
+        </div>
+      </div>
+      <hr class="dark:border-zinc-700" />
+    </header>
+
+    <div id="friend-circle-lite-root"></div>
+
+    <script is:inline>
+      if (typeof UserConfig === "undefined") {
+        var UserConfig = {
+          private_api_url: "https://fc.2005815.xyz/",
+          page_turning_number: 20,
+          error_img: "https://i.p-i.vip/30/20240815-66bced9226a36.webp",
+        };
+      }
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://fastly.jsdelivr.net/gh/willow-god/Friend-Circle-Lite/main/fclite.min.css"
+    />
+    <script
+      async
+      src="https://fastly.jsdelivr.net/gh/willow-god/Friend-Circle-Lite/main/fclite.min.js"
+    ></script>
+
+    <style is:inline>
+      /* ── FCircle Lite theme bridge ──
+         FCLite reads [data-theme] to pick its CSS vars.
+         We set data-theme on #friend-circle-lite-root based on the
+         site's html.dark class so the two stay in sync. */
+      #friend-circle-lite-root {
+        font-family: inherit;
+      }
+
+      /* FCLite allows 3 lines but the 120px card can't fit them all —
+         clamp the title to 2 lines so nothing gets visually clipped. */
+      #friend-circle-lite-root .card-title {
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        max-height: 3em;
+      }
+
+      /* Tweak card aesthetics to match the blog's rounded style */
+      #friend-circle-lite-root .card {
+        border-radius: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+      #friend-circle-lite-root .card:hover {
+        transform: translateY(-3px);
+      }
+      #friend-circle-lite-root #random-article {
+        border-radius: 0.75rem;
+      }
+      #friend-circle-lite-root #load-more-btn {
+        font-family: inherit;
+        border-radius: 9999px;
+        letter-spacing: 0.02em;
+      }
+      #friend-circle-lite-root #load-more-btn:hover {
+        width: 180px;
+      }
+      #friend-circle-lite-root #stats-container {
+        font-size: 12px;
+        opacity: 0.6;
+      }
+      #friend-circle-lite-root .modal-content {
+        border-radius: 1rem;
+      }
+
+      @media (max-width: 640px) {
+        #friend-circle-lite-root .card {
+          border-radius: 0.5rem;
+          height: 110px;
+        }
+        #friend-circle-lite-root .card-title {
+          font-size: 14px;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          max-height: 2.6em;
+        }
+        #friend-circle-lite-root #random-article {
+          border-radius: 0.5rem;
+          padding: 14px;
+        }
+      }
+    </style>
+
+    <!-- Theme sync + view-transition re-init -->
+    <script is:inline>
+      (function () {
+        var root = document.getElementById("friend-circle-lite-root");
+
+        function syncTheme() {
+          var el = document.getElementById("friend-circle-lite-root");
+          if (!el) return;
+          var isDark = document.documentElement.classList.contains("dark");
+          el.setAttribute("data-theme", isDark ? "dark" : "light");
+        }
+
+        function init() {
+          var el = document.getElementById("friend-circle-lite-root");
+          if (!el) return;
+          syncTheme();
+          if (typeof initialize_fc_lite === "function") {
+            initialize_fc_lite();
+          }
+        }
+
+        // Astro view-transition: body is swapped, need to re-set
+        // data-theme and re-initialize FCircle on the new DOM.
+        document.addEventListener("astro:page-load", init);
+
+        // Watch for manual theme toggles (they toggle html.dark)
+        var observer = new MutationObserver(function () {
+          syncTheme();
+        });
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["class"],
+        });
+      })();
+    </script>
+  </main>
+</Layout>

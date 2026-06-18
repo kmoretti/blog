@@ -1,0 +1,62 @@
+name: 添加友链
+description: 提交友链信息，审核通过后会出现在朋友圈中
+title: "[友链] "
+labels:
+  - friend-link
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请填写以下信息，审核通过后友链会被添加到朋友圈。
+  - type: input
+    id: name
+    attributes:
+      label: 网站名称
+      placeholder: 例：张洪Heo
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: 网站链接
+      placeholder: https://example.com/
+    validations:
+      required: true
+  - type: input
+    id: avatar
+    attributes:
+      label: 头像链接
+      placeholder: https://example.com/avatar.png
+    validations:
+      required: true
+  - type: input
+    id: snapshot
+    attributes:
+      label: 站点截图链接
+      description: 可选，一张你站点的截图或首页截图
+      placeholder: https://example.com/screenshot.webp
+    validations:
+      required: false
+  - type: textarea
+    id: desc
+    attributes:
+      label: 一句话介绍
+      placeholder: 用一句话描述你的站点
+    validations:
+      required: false
+  - type: input
+    id: feed
+    attributes:
+      label: RSS 订阅地址
+      description: 可选，方便朋友圈抓取最新文章
+      placeholder: https://example.com/atom.xml
+    validations:
+      required: false
+  - type: input
+    id: links
+    attributes:
+      label: 友链页地址
+      description: 可选，你站点的友情链接页面
+      placeholder: https://example.com/friends/
+    validations:
+      required: false

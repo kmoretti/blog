@@ -1,11 +1,11 @@
 ---
+import AboutPageShowcase from "../components/about/AboutPageShowcase.astro";
 import Giscus from "../components/Giscus.astro";
-import { SITE_TITLE } from "../consts";
+import { ABOUT_PAGE, SITE_TITLE } from "../consts";
 import Layout from "../layouts/Layout.astro";
 
-const pageTitle = `关于我 | ${SITE_TITLE}`;
-const pageDescription = "关于我";
-const githubUrl = "https://github.com/fenychn0206";
+const pageTitle = `${ABOUT_PAGE.title} | ${SITE_TITLE}`;
+const pageDescription = ABOUT_PAGE.description;
 ---
 
 <Layout
@@ -13,56 +13,9 @@ const githubUrl = "https://github.com/fenychn0206";
   description={pageDescription}
   className="flex min-h-svh max-w-3xl flex-col"
 >
-  <main class="pb-16">
-    <header class="mb-6 space-y-2">
-      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
-        <a href="/" class="hover:underline">Frederick's Blog</a>
-        <span class="mx-1">/</span>
-      </nav>
-
-      <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-        关于我
-      </h1>
-    </header>
-
-    <article>
-      <p class="mt-0">
-        这里是Frederick的个人站，一个属于自己的小世界。博主闲暇时间有参与开源社区，请访问我的
-        <a href={githubUrl} target="_blank" rel="noopener noreferrer">GitHub</a
-        >。
-      </p>
-      <p>
-        文笔不好不要喷，因为你说得对，但是原神是米哈游开发的开放世界 RPG。（逃
-      </p>
-
-      <h2>技术栈</h2>
-      <ul>
-        <li>C++：我不想说什么，算法竞赛用的，会基础语法和 STL 标准库</li>
-        <li>HTML / Javascript / Typescript</li>
-        <li>Tailwind CSS：因为 CSS 写得烂，所以用它来代替写 CSS</li>
-        <li>Astro.js：本博客技术栈</li>
-        <li>Unix / Linux 系统：在研究 Arch</li>
-        <li>Docker：学习中</li>
-      </ul>
-
-      <h2>主要贡献于</h2>
-      <p>
-        <a
-          href="https://github.com/EvanNotFound/hexo-theme-redefine"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><strong>EvanNotFound/hexo-theme-redefine</strong></a
-        >：虽然是 Commit 排名第二的 Commiter，但是都是改的一些细枝末节的东西。
-      </p>
-      <p>
-        <a
-          href="https://github.com/mtrlps-community/lps-community-guide"
-          target="_blank"
-          rel="noopener noreferrer"><strong>lps-community-guide</strong></a
-        >：由MTR齐齐玩服务器玩家社区创建的服务器导航站点，该项目目前还没发挥太大作用，当然本人还在参与维护一些附属的东西。
-      </p>
-      <h2>留言板</h2>
-    </article>
-    <Giscus pageKey={Astro.url.pathname} pageTitle={pageTitle} />
+  <main>
+    <AboutPageShowcase>
+      <Giscus pageKey={Astro.url.pathname} pageTitle={pageTitle} />
+    </AboutPageShowcase>
   </main>
 </Layout>
