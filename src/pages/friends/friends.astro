@@ -175,6 +175,7 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
               <span
                 class={`friend-latency friend-latency--${friend.latencyTone}`}
               >
+                <span class="friend-latency-dot" />
                 {friend.latencyText}
               </span>
             </div>
@@ -280,7 +281,7 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       --friends-muted: #6b7280;
     }
 
-    :global(html.dark) .friends-detail {
+    html.dark .friends-detail {
       --friends-accent: #b1d5c8;
       --friends-accent-soft: rgba(177, 213, 200, 0.2);
       --friends-card-bg: rgba(24, 24, 27, 0.84);
@@ -382,6 +383,7 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       z-index: 2;
       display: inline-flex;
       align-items: center;
+      gap: 0.35rem;
       border-radius: 999px;
       border: 1px solid transparent;
       padding: 0.35rem 0.7rem;
@@ -391,6 +393,14 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       backdrop-filter: blur(10px);
     }
 
+    .friend-latency-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
     .friend-latency--fast,
     .friend-latency--ok {
       background: color-mix(in srgb, var(--friends-accent) 20%, transparent);
@@ -398,9 +408,16 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       color: color-mix(in srgb, var(--friends-accent) 20%, #0f172a);
     }
 
-    :global(html.dark) .friend-latency--fast,
-    :global(html.dark) .friend-latency--ok {
-      color: var(--friends-accent);
+    html.dark .friend-latency--fast,
+    html.dark .friend-latency--ok {
+      background: #4ade80;
+      border-color: #22c55e;
+      color: #fff;
+      backdrop-filter: none;
+    }
+
+    html.dark .friend-latency-dot {
+      background: currentColor;
     }
 
     .friend-latency--slow {
@@ -409,16 +426,37 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       color: #b45309;
     }
 
+    html.dark .friend-latency--slow {
+      background: #f59e0b;
+      border-color: #d97706;
+      color: #fff;
+      backdrop-filter: none;
+    }
+
     .friend-latency--down {
       background: rgba(244, 63, 94, 0.14);
       border-color: rgba(244, 63, 94, 0.3);
       color: #be123c;
     }
 
+    html.dark .friend-latency--down {
+      background: #f43f5e;
+      border-color: #e11d48;
+      color: #fff;
+      backdrop-filter: none;
+    }
+
     .friend-latency--idle {
       background: rgba(113, 113, 122, 0.12);
       border-color: rgba(113, 113, 122, 0.18);
       color: var(--friends-muted);
+    }
+
+    html.dark .friend-latency--idle {
+      background: #71717a;
+      border-color: #52525b;
+      color: #fff;
+      backdrop-filter: none;
     }
 
     .friend-content {
@@ -520,8 +558,8 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       color: #18181b;
     }
 
-    :global(html.dark) .friend-meta-value,
-    :global(html.dark) .friend-feed-link {
+    html.dark .friend-meta-value,
+    html.dark .friend-feed-link {
       color: #f4f4f5;
     }
 
@@ -536,7 +574,7 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       color: color-mix(in srgb, var(--friends-accent) 30%, #18181b);
     }
 
-    :global(html.dark) .friend-feed-link:hover {
+    html.dark .friend-feed-link:hover {
       color: var(--friends-accent);
     }
 
