@@ -1,0 +1,193 @@
+/* AISummary Styles — 适配明暗模式与多端布局 */
+
+/* === 颜色变量 === */
+:root {
+  --ais-bg: rgba(244, 244, 245, 0.6);
+  --ais-border: rgba(228, 228, 231, 0.8);
+  --ais-inner-bg: rgba(255, 255, 255, 0.8);
+  --ais-inner-border: rgba(228, 228, 231, 0.6);
+  --ais-text: #52525b;
+  --ais-text-muted: #71717a;
+  --ais-accent: #3b82f6;
+  --ais-accent-fg: #ffffff;
+  --ais-shadow: rgba(0, 0, 0, 0.05);
+  --ais-shadow-hover: rgba(0, 0, 0, 0.08);
+}
+
+html.dark {
+  --ais-bg: rgba(39, 39, 42, 0.6);
+  --ais-border: rgba(63, 63, 70, 0.8);
+  --ais-inner-bg: rgba(24, 24, 27, 0.8);
+  --ais-inner-border: rgba(63, 63, 70, 0.6);
+  --ais-text: #a1a1aa;
+  --ais-text-muted: #71717a;
+  --ais-accent: #60a5fa;
+  --ais-accent-fg: #18181b;
+  --ais-shadow: rgba(0, 0, 0, 0.2);
+  --ais-shadow-hover: rgba(0, 0, 0, 0.3);
+}
+
+/* === 容器 === */
+.aisummary-container {
+  background: var(--ais-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  line-height: 1.5;
+  border: 1px solid var(--ais-border);
+  margin: 0 0 1.5rem 0;
+  box-shadow: 0 2px 8px var(--ais-shadow);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.aisummary-container:hover {
+  box-shadow: 0 4px 12px var(--ais-shadow-hover);
+  transform: translateY(-2px);
+}
+
+@media screen and (max-width: 768px) {
+  .aisummary-container {
+    padding: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* === 标题栏 === */
+.aisummary-title {
+  display: flex;
+  color: var(--ais-text);
+  border-radius: 0.5rem;
+  align-items: center;
+  padding: 0 0.75rem;
+  cursor: default;
+  user-select: none;
+}
+
+.aisummary-title-text {
+  font-weight: 600;
+  margin-left: 0.625rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* === 图标 === */
+.aisummary-title-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aisummary-title-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--ais-accent);
+}
+
+.aisummary-title-icon svg path {
+  fill: var(--ais-accent);
+}
+
+/* === 标签 === */
+.aisummary-tag {
+  font-size: 0.75rem;
+  background-color: var(--ais-accent);
+  color: var(--ais-accent-fg);
+  font-weight: 600;
+  border-radius: 0.25rem;
+  margin-left: auto;
+  line-height: 1;
+  padding: 0.375rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.3s;
+}
+
+.aisummary-tag:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* === 摘要正文 === */
+.aisummary-explanation {
+  margin-top: 0.875rem;
+  padding: 0.75rem 1rem;
+  background: var(--ais-inner-bg);
+  border-radius: 0.5rem;
+  border: 1px solid var(--ais-inner-border);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  display: block;
+  position: relative;
+  overflow: visible;
+  max-height: none !important;
+  will-change: contents;
+  color: var(--ais-text);
+}
+
+.aisummary-explanation::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--ais-accent);
+  border-radius: 2px;
+}
+
+/* === 免责声明 === */
+.aisummary-disclaimer {
+  font-size: 0.75rem;
+  color: var(--ais-text-muted);
+  margin-top: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+/* === 打字机光标动画 === */
+.blinking-cursor {
+  background-color: var(--ais-accent);
+  width: 0.625rem;
+  height: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+  animation: blinking-cursor 0.5s infinite;
+  -webkit-animation: blinking-cursor 0.5s infinite;
+  margin-left: 0.25rem;
+  border-radius: 1px;
+}
+
+@keyframes blinking-cursor {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 可访问性：减少动态效果时关闭光标闪烁 */
+@media (prefers-reduced-motion: reduce) {
+  .blinking-cursor {
+    animation: none;
+    -webkit-animation: none;
+  }
+  .aisummary-container {
+    transition: none;
+  }
+}

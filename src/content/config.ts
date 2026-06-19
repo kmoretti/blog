@@ -8,6 +8,7 @@ const posts = defineCollection({
     image: z.string().default("/static/banner.png"),
     tags: z.array(z.string()).default([]),
     categories: z.array(z.string()).default([]),
+    summary: z.string().optional(),
   }),
 });
 // Friends pages (e.g. link exchange instructions)

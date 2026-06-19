@@ -61,7 +61,7 @@ const getLatencyTone = (latency?: number, reachable?: boolean) => {
 let latencyMap = new Map<string, { latency?: number; reachable?: boolean }>();
 
 try {
-  const response = await fetch("https://fc.2005815.xyz/link.json");
+  const response = await fetch("https://fc.081531.xyz/link.json");
   const remoteData = (await response.json()) as RemoteLinkPayload;
   latencyMap = new Map(
     (remoteData.link_data ?? []).flatMap((item) => {
@@ -151,7 +151,7 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
         <span
           class="rounded-full border border-zinc-200 px-3 py-1 dark:border-zinc-800"
         >
-          延迟数据源：fc.2005815.xyz
+          延迟数据源：fc.081531.xyz
         </span>
       </div>
     </header>

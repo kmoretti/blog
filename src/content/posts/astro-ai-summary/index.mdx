@@ -1,0 +1,203 @@
+---
+title: 为 Astro 博客接入星火免费模型 AI 文章摘要
+description: 使用讯飞星火 Spark-Lite 免费模型，实现离线生成、静态渲染的文章 AI 摘要功能，支持明暗模式与多端适配。
+date: 2026-06-19
+tags:
+  - Astro
+  - AI
+  - 博客魔改
+  - TypeScript
+categories:
+  - 博客魔改
+summary: "本文记录了在Astro博客中接入讯飞星火Spark Lite免费模型实现文章AI摘要的完整过程，涵盖API代理搭建、离线摘要生成脚本适配、前端打字机动画渲染以及明暗模式与多端布局的样式适配等关键环节。"
+---
+
+## 为什么需要 AI 摘要
+
+写博客以来一直觉得文章开头缺少一个"速览"性质的内容。读者打开一篇文章，如果能先看到一段 AI 生成的摘要，就能快速判断值不值得继续读下去。
+
+之前了解过 [TianliGPT](https://ai.zhheo.com/) 和 [konoXIN 的实现方案](https://www.konoxin.top/posts/db7b3418)，但前者是付费服务，后者把摘要存在 IndexDB 里——每个访客都要请求一次 API。对于我这种静态博客来说，不够"静态"。
+
+最终选择了 [static-aisummary](https://github.com/ljxme/static-aisummary) 的思路：**离线生成摘要，写入 frontmatter，构建时直接读取**。访问者端零额外请求，真正的纯静态。
+
+## 方案概览
+
+整个方案分三层：
+
+```
+离线脚本 → 调用 AI API → 摘要写入 frontmatter
+构建阶段 → 从 frontmatter 读取 → 渲染到页面
+访问阶段 → 打字机动画展示 → 零网络开销
+```
+
+AI 模型选用讯飞星火 **Spark-Lite**，完全免费无限量，对个人博客来说绰绰有余。
+
+## 搭建 API 代理
+
+星火 Spark-Lite 使用 WebSocket 协议，静态站点无法直接调用，需要一个代理服务器。
+
+### 申请 Spark-Lite
+
+1. 访问 [星火大模型 API 平台](https://xinghuo.xfyun.cn/sparkapi)
+2. 选择 **Spark-Lite** 套餐，领取无限量
+3. 创建应用，记下 `APPID`、`APIKey`、`APISecret`
+
+### 部署 Vercel 代理
+
+使用 [spark-ai-summary](https://github.com/ljxme/spark-ai-summary) 仓库一键部署到 Vercel：
+
+1. 导入项目后，在 **Settings → Environment Variables** 中配置：
+
+| Spark 字段  | Vercel 变量名      |
+| ----------- | ------------------ |
+| `APPID`     | `SPARK_APPID`      |
+| `APIKey`    | `SPARK_API_KEY`    |
+| `APISecret` | `SPARK_API_SECRET` |
+
+2. 重新部署，获得 `https://<project>.vercel.app/api/spark-proxy` 接口地址
+
+> 如果需要在国访问，建议绑定自有域名。
+
+## 适配本博客的实现
+
+### 内容模型扩展
+
+本博客的内容 schema 定义在 `src/content/config.ts`，需要添加 `summary` 可选字段：
+
+```typescript
+const posts = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    image: z.string().default("/static/banner.png"),
+    tags: z.array(z.string()).default([]),
+    categories: z.array(z.string()).default([]),
+    summary: z.string().optional(), // 新增
+  }),
+});
+```
+
+### 文件结构与配置
+
+基于 static-aisummary 工具包，在博客中创建了以下文件：
+
+```
+src/plugins/
+  ├── aisummary.config.js    # 配置（脚本+前端共用）
+  └── aisummary.js           # 前端渲染脚本
+src/assets/styles/
+  └── aisummary.css          # 摘要组件样式
+scripts/
+  └── generateSummary.ts     # 离线摘要生成脚本
+```
+
+AI 相关配置统一放在项目根目录的 `.env` 文件中：
+
+```env
+AI_SUMMARY_API=https://your-proxy.vercel.app/api/spark-proxy
+AI_SUMMARY_KEY=your-api-key
+AI_SUMMARY_MODEL=lite
+AISUMMARY_CONCURRENCY=2
+AISUMMARY_MAX_TOKEN=5000
+AISUMMARY_COVER_ALL=false
+```
+
+### 摘要生成脚本适配
+
+原脚本扫描 `src/content/blog/` 下的 `index.md`，但本博客的文章在 `src/content/posts/` 下，文件名是 `*.md` 或 `*.mdx`。主要改动：
+
+1. **目录路径**：`src/content/posts/` 替代 `src/content/blog/`
+2. **文件匹配**：`*.md` / `*.mdx` 替代 `index.md` / `index.mdx`
+3. **配置读取**：新增 `.env` 文件解析，支持 `AISUMMARY_MAX_TOKEN` 和 `AISUMMARY_COVER_ALL` 等变量
+
+运行生成命令：
+
+```bash
+npx tsx scripts/generateSummary.ts
+```
+
+脚本会自动扫描所有文章，调用 AI 生成摘要后写入 frontmatter 的 `summary` 字段。
+
+### 明暗模式样式适配
+
+本博客使用 Tailwind CSS 的 `darkMode: "class"` 方案，暗色模式通过 `html.dark` 类触发。原版的 `aisummary.css` 依赖了一些未定义的 CSS 变量，需要替换为具体的颜色值：
+
+```css
+/* 亮色模式 — zinc 色系 */
+:root {
+  --ais-bg: rgba(244, 244, 245, 0.6);
+  --ais-border: rgba(228, 228, 231, 0.8);
+  --ais-accent: #3b82f6;
+  --ais-text: #52525b;
+}
+
+/* 暗色模式 — 深色 zinc 色系 */
+html.dark {
+  --ais-bg: rgba(39, 39, 42, 0.6);
+  --ais-border: rgba(63, 63, 70, 0.8);
+  --ais-accent: #60a5fa;
+  --ais-text: #a1a1aa;
+}
+```
+
+同时加入了 `prefers-reduced-motion` 媒体查询，为偏好减少动画的用户关闭光标闪烁和悬浮效果。
+
+### View Transitions 兼容
+
+本博客启用了 Astro View Transitions，页面切换时不会重新加载 `<script>`。需要确保：
+
+1. 在 `initializeAISummary()` 中重置 `aisummaryIsRunning` 标记
+2. 监听 `astro:page-load` 事件，每次页面切换后重新初始化
+
+```javascript
+function initializeAISummary() {
+  aisummaryIsRunning = false; // 重置标记
+  // ...初始逻辑
+}
+
+document.addEventListener("astro:page-load", initializeAISummary);
+```
+
+### 前端渲染集成
+
+在文章模板 `[...slug].astro` 中，当 `post.data.summary` 存在时渲染摘要组件：
+
+```astro
+{
+  post.data.summary && (
+    <div class="aisummary-container not-prose">
+      <div class="aisummary-title">
+        <i class="aisummary-title-icon">
+          <Icon name="material-symbols:smart-toy-outline-rounded" />
+        </i>
+        <div class="aisummary-title-text">AI 摘要</div>
+        <div class="aisummary-tag">AI</div>
+      </div>
+      <div class="aisummary-explanation" data-ai-summary={post.data.summary}>
+        {post.data.summary}
+      </div>
+      <div class="aisummary-disclaimer">
+        本摘要由 AI 生成，仅供参考，内容准确性请以原文为准。
+      </div>
+    </div>
+  )
+}
+```
+
+> 注意 `not-prose` 类：因为文章容器使用了 Tailwind Typography 的 `prose` 样式，加 `not-prose` 可以防止摘要组件的样式被 prose 覆盖。
+
+## 使用方式
+
+1. 确保 `.env` 中 `AI_SUMMARY_API` 配置正确
+2. 安装 `tsx`：`pnpm add -D tsx`
+3. 运行 `npx tsx scripts/generateSummary.ts`
+4. 摘要自动写入各文章的 frontmatter
+5. 正常 `pnpm build` 构建即可
+
+## 小结
+
+整体实现下来，这套方案最大的优势就是**零运行时开销**——摘要只在本地生成一次，之后完全随静态站点分发。访问者看到的效果是一个带打字机动画的摘要卡片，体验不错，且不消耗任何 API 额度。
+
+星火 Spark-Lite 免费模型的摘要质量也还行，偶尔会有些奇怪的措辞，但作为"速览"来说足够了。如果后续想换更好的模型，只需要换 API 地址和密钥，脚本部分不用改。

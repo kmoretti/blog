@@ -1,14 +1,10 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
+import { type CollectionEntry, getCollection } from "astro:content";
 import Giscus from "../../components/Giscus.astro";
 import PostMetaChips from "../../components/PostMetaChips.astro";
 import Layout from "../../layouts/Layout.astro";
-import {
-  formatDate,
-  formatNumber,
-  getPostReadingStats,
-} from "../../lib/utils";
+import { formatDate, formatNumber, getPostReadingStats } from "../../lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -42,7 +38,9 @@ const stats = getPostReadingStats(post.body);
         )
       }
       <div class="mx-auto flex max-w-2xl flex-wrap justify-center gap-2.5 pt-1">
-        <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300">
+        <div
+          class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"
+        >
           <Icon
             name="material-symbols:calendar-month-rounded"
             width="18"
@@ -50,15 +48,23 @@ const stats = getPostReadingStats(post.body);
           />
           <span>{formatDate(post.data.date)}</span>
         </div>
-        <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300">
+        <div
+          class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"
+        >
           <Icon
             name="material-symbols:auto-stories-rounded"
             width="18"
             height="18"
           />
-          <span>{`\u63a8\u8350\u9605\u8bfb ${stats.readingMinutes} \u5206\u949f`}</span>
+          <span
+            >{
+              `\u63a8\u8350\u9605\u8bfb ${stats.readingMinutes} \u5206\u949f`
+            }</span
+          >
         </div>
-        <div class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300">
+        <div
+          class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"
+        >
           <Icon
             name="material-symbols:article-rounded"
             width="18"
@@ -79,24 +85,18 @@ const stats = getPostReadingStats(post.body);
           <span>{"\u6d4f\u89c8\u91cf"}</span>
           <span
             id="busuanzi_value_page_pv"
-            class="font-semibold text-zinc-900 dark:text-zinc-100"
-          ></span>
+            class="font-semibold text-zinc-900 dark:text-zinc-100"></span>
         </div>
         <div
           id="busuanzi_container_site_uv"
           data-busuanzi-item
           class="inline-flex items-center gap-1.5 rounded-2xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-sm text-zinc-600 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-800/75 dark:text-zinc-300"
         >
-          <Icon
-            name="material-symbols:group-rounded"
-            width="18"
-            height="18"
-          />
+          <Icon name="material-symbols:group-rounded" width="18" height="18" />
           <span>{"\u89c2\u4f17\u6570"}</span>
           <span
             id="busuanzi_value_site_uv"
-            class="font-semibold text-zinc-900 dark:text-zinc-100"
-          ></span>
+            class="font-semibold text-zinc-900 dark:text-zinc-100"></span>
         </div>
       </div>
       <div class="flex flex-col gap-3 pt-2">
@@ -113,6 +113,34 @@ const stats = getPostReadingStats(post.body);
         data-pagefind-body
         data-pagefind-sort={post.data.date.toISOString()}
       >
+        {
+          post.data.summary && (
+            <div class="aisummary-container not-prose">
+              <div class="aisummary-title">
+                <i class="aisummary-title-icon">
+                  <Icon
+                    name="material-symbols:smart-toy-outline-rounded"
+                    width="20"
+                    height="20"
+                  />
+                </i>
+                <div class="aisummary-title-text">AI 摘要</div>
+                <div class="aisummary-tag" id="aisummary-tag">
+                  AI
+                </div>
+              </div>
+              <div
+                class="aisummary-explanation"
+                data-ai-summary={post.data.summary}
+              >
+                {post.data.summary}
+              </div>
+              <div class="aisummary-disclaimer">
+                本摘要由 AI 生成，仅供参考，内容准确性请以原文为准。
+              </div>
+            </div>
+          )
+        }
         <div class="hidden">
           <span data-pagefind-meta="title">{post.data.title}</span>
           <span data-pagefind-meta="description">{post.data.description}</span>
@@ -139,4 +167,5 @@ const stats = getPostReadingStats(post.body);
     </div>
   </main>
   <script is:inline defer src="/js/GmeekTOC.js"></script>
+  <script is:inline defer src="/js/aisummary.js"></script>
 </Layout>

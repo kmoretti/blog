@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from "astro:transitions";
+import aisummaryCss from "../assets/styles/aisummary.css?url";
 import Header from "../components/Header.astro";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
@@ -94,6 +95,9 @@ const {
       data-website-id="20db53a2-22e0-4ed1-b379-8d1136fb40c8"></script>
     <script is:inline defer src="/js/GmeekBSZ.js"></script>
     <script is:inline defer src="/js/lightbox.js"></script>
+    <!-- AISummary 配置与样式 -->
+    <script is:inline defer src="/js/aisummary.config.js"></script>
+    <link rel="stylesheet" href={aisummaryCss} />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />

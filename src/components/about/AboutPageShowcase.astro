@@ -9,7 +9,7 @@ import AboutPanelHead from "./AboutPanelHead.astro";
 //import htmlIcon from "../../../关于 _ LiuShen's Blog - 清羽飞扬_files/633006f9ab27d.png";
 
 const about = ABOUT_PAGE;
-const avatarUrl = "/avatar.jpeg";
+const avatarUrl = "https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0";
 //const skillIcons = {
 //  html: htmlIcon,
 //  css: cssIcon,
@@ -169,7 +169,11 @@ const featuredSkills = about.skills.featured.map((skill) => ({
               }
             >
               <span class="social-badge" aria-hidden="true">
-                {link.badge}
+                {link.badge.includes(":") ? (
+                  <Icon name={link.badge} width="20" height="20" />
+                ) : (
+                  link.badge
+                )}
               </span>
               <span class="social-copy">
                 <strong>{link.label}</strong>
