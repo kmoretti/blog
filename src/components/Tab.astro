@@ -1,0 +1,184 @@
+---
+interface Props {
+  /** 标签页名称数组 */
+  tabs: string[];
+  /** 初始激活的标签（从 1 开始） */
+  active?: number;
+  /** 是否居中 */
+  center?: boolean;
+}
+
+const { tabs, active = 1, center = false } = Astro.props;
+
+// 唯一 ID 避免多实例冲突
+const uid = `tab-${Math.random().toString(36).slice(2, 8)}`;
+const wrapperClass = ["tab-wrapper", center && "tab-center"]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={wrapperClass} data-tab-group={uid} data-active={active}>
+  <div class="tabs" role="tablist">
+    {
+      tabs.map((tab, i) => (
+        <button
+          role="tab"
+          class:list={[{ active: active === i + 1 }]}
+          data-tab-index={i + 1}
+          aria-selected={active === i + 1}
+        >
+          {tab}
+        </button>
+      ))
+    }
+  </div>
+  {
+    tabs.map((_, i) => {
+      const slotName = `tab${i + 1}`;
+      const content = Astro.slots.render(slotName);
+
+      return (
+        <div
+          class="tab-content"
+          role="tabpanel"
+          data-tab-index={i + 1}
+          style={active !== i + 1 ? "display: none" : ""}
+        >
+          <Fragment set:html={content} />
+        </div>
+      );
+    })
+  }
+</div>
+
+<script is:inline>
+  function initTabs(root) {
+    const buttons = root.querySelectorAll("[role='tab']");
+    const panels = root.querySelectorAll("[role='tabpanel']");
+
+    function switchTab(index) {
+      buttons.forEach((btn, i) => {
+        const isActive = i + 1 === index;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", isActive);
+      });
+      panels.forEach((panel, i) => {
+        panel.style.display = i + 1 === index ? "" : "none";
+      });
+      root.dataset.active = index;
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchTab(Number(btn.dataset.tabIndex));
+      });
+    });
+  }
+
+  // 初始页面加载
+  document.querySelectorAll("[data-tab-group]").forEach(initTabs);
+
+  // View Transitions 兼容
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll("[data-tab-group]").forEach(initTabs);
+  });
+</script>
+
+<style>
+  .tab-wrapper {
+    margin: 1.5em 0;
+  }
+
+  .tab-center {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
+    position: relative;
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 0.9em;
+    line-height: 1.4;
+  }
+
+  .tabs button {
+    position: relative;
+    margin-bottom: 0.5em;
+    padding: 0.3em 0.5em;
+    border: none;
+    border-radius: 0.4em;
+    background: transparent;
+    color: rgb(113 113 122);
+    cursor: pointer;
+    font: inherit;
+    transition: all 0.2s;
+  }
+
+  :global(html.dark) .tabs button {
+    color: rgb(161 161 170);
+  }
+
+  .tabs button:hover {
+    background-color: rgb(0 0 0 / 0.04);
+    color: rgb(24 24 27);
+  }
+
+  :global(html.dark) .tabs button:hover {
+    background-color: rgb(255 255 255 / 0.05);
+    color: rgb(244 244 245);
+  }
+
+  .tabs button::before,
+  .tabs button::after {
+    display: block;
+    position: absolute;
+    left: 0.8em;
+    right: 0.8em;
+    bottom: -0.5em;
+    height: 2px;
+    border-radius: 1em;
+    pointer-events: none;
+    content: "";
+  }
+
+  .tabs button::after {
+    left: -0.8em;
+    right: -0.8em;
+    background-color: rgb(228 228 231);
+  }
+
+  :global(html.dark) .tabs button::after {
+    background-color: rgb(63 63 70);
+  }
+
+  .tabs button.active {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.06),
+      0 1px 3px rgb(0 0 0 / 0.1);
+    background-color: rgb(255 255 255);
+    color: rgb(24 24 27);
+  }
+
+  :global(html.dark) .tabs button.active {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.2),
+      0 1px 3px rgb(0 0 0 / 0.3);
+    background-color: rgb(39 39 42);
+    color: rgb(244 244 245);
+  }
+
+  .tabs button.active::before {
+    background-color: rgb(59 130 246);
+    z-index: 1;
+  }
+
+  .tab-content {
+    margin: 1em 0;
+  }
+</style>

@@ -1,0 +1,200 @@
+---
+interface ChatItem {
+  role: "self" | "other" | "time" | "system";
+  content: string | string[];
+  name?: string;
+}
+
+interface Props {
+  items?: ChatItem[];
+  class?: string;
+}
+
+const { items = [], class: className } = Astro.props;
+
+const wrapperClass = ["chat", className].filter(Boolean).join(" ");
+
+const normalizeContent = (content: string | string[]) =>
+  Array.isArray(content) ? content : [content];
+
+const renderParagraphs = (text: string) =>
+  text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+---
+
+{
+  items.length > 0 ? (
+    <div class={wrapperClass}>
+      {items.map((item) => {
+        const bodies = normalizeContent(item.content);
+
+        if (item.role === "time" || item.role === "system") {
+          return (
+            <div
+              class:list={[
+                "chat-center",
+                item.role === "system" && "chat-center-system",
+              ]}
+            >
+              {bodies.map((body) =>
+                renderParagraphs(body).map((line) => <p>{line}</p>),
+              )}
+            </div>
+          );
+        }
+
+        const isSelf = item.role === "self";
+
+        return (
+          <section
+            class:list={[
+              "chat-row",
+              isSelf ? "chat-row-self" : "chat-row-other",
+            ]}
+          >
+            {item.name && <div class="chat-name">{item.name}</div>}
+            {bodies.map((body) => (
+              <div
+                class:list={[
+                  "chat-bubble",
+                  isSelf ? "chat-bubble-self" : "chat-bubble-other",
+                ]}
+              >
+                {renderParagraphs(body).map((line) => (
+                  <p>{line}</p>
+                ))}
+              </div>
+            ))}
+          </section>
+        );
+      })}
+    </div>
+  ) : (
+    <span class="chat-empty">暂无聊天内容</span>
+  )
+}
+
+<style>
+  .chat {
+    --chat-self-bg: rgb(37 99 235);
+    --chat-self-text: rgb(248 250 252);
+    --chat-self-shadow: rgb(37 99 235 / 0.28);
+    --chat-other-bg: rgb(244 244 245);
+    --chat-other-text: rgb(39 39 42);
+    --chat-other-border: rgb(228 228 231 / 0.85);
+    --chat-center-text: rgb(113 113 122);
+    --chat-name-text: rgb(82 82 91);
+    margin: 1.75rem 0;
+    font-size: 0.95rem;
+  }
+
+  :global(html.dark) .chat {
+    --chat-self-bg: rgb(29 78 216 / 0.38);
+    --chat-self-text: rgb(239 246 255);
+    --chat-self-shadow: rgb(30 64 175 / 0.38);
+    --chat-other-bg: rgb(36 38 45);
+    --chat-other-text: rgb(244 244 245);
+    --chat-other-border: rgb(255 255 255 / 0.04);
+    --chat-center-text: rgb(161 161 170);
+    --chat-name-text: rgb(212 212 216);
+  }
+
+  .chat-row {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 1.15rem;
+  }
+
+  .chat-row-self {
+    align-items: flex-end;
+  }
+
+  .chat-row-other {
+    align-items: flex-start;
+  }
+
+  .chat-name {
+    margin: 0 0 0.45rem;
+    padding-inline: 0.15rem;
+    color: var(--chat-name-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .chat-row-self .chat-name {
+    text-align: end;
+  }
+
+  .chat-bubble {
+    width: fit-content;
+    max-width: min(100%, 30rem);
+    margin: 0;
+    padding: 0.85rem 1.15rem;
+    border: 1px solid var(--chat-other-border);
+    border-radius: 1.15rem;
+  }
+
+  .chat-bubble + .chat-bubble {
+    margin-top: 0.55rem;
+  }
+
+  .chat-bubble-self {
+    border-color: transparent;
+    border-top-right-radius: 0.35rem;
+    background: var(--chat-self-bg);
+    color: var(--chat-self-text);
+    box-shadow: 0 12px 24px -22px var(--chat-self-shadow);
+  }
+
+  .chat-bubble-other {
+    border-top-left-radius: 0.35rem;
+    background: var(--chat-other-bg);
+    color: var(--chat-other-text);
+    box-shadow: 0 10px 24px -24px rgb(15 23 42 / 0.22);
+  }
+
+  :global(html.dark) .chat-bubble-other {
+    box-shadow: none;
+  }
+
+  .chat-bubble :global(p) {
+    margin: 0;
+    line-height: 1.8;
+  }
+
+  .chat-bubble :global(p + p) {
+    margin-top: 0.35rem;
+  }
+
+  .chat-center {
+    margin: 1.6rem 0 1.85rem;
+    color: var(--chat-center-text);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .chat-center-system {
+    margin-top: 2rem;
+    font-weight: 500;
+  }
+
+  .chat-center :global(p) {
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .chat-center :global(p + p) {
+    margin-top: 0.35rem;
+  }
+
+  .chat-empty {
+    display: inline-block;
+    margin: 1rem 0;
+    color: rgb(113 113 122);
+    font-size: 0.95rem;
+  }
+</style>

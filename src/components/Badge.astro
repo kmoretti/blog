@@ -1,0 +1,195 @@
+---
+import { SITE_URL } from "../consts";
+
+interface Props {
+  /** 自定义图片 URL */
+  img?: string;
+  /** 显示文本（也可通过默认插槽传入） */
+  text?: string;
+  /** 链接地址 */
+  link?: string;
+  /** 指定圆形 */
+  round?: boolean;
+  /** 指定方形 */
+  square?: boolean;
+  class?: string;
+}
+
+const {
+  img,
+  text,
+  link,
+  round,
+  square,
+  class: className,
+  ...rest
+} = Astro.props;
+
+/* ---------- 工具函数 ---------- */
+
+const siteHost = (() => {
+  try {
+    return new URL(SITE_URL).hostname;
+  } catch {
+    return "blog.081531.xyz";
+  }
+})();
+
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
+function getGithubUsername(url: string): string | undefined {
+  try {
+    const u = new URL(url);
+    if (!u.hostname.includes("github.com")) return undefined;
+    const parts = u.pathname.split("/").filter(Boolean);
+    return parts.length >= 1 ? parts[0] : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function isExtLink(url: string): boolean {
+  return url.startsWith("http") && !url.includes(siteHost);
+}
+
+function getGithubAvatar(username: string): string {
+  return `https://github.com/${username}.png`;
+}
+
+function getFavicon(domain: string): string {
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+}
+
+/* ---------- 图标解析 ---------- */
+
+let resolvedImg = "";
+
+if (img) {
+  resolvedImg = img;
+} else if (link) {
+  const ghUser = getGithubUsername(link);
+  if (ghUser) {
+    resolvedImg = getGithubAvatar(ghUser);
+  } else if (isExtLink(link)) {
+    resolvedImg = getFavicon(getDomain(link));
+  }
+}
+
+/* ---------- 形状 ---------- */
+
+// 有图：默认圆形，除非指定方形
+// 无图：默认方形，除非指定圆形
+const isRound = resolvedImg ? !square : !!round;
+
+/* ---------- 链接逻辑 ---------- */
+
+const isHash = link?.startsWith("#");
+const hasLink = !!link && !isHash;
+const isExternal = hasLink && isExtLink(link);
+const wrapperTag = hasLink ? "a" : isHash ? "a" : "span";
+
+const wrapperClass = ["badge", isRound && "badge-round", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  wrapperTag === "a" ? (
+    <a
+      href={link || "#"}
+      class={wrapperClass}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {resolvedImg && (
+        <img class="badge-icon" src={resolvedImg} alt="" loading="lazy" />
+      )}
+      {text ? (
+        <span class="badge-text" set:html={text} />
+      ) : (
+        <span class="badge-text">
+          <slot />
+        </span>
+      )}
+    </a>
+  ) : (
+    <span class={wrapperClass}>
+      {resolvedImg && (
+        <img class="badge-icon" src={resolvedImg} alt="" loading="lazy" />
+      )}
+      {text ? (
+        <span class="badge-text" set:html={text} />
+      ) : (
+        <span class="badge-text">
+          <slot />
+        </span>
+      )}
+    </span>
+  )
+}
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0.1em;
+    border: 1px solid rgb(0 0 0 / 0.08);
+    border-radius: 4px;
+    background-color: rgb(0 0 0 / 0.04);
+    font-size: 0.875em;
+    line-height: 1;
+    text-decoration: none;
+    color: rgb(63 63 70);
+    transition:
+      color 0.2s,
+      background-color 0.2s;
+    vertical-align: middle;
+  }
+
+  :global(html.dark) .badge {
+    border-color: rgb(255 255 255 / 0.08);
+    background-color: rgb(255 255 255 / 0.05);
+    color: rgb(212 212 216);
+  }
+
+  .badge[href]:hover {
+    color: rgb(24 24 27);
+    background-color: rgb(0 0 0 / 0.08);
+  }
+
+  :global(html.dark) .badge[href]:hover {
+    color: rgb(244 244 245);
+    background-color: rgb(255 255 255 / 0.1);
+  }
+
+  .badge-round,
+  .badge-round > .badge-icon {
+    border-radius: 0.8em;
+  }
+
+  .badge-icon {
+    height: 1.3em;
+    border-radius: 3.5px;
+    flex-shrink: 0;
+  }
+
+  .badge-icon + .badge-text {
+    margin-inline-start: -0.1em;
+  }
+
+  .badge-text {
+    padding: 0.15em 0.4em;
+    line-height: 1.2;
+  }
+
+  .badge-text:empty {
+    display: none;
+  }
+</style>

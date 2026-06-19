@@ -1,0 +1,132 @@
+---
+title: "Timeline 时间轴组件：用节点串起多段内容"
+description: "介绍 Timeline 组件的设计思路——按标题组织时间节点、支持单条和多条卡片内容，以及在 MDX 中展示时间线信息的方式。"
+date: 2026-06-19
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Timeline from "../../../components/Timeline.astro";
+import Tab from "../../../components/Tab.astro";
+
+export const basicItems = [
+  { caption: "前天", content: "看到了小兔" },
+  { caption: "昨天", content: "是小鹿" },
+  { caption: "今天", content: "是你。" },
+];
+
+export const mixedItems = [
+  { caption: "今日无事" },
+  { caption: "今日依旧无事" },
+  {
+    caption: "然后——",
+    content: ["一件事\\n两件事。", "再添一笔。"],
+  },
+];
+
+export const syntaxExample = `<Timeline
+  items={[
+    { caption: "前天", content: "看到了小兔" },
+    { caption: "昨天", content: "是小鹿" },
+    { caption: "今天", content: "是你。" },
+    {
+      caption: "然后——",
+      content: ["一件事\\n两件事。", "再添一笔。"],
+    },
+  ]}
+/>`;
+
+## 为什么需要 Timeline
+
+有些内容不适合写成普通列表，比如版本演进、生活记录、项目节点、发布日志。它们既有先后顺序，又希望每个节点下面还能承载一小段内容。
+
+**Timeline** 组件就是为这种场景准备的：左侧是一条竖线和节点圆点，右侧是时间标题与内容卡片，既能快速浏览，也能保留层次感。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+    <Timeline items={basicItems} />
+  </Fragment>
+  <Fragment slot="tab2">
+
+```astro
+{syntaxExample}
+```
+
+  </Fragment>
+</Tab>
+
+## 基础用法
+
+传入 `items` 数组即可。每一项至少需要一个 `caption`：
+
+<Timeline items={basicItems} />
+
+## 多条内容
+
+同一个时间节点下可以放多条卡片内容，只需要把 `content` 写成数组：
+
+<Timeline items={mixedItems} />
+
+## 内容规则
+
+Timeline 对每个节点支持两种内容形式：
+
+- `content: "单条内容"`：渲染一个卡片
+- `content: ["第一条", "第二条"]`：渲染多个卡片
+- 不传 `content`：只显示标题节点，不显示卡片
+
+此外，单条内容里支持用换行拆成多个段落：
+
+```ts
+{
+  caption: "然后——",
+  content: "一件事\n两件事。"
+}
+```
+
+会渲染成同一个卡片里的两段文字。
+
+## Props 一览
+
+| 属性    | 类型                                                  | 默认值 | 说明       |
+| ------- | ----------------------------------------------------- | ------ | ---------- |
+| `items` | `{ caption: string; content?: string \| string[] }[]` | `[]`   | 时间轴数据 |
+| `class` | `string`                                              | —      | 额外类名   |
+
+## 核心实现
+
+组件的核心思路非常直接：
+
+1. 使用 `dl > dt + dd` 组织语义结构
+2. 用伪元素绘制整条竖线与每个节点圆点
+3. 将 `content` 统一归一化成数组，方便同时支持单条和多条内容
+4. 将字符串中的换行切成多段 `<p>`
+
+归一化逻辑大致如下：
+
+```ts
+const normalizeContent = (content?: string | string[]) => {
+  if (!content) return [];
+  return Array.isArray(content) ? content : [content];
+};
+```
+
+而段落切分则通过换行完成：
+
+```ts
+const renderParagraphs = (text: string) =>
+  text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+```
+
+## 小结
+
+Timeline 组件适合承载一切“按顺序发生”的内容。相比普通列表，它更有视觉引导；相比大段正文，它又更利于扫描。用在博客里，写成长记录、开发历程、版本节点都会很顺手。

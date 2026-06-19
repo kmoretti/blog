@@ -1,0 +1,152 @@
+---
+title: "Blur 与 Quote 组件：模糊文字与图标引用"
+description: "介绍两个轻量组件——Blur 让文字模糊、鼠标悬浮恢复清晰；Quote 用大图标搭配文字，打造优雅的引用块效果。"
+date: 2026-06-19
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Blur from "../../../components/Blur.astro";
+import Quote from "../../../components/Quote.astro";
+
+## Blur 组件
+
+### 基本用法
+
+Blur 组件让文字模糊显示，鼠标悬浮时恢复清晰。适合隐藏剧透内容、增加悬念感，或者纯粹作为一个视觉效果。
+
+这段文字中有 <Blur text="模糊内容" />，悬浮即可查看。
+
+### 自定义模糊强度
+
+通过 `amount` 属性控制模糊程度（单位 px，默认 4）：
+
+轻度模糊（2px）：<Blur text="轻度模糊" amount={2} />
+
+中度模糊（4px）：<Blur text="中度模糊" amount={4} />
+
+重度模糊（8px）：<Blur text="重度模糊" amount={8} />
+
+### 使用插槽
+
+除了 `text` 属性，也可以通过默认插槽传入更复杂的内容：
+
+这是一个秘密：<Blur>**剧透内容** 被模糊了</Blur>
+
+---
+
+## Quote 组件
+
+Quote 组件创建一个带有大图标的引用块。图标使用渐变遮罩，悬浮时图标会变得更加清晰并上移。
+
+### 基本用法
+
+<Quote>有时候，有些话，有点意思。</Quote>
+
+### 自定义图标
+
+通过 `icon` 属性指定任意 Iconify 图标：
+
+<Quote icon="material-symbols:article">令图标有所指，引用亦有中心。</Quote>
+
+<Quote icon="material-symbols:lightbulb">
+  一个好点子，往往来自于不经意的灵光一闪。
+</Quote>
+
+### 图标插槽
+
+除了 `icon` 属性，还可以通过 `Fragment slot="icon"` 传入任意内容作为图标——Emoji、颜文字、甚至英文装饰都可以：
+
+<Quote>
+  <Fragment slot="icon">(•ω•)</Fragment>
+  图标插槽也可以是颜文字，比如这个表情。
+</Quote>
+
+<Quote>
+  <Fragment slot="icon">✨</Fragment>
+  或者用一个简单的 Emoji 装饰。
+</Quote>
+
+---
+
+## 组合使用
+
+Blur 和 Quote 可以自然地组合——在引用块中嵌入模糊内容：
+
+<Quote icon="material-symbols:lock">
+  这里有一段被加密的信息：
+  <Blur text="秘密答案在这里" />
+  ，悬浮即可查看。
+</Quote>
+
+<Quote icon="material-symbols:visibility-off">
+  剧透预警！<Blur>主角最后其实没有死</Blur>，如果你还没看完的话就别悬浮了。
+</Quote>
+
+---
+
+## Props 一览
+
+### Blur
+
+| 属性     | 类型     | 默认值 | 说明                         |
+| -------- | -------- | ------ | ---------------------------- |
+| `text`   | `string` | —      | 显示文本（也可通过插槽传入） |
+| `amount` | `number` | `4`    | 模糊强度（px）               |
+
+### Quote
+
+| 属性   | 类型     | 默认值                    | 说明             |
+| ------ | -------- | ------------------------- | ---------------- |
+| `icon` | `string` | `"material-symbols:chat"` | Iconify 图标名称 |
+
+**插槽**：
+
+- 默认插槽：引用正文内容
+- `icon` 插槽：自定义图标区域（覆盖 `icon` 属性）
+
+## 核心实现
+
+### Blur 核心
+
+极简的 CSS filter + hover 过渡：
+
+```css
+.blur {
+  filter: blur(var(--blur-amount));
+  transition: filter 0.25s ease;
+}
+
+.blur:hover {
+  filter: blur(0);
+}
+```
+
+模糊强度通过 CSS 变量 `--blur-amount` 控制，修改 `amount` 属性即可调整。
+
+### Quote 核心
+
+图标使用 `mask-image` 创建从上到下的渐变透明效果，配合 `isolation: isolate` 确保层级正确：
+
+```css
+.icon-line {
+  opacity: 0.5;
+  mask-image: linear-gradient(#fff, transparent);
+  font-size: 4rem;
+  transition: all 0.25s ease;
+  z-index: -1;
+}
+
+.quote:hover > .icon-line {
+  opacity: 1;
+  transform: translateY(-0.5rem);
+}
+```
+
+## 小结
+
+Blur 和 Quote 是两个非常轻量的组件，但组合起来可以为文章增添不少趣味。Blur 用来制造悬念、隐藏剧透；Quote 用来优雅地展示金句或引用。两者都不依赖 JavaScript，纯 CSS 实现所有交互效果。

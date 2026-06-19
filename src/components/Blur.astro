@@ -1,0 +1,28 @@
+---
+interface Props {
+  /** 显示文本（也可通过默认插槽传入） */
+  text?: string;
+  /** 模糊强度（px） */
+  amount?: number;
+}
+
+const { text, amount = 4 } = Astro.props;
+---
+
+<span class="blur" style={`--blur-amount: ${amount}px`}>
+  {text || <slot />}
+</span>
+
+<style>
+  .blur {
+    --blur-amount: 4px;
+    display: inline;
+    filter: blur(var(--blur-amount));
+    transition: filter 0.25s ease;
+    cursor: default;
+  }
+
+  .blur:hover {
+    filter: blur(0);
+  }
+</style>

@@ -23,3 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 static-aisummary-1.0.0/
+.qoder/
+.rtk/

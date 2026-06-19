@@ -1,0 +1,139 @@
+---
+interface TimelineItem {
+  /** 时间轴标题 */
+  caption: string;
+  /** 当前标题下的内容，可为单条或多条 */
+  content?: string | string[];
+}
+
+interface Props {
+  items?: TimelineItem[];
+  class?: string;
+}
+
+const { items = [], class: className } = Astro.props;
+
+const wrapperClass = ["timeline", className].filter(Boolean).join(" ");
+
+const normalizeContent = (content?: string | string[]) => {
+  if (!content) return [];
+  return Array.isArray(content) ? content : [content];
+};
+
+const renderParagraphs = (text: string) =>
+  text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+---
+
+{
+  items.length > 0 ? (
+    <dl class={wrapperClass}>
+      {items.map((item) => {
+        const bodies = normalizeContent(item.content);
+
+        return (
+          <Fragment>
+            <dt class="timeline-caption">{item.caption}</dt>
+            {bodies.map((body) => (
+              <dd class="timeline-body">
+                {renderParagraphs(body).map((line) => (
+                  <p>{line}</p>
+                ))}
+              </dd>
+            ))}
+          </Fragment>
+        );
+      })}
+    </dl>
+  ) : (
+    <span class="timeline-empty">时间线为空</span>
+  )
+}
+
+<style>
+  .timeline {
+    --timeline-line: rgb(228 228 231);
+    --timeline-dot: rgb(161 161 170);
+    --timeline-card-bg: rgb(244 244 245);
+    --timeline-card-border: rgb(228 228 231 / 0.8);
+    --timeline-text: rgb(39 39 42);
+    --timeline-muted: rgb(82 82 91);
+    position: relative;
+    margin: 1.5rem 0;
+    padding-inline-start: 2rem;
+    font-size: 0.95rem;
+  }
+
+  :global(html.dark) .timeline {
+    --timeline-line: rgb(63 63 70);
+    --timeline-dot: rgb(161 161 170);
+    --timeline-card-bg: rgb(39 39 42);
+    --timeline-card-border: rgb(255 255 255 / 0.04);
+    --timeline-text: rgb(244 244 245);
+    --timeline-muted: rgb(212 212 216);
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    inset: 0.8rem auto 0.8rem 0.45rem;
+    width: 0.32rem;
+    border-radius: 999px;
+    background: var(--timeline-line);
+  }
+
+  .timeline-caption {
+    position: relative;
+    margin: 0 0 0.5rem;
+    color: var(--timeline-muted);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .timeline-caption::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: -1.65rem;
+    top: 0.45rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: var(--timeline-dot);
+    box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--timeline-card-bg) 92%, transparent);
+  }
+
+  .timeline-body {
+    width: fit-content;
+    max-width: min(100%, 32rem);
+    margin: 0 0 1rem;
+    padding: 0.95rem 1.15rem;
+    border: 1px solid var(--timeline-card-border);
+    border-radius: 0.95rem;
+    background: var(--timeline-card-bg);
+    color: var(--timeline-text);
+    box-shadow: 0 10px 24px -22px rgb(15 23 42 / 0.22);
+  }
+
+  :global(html.dark) .timeline-body {
+    box-shadow: none;
+  }
+
+  .timeline-body :global(p) {
+    margin: 0;
+    line-height: 1.75;
+  }
+
+  .timeline-body :global(p + p) {
+    margin-top: 0.5rem;
+  }
+
+  .timeline-empty {
+    display: inline-block;
+    margin: 1rem 0;
+    color: rgb(113 113 122);
+    font-size: 0.95rem;
+  }
+</style>

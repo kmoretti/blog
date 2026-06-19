@@ -1,0 +1,163 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  /** 提示类型 */
+  type?: "tip" | "info" | "question" | "warning" | "error";
+  /** 卡片风格（带渐变光晕） */
+  card?: boolean;
+  /** 自定义图标（Iconify 名称） */
+  icon?: string;
+  /** 自定义主题色 */
+  color?: string;
+  /** 自定义标题文字 */
+  title?: string;
+}
+
+const {
+  type = "tip",
+  card = false,
+  icon: customIcon,
+  color: customColor,
+  title: customTitle,
+} = Astro.props;
+
+/** 类型 → 图标 / 颜色 / 默认标题 */
+const typeConfig: Record<
+  string,
+  { icon: string; color: string; title: string }
+> = {
+  tip: {
+    icon: "material-symbols:check-circle-rounded",
+    color: "#33AA77",
+    title: "提醒",
+  },
+  info: {
+    icon: "material-symbols:info-rounded",
+    color: "#71717A",
+    title: "信息",
+  },
+  question: {
+    icon: "material-symbols:help-rounded",
+    color: "#33AAFF",
+    title: "问题",
+  },
+  warning: {
+    icon: "material-symbols:warning-rounded",
+    color: "#FF8800",
+    title: "警告",
+  },
+  error: {
+    icon: "material-symbols:error-rounded",
+    color: "#FF3333",
+    title: "错误",
+  },
+};
+
+const config = typeConfig[type] ?? typeConfig.tip;
+const resolvedIcon = customIcon || config.icon;
+const resolvedColor = customColor || config.color;
+const resolvedTitle = customTitle || config.title;
+const wrapperClass = ["alert", card && "alert-card"].filter(Boolean).join(" ");
+---
+
+<div class={wrapperClass} style={`--alert-color: ${resolvedColor}`}>
+  <div class="alert-header">
+    <Icon name={resolvedIcon} width="18" height="18" class="alert-icon" />
+    <span class="alert-title">
+      <slot name="title">{resolvedTitle}</slot>
+    </span>
+  </div>
+  <div class="alert-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .alert {
+    --alert-bg: rgb(250 250 250);
+    position: relative;
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.6rem;
+    background-color: var(--alert-bg);
+    font-size: 0.9rem;
+    overflow: hidden;
+  }
+
+  :global(html.dark) .alert {
+    --alert-bg: rgb(39 39 42);
+  }
+
+  /* 卡片风格：顶部渐变光晕 */
+  .alert-card {
+    background-image: radial-gradient(
+      circle at 4em -25em,
+      var(--alert-color),
+      transparent 30em
+    );
+  }
+
+  :global(html.dark) .alert-card {
+    background-image: radial-gradient(
+      circle at 4em -25em,
+      var(--alert-color),
+      transparent 20em
+    );
+  }
+
+  .alert-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    font-weight: 700;
+    color: var(--alert-color);
+  }
+
+  .alert-icon {
+    flex-shrink: 0;
+  }
+
+  .alert-title {
+    line-height: 1.4;
+  }
+
+  .alert-title :global(p) {
+    margin: 0;
+  }
+
+  /* 插槽内容样式 */
+  .alert-body :global(p) {
+    margin: 0.25rem 0;
+    line-height: 1.6;
+    color: rgb(63 63 70);
+  }
+
+  :global(html.dark) .alert-body :global(p) {
+    color: rgb(212 212 216);
+  }
+
+  .alert-body :global(a) {
+    color: var(--alert-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .alert-body :global(code) {
+    padding: 0.1em 0.35em;
+    border-radius: 0.3em;
+    background-color: rgb(0 0 0 / 0.06);
+    font-size: 0.85em;
+    font-family: "Noto Sans Mono", ui-monospace, monospace;
+  }
+
+  :global(html.dark) .alert-body :global(code) {
+    background-color: rgb(255 255 255 / 0.08);
+  }
+
+  /* 仅有标题时隐藏 body 间距 */
+  .alert-body:empty {
+    display: none;
+  }
+</style>

@@ -1,11 +1,18 @@
 ---
-
+import Key from "./Key.astro";
 ---
 
 <div
   class="rounded-2xl border border-zinc-200 bg-zinc-50/90 p-3 dark:border-zinc-700 dark:bg-zinc-800/70"
 >
   <label for="post-search-panel" class="sr-only">搜索文章</label>
+  <div class="mb-2 flex items-center justify-between gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+    <span>站内搜索</span>
+    <span class="inline-flex items-center gap-1">
+      快捷键
+      <Key cmd code="K" press="post-search:toggle" prevent />
+    </span>
+  </div>
   <div id="post-search-panel" class="pagefind-search"></div>
 </div>
 
@@ -23,6 +30,26 @@
     host.innerHTML =
       '<p class="text-sm text-zinc-500 dark:text-zinc-400">搜索索引暂不可用，请先执行构建后再试。</p>';
     host.dataset.ready = "1";
+  }
+
+  /**
+   * @param {HTMLElement} host
+   */
+  function focusPagefindInput(host) {
+    const tryFocus = () => {
+      const input = host.querySelector("input");
+      if (!(input instanceof HTMLInputElement)) return false;
+      input.focus();
+      input.select();
+      return true;
+    };
+
+    if (tryFocus()) return;
+
+    requestAnimationFrame(() => {
+      if (tryFocus()) return;
+      window.setTimeout(tryFocus, 160);
+    });
   }
 
   /**
@@ -76,9 +103,14 @@
 
   async function mountPagefind() {
     const host = document.querySelector(".pagefind-search");
-    if (!(host instanceof HTMLElement) || host.dataset.ready === "1") return;
+    if (!(host instanceof HTMLElement)) return;
 
     syncTheme(host);
+
+    if (host.dataset.ready === "1") {
+      focusPagefindInput(host);
+      return;
+    }
 
     if (!(await hasPagefindAssets())) {
       renderUnavailableMessage(host);
@@ -110,6 +142,7 @@
       });
 
       host.dataset.ready = "1";
+      focusPagefindInput(host);
     } catch (error) {
       console.error(error);
       renderUnavailableMessage(host);

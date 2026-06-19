@@ -1,0 +1,422 @@
+---
+interface Props {
+  text?: string;
+  code?: string;
+  icon?: boolean;
+  ctrl?: boolean;
+  shift?: boolean;
+  alt?: boolean;
+  meta?: boolean;
+  win?: boolean;
+  cmd?: boolean;
+  prevent?: boolean;
+  press?: string;
+  class?: string;
+}
+
+const {
+  text,
+  code,
+  icon,
+  ctrl = false,
+  shift = false,
+  alt = false,
+  meta = false,
+  win = false,
+  cmd = false,
+  prevent = false,
+  press,
+  class: className,
+} = Astro.props;
+
+const wrapperClass = ["key", className].filter(Boolean).join(" ");
+
+const displayMap: Record<string, string> = {
+  " ": "Space",
+  ArrowDown: "↓",
+  ArrowLeft: "←",
+  ArrowRight: "→",
+  ArrowUp: "↑",
+  Control: "Ctrl",
+  Delete: "Del",
+  Escape: "Esc",
+  Meta: "Win",
+};
+
+const symbolMap: Record<string, string> = {
+  " ": "Space",
+  Alt: "⌥",
+  Backspace: "⌫",
+  Control: "⌃",
+  Delete: "⌦",
+  Enter: "↵",
+  Escape: "⎋",
+  Meta: "⌘",
+  Shift: "⇧",
+  Tab: "⇥",
+  Win: "⊞",
+};
+
+function normalizeCodeDisplay(value?: string, useSymbol = false) {
+  if (!value) return "";
+  if (useSymbol && value in symbolMap) return symbolMap[value];
+  if (value in displayMap) return displayMap[value];
+  return value;
+}
+
+const fallbackCodes = (() => {
+  if (text) return [];
+
+  const result: string[] = [];
+
+  if (cmd) result.push("Control");
+  else if (ctrl) result.push("Control");
+
+  if (shift) result.push("Shift");
+  if (alt) result.push("Alt");
+  if (meta) result.push("Meta");
+  if (win && !meta) result.push("Win");
+  if (code) result.push(code);
+
+  return result;
+})();
+
+const fallbackLabel = text
+  ? text
+  : fallbackCodes
+      .map((item) => normalizeCodeDisplay(item, !!icon))
+      .join(icon ? "" : "+");
+---
+
+<kbd
+  class={wrapperClass}
+  role="button"
+  tabindex="0"
+  data-key-component
+  data-text={text ?? undefined}
+  data-code={code ?? undefined}
+  data-icon={icon === undefined ? "auto" : icon ? "1" : "0"}
+  data-ctrl={ctrl ? "1" : undefined}
+  data-shift={shift ? "1" : undefined}
+  data-alt={alt ? "1" : undefined}
+  data-meta={meta ? "1" : undefined}
+  data-win={win ? "1" : undefined}
+  data-cmd={cmd ? "1" : undefined}
+  data-prevent={prevent ? "1" : undefined}
+  data-press={press ?? undefined}
+>
+  <span data-key-label>{fallbackLabel}</span>
+</kbd>
+
+<script is:inline>
+  if (!window.__blogKeyComponentInit) {
+    window.__blogKeyComponentInit = true;
+
+    const keySelector = "[data-key-component]";
+
+    const displayMap = {
+      " ": "Space",
+      ArrowDown: "↓",
+      ArrowLeft: "←",
+      ArrowRight: "→",
+      ArrowUp: "↑",
+      Control: "Ctrl",
+      Delete: "Del",
+      Escape: "Esc",
+      Meta: "Win",
+    };
+
+    const symbolMap = {
+      " ": "Space",
+      Alt: "⌥",
+      Backspace: "⌫",
+      Control: "⌃",
+      Delete: "⌦",
+      Enter: "↵",
+      Escape: "⎋",
+      Meta: "⌘",
+      Shift: "⇧",
+      Tab: "⇥",
+      Win: "⊞",
+    };
+
+    function isMac() {
+      return /mac/i.test(navigator.userAgent) || /mac/i.test(navigator.platform);
+    }
+
+    function parseFlag(value) {
+      return value === "1";
+    }
+
+    function normalizeDisplay(code, useSymbol, mac) {
+      if (!code) return "";
+
+      if (code === "Meta") {
+        if (useSymbol) return symbolMap.Meta;
+        return mac ? "Cmd" : "Win";
+      }
+
+      if (code === "Win") {
+        if (useSymbol) return symbolMap.Win;
+        return "Win";
+      }
+
+      if (useSymbol && symbolMap[code]) return symbolMap[code];
+      if (displayMap[code]) return displayMap[code];
+      return code;
+    }
+
+    function normalizeKey(value) {
+      if (!value) return "";
+
+      const lower = String(value).toLowerCase();
+
+      if (lower === "esc") return "escape";
+      if (lower === "spacebar" || lower === "space" || lower === " ") return " ";
+      if (lower === "ctrl") return "control";
+      if (lower === "cmd" || lower === "command" || lower === "meta") return "meta";
+      if (lower === "win" || lower === "super" || lower === "os") return "meta";
+
+      return lower;
+    }
+
+    function getKeyList(element) {
+      const keys = [];
+      const mac = isMac();
+      const useSymbol =
+        element.dataset.icon === "auto"
+          ? mac
+          : element.dataset.icon === "1";
+
+      if (element.dataset.text) {
+        return {
+          label: element.dataset.text,
+        };
+      }
+
+      if (parseFlag(element.dataset.cmd)) {
+        keys.push(mac ? "Meta" : "Control");
+      } else if (parseFlag(element.dataset.ctrl)) {
+        keys.push("Control");
+      }
+
+      if (parseFlag(element.dataset.shift)) keys.push("Shift");
+      if (parseFlag(element.dataset.alt)) keys.push("Alt");
+
+      if (parseFlag(element.dataset.meta) && !parseFlag(element.dataset.cmd)) {
+        keys.push("Meta");
+      }
+
+      if (parseFlag(element.dataset.win) && !parseFlag(element.dataset.meta)) {
+        keys.push("Win");
+      }
+
+      if (element.dataset.code) keys.push(element.dataset.code);
+
+      const joiner = useSymbol ? "" : "+";
+
+      return {
+        label: keys.map((key) => normalizeDisplay(key, useSymbol, mac)).join(joiner),
+      };
+    }
+
+    function updateLabels() {
+      document.querySelectorAll(keySelector).forEach((element) => {
+        const label = element.querySelector("[data-key-label]");
+        if (!(label instanceof HTMLElement)) return;
+        label.textContent = getKeyList(element).label;
+      });
+    }
+
+    function modifiersMatch(element, event) {
+      const expectCmd = parseFlag(element.dataset.cmd);
+
+      const cmdMatch = expectCmd
+        ? isMac()
+          ? event.metaKey
+          : event.ctrlKey
+        : true;
+
+      return (
+        cmdMatch &&
+        (!parseFlag(element.dataset.ctrl) || (!expectCmd && event.ctrlKey)) &&
+        (!parseFlag(element.dataset.shift) || event.shiftKey) &&
+        (!parseFlag(element.dataset.alt) || event.altKey) &&
+        (!parseFlag(element.dataset.meta) || (!expectCmd && event.metaKey)) &&
+        (!parseFlag(element.dataset.win) || event.metaKey)
+      );
+    }
+
+    function matchKeyEvent(element, event) {
+      if (!modifiersMatch(element, event)) return false;
+
+      const expected = element.dataset.code;
+      if (!expected) return true;
+
+      return normalizeKey(event.key) === normalizeKey(expected);
+    }
+
+    function triggerPress(element, source, originalEvent) {
+      element.classList.add("active");
+
+      const detail = {
+        source,
+        code: element.dataset.code || null,
+        text: element.dataset.text || null,
+      };
+
+      element.dispatchEvent(
+        new CustomEvent("press", {
+          bubbles: true,
+          composed: true,
+          detail,
+        }),
+      );
+
+      if (element.dataset.press) {
+        document.dispatchEvent(
+          new CustomEvent(element.dataset.press, {
+            detail,
+          }),
+        );
+      }
+
+      if (source === "mouse" || source === "element") {
+        window.setTimeout(() => {
+          element.classList.remove("active");
+        }, 140);
+      }
+
+      if (parseFlag(element.dataset.prevent) && originalEvent?.preventDefault) {
+        originalEvent.preventDefault();
+      }
+    }
+
+    function clearActive(element) {
+      element.classList.remove("active");
+    }
+
+    function getKeyElement(target) {
+      return target instanceof Element ? target.closest(keySelector) : null;
+    }
+
+    document.addEventListener("click", (event) => {
+      const element = getKeyElement(event.target);
+      if (!(element instanceof HTMLElement)) return;
+
+      event.stopPropagation();
+      triggerPress(element, "mouse", event);
+    }, { capture: true });
+
+    document.addEventListener("keydown", (event) => {
+      document.querySelectorAll(keySelector).forEach((element) => {
+        if (!(element instanceof HTMLElement)) return;
+        if (!matchKeyEvent(element, event)) return;
+        triggerPress(element, "keyboard", event);
+      });
+    });
+
+    document.addEventListener("keyup", (event) => {
+      document.querySelectorAll(keySelector).forEach((element) => {
+        if (!(element instanceof HTMLElement)) return;
+        if (matchKeyEvent(element, event) || !modifiersMatch(element, event)) {
+          clearActive(element);
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const element = getKeyElement(event.target);
+      if (!(element instanceof HTMLElement)) return;
+
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        triggerPress(element, "element", event);
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      document.querySelectorAll(keySelector).forEach((element) => {
+        if (element instanceof HTMLElement) clearActive(element);
+      });
+    });
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", updateLabels, { once: true });
+    } else {
+      updateLabels();
+    }
+
+    document.addEventListener("astro:page-load", updateLabels);
+  }
+</script>
+
+<style>
+  .key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.7em;
+    margin: 0.08em;
+    padding: 0.02em 0.34em 0.14em;
+    border: 1px solid rgb(82 82 91 / 0.8);
+    border-bottom-width: 2px;
+    border-radius: 0.34rem;
+    background: rgb(63 63 70 / 0.78);
+    box-shadow: inset 0 -0.08rem 0 rgb(113 113 122 / 0.4);
+    color: rgb(228 228 231);
+    font-family: "Noto Sans SC", sans-serif;
+    font-size: 0.95em;
+    font-weight: 500;
+    line-height: 1.45;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    cursor: pointer;
+    transition:
+      transform 0.12s ease,
+      background-color 0.12s ease,
+      color 0.12s ease,
+      border-color 0.12s ease,
+      box-shadow 0.12s ease;
+  }
+
+  .key:hover {
+    border-color: rgb(113 113 122 / 0.95);
+    background: rgb(82 82 91 / 0.88);
+  }
+
+  .key:focus-visible {
+    outline: 2px solid rgb(96 165 250 / 0.85);
+    outline-offset: 2px;
+  }
+
+  .key:active,
+  .key.active {
+    border-color: rgb(37 99 235 / 0.8);
+    background: rgb(30 64 175 / 0.35);
+    box-shadow: inset 0 -0.08rem 0 rgb(59 130 246 / 0.9);
+    color: rgb(239 246 255);
+    transform: translateY(0.06em);
+  }
+
+  :global(html:not(.dark)) .key {
+    border-color: rgb(212 212 216);
+    background: rgb(244 244 245);
+    box-shadow: inset 0 -0.08rem 0 rgb(212 212 216 / 0.95);
+    color: rgb(63 63 70);
+  }
+
+  :global(html:not(.dark)) .key:hover {
+    border-color: rgb(161 161 170);
+    background: rgb(228 228 231);
+  }
+
+  :global(html:not(.dark)) .key:active,
+  :global(html:not(.dark)) .key.active {
+    border-color: rgb(96 165 250);
+    background: rgb(219 234 254);
+    box-shadow: inset 0 -0.08rem 0 rgb(96 165 250);
+    color: rgb(30 64 175);
+  }
+</style>

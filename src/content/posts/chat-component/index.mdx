@@ -1,0 +1,115 @@
+---
+title: "Chat 聊天气泡组件：左右对话与中间提示"
+description: "介绍一个适合 Astro 博客文章的 Chat 组件，支持右侧自己的消息、左侧他人的消息，以及居中的时间和系统提示。"
+date: 2026-06-19
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Chat from "../../../components/Chat.astro";
+import Tab from "../../../components/Tab.astro";
+
+export const previewItems = [
+  { role: "time", content: "2024-11-09 23:39:30" },
+  { role: "self", content: "也许" },
+  { role: "self", content: "我们可以聊聊天" },
+  { role: "self", name: "纸鹿", content: "我还可以有名字" },
+  { role: "system", content: "纸鹿撤回了一条消息" },
+  { role: "other", name: "用户1", content: "有趣\n我学到了。" },
+];
+
+export const groupedItems = [
+  { role: "time", content: "2026-06-19 22:10:00" },
+  {
+    role: "other",
+    name: "朋友",
+    content: ["这个组件挺适合写聊天记录。", "而且还能连续发好几条。"],
+  },
+  {
+    role: "self",
+    name: "我",
+    content: ["对，放在博客里做对话体文章刚刚好。", "时间和系统提示也不用单独写样式了。"],
+  },
+  { role: "system", content: "你把会话名称改成了“组件灵感”" },
+];
+
+## 为什么需要 Chat
+
+有些内容天然更适合“对话”而不是“段落”来呈现。比如聊天记录、访谈摘录、角色扮演、产品对话稿，或者写一篇更轻松的技术笔记。  
+
+这个 **Chat** 组件做的事情很简单：把“我说的话”放在右侧，把“别人说的话”放在左侧，把时间和系统提示放在中间，用最少的结构换来比较完整的聊天质感。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+    <Chat items={previewItems} />
+  </Fragment>
+  <Fragment slot="tab2">
+
+```astro
+const items = [
+  { role: "time", content: "2024-11-09 23:39:30" },
+  { role: "self", content: "也许" },
+  { role: "self", content: "我们可以聊聊天" },
+  { role: "self", name: "纸鹿", content: "我还可以有名字" },
+  { role: "system", content: "纸鹿撤回了一条消息" },
+  { role: "other", name: "用户1", content: "有趣\n我学到了。" },
+];
+
+<Chat items={items} />
+```
+
+  </Fragment>
+</Tab>
+
+## 基础用法
+
+组件只需要一个 `items` 数组。数组里的每一项都描述一条聊天内容或一条中间提示。
+
+<Chat items={groupedItems} />
+
+## 数据规则
+
+`items` 里的每一项支持下面这些字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `role` | `"self" \| "other" \| "time" \| "system"` | 内容显示在哪一侧，以及用哪种样式渲染 |
+| `content` | `string \| string[]` | 聊天内容，支持单条文本，也支持连续多条气泡 |
+| `name` | `string` | 可选昵称，会显示在这一组消息上方 |
+
+其中：
+
+- `self` 会渲染到右侧，使用蓝色气泡
+- `other` 会渲染到左侧，使用灰色气泡
+- `time` 会渲染到中间，适合放时间戳
+- `system` 也会渲染到中间，适合放撤回、改名、加入会话之类的提示
+
+如果 `content` 是字符串数组，就会在同一组里连续渲染多个气泡；如果字符串里有换行，也会自动拆成多段文字。
+
+## Props 一览
+
+| 属性 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `items` | `ChatItem[]` | `[]` | 聊天数据 |
+| `class` | `string` | - | 额外类名，便于局部覆盖样式 |
+
+## 核心实现
+
+这个组件没有走复杂的插槽解析，而是直接把聊天内容收敛成结构化数据：
+
+1. `role` 决定左右位置和中间提示样式
+2. `name` 决定是否显示昵称
+3. `content` 统一归一成数组，这样单条和多条消息共用一套渲染逻辑
+4. 气泡内部再按换行拆成多个段落
+
+这种写法对 MDX 更友好，因为在文章里维护一份聊天数据，通常比手写大量嵌套标签更轻松。
+
+## 小结
+
+Chat 组件适合放在“对话感”比较强的文章里。它不依赖额外库，也不要求客户端状态，只用 Astro 组件本身就能把聊天布局、昵称、时间和系统提示都整理好。后面如果你还想继续扩展头像、已读状态、引用消息，也可以在这个结构上接着加。

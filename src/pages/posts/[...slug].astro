@@ -2,21 +2,38 @@
 import { Icon } from "astro-icon/components";
 import { type CollectionEntry, getCollection } from "astro:content";
 import Giscus from "../../components/Giscus.astro";
+import PostFooter from "../../components/PostFooter.astro";
 import PostMetaChips from "../../components/PostMetaChips.astro";
+import PostNavigator from "../../components/PostNavigator.astro";
+import ProseA from "../../components/ProseA.astro";
 import Layout from "../../layouts/Layout.astro";
-import { formatDate, formatNumber, getPostReadingStats } from "../../lib/utils";
+import {
+  formatDate,
+  formatNumber,
+  getPostReadingStats,
+  sortPostsByDate,
+} from "../../lib/utils";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
-  return posts.map((post) => ({
+  const sorted = sortPostsByDate(posts);
+  return sorted.map((post, index) => ({
     params: { slug: post.slug },
-    props: post,
+    props: {
+      ...post,
+      prevPost: index > 0 ? sorted[index - 1] : undefined,
+      nextPost: index < sorted.length - 1 ? sorted[index + 1] : undefined,
+    },
   }));
 }
 
-type Props = CollectionEntry<"posts">;
+type Props = CollectionEntry<"posts"> & {
+  prevPost?: CollectionEntry<"posts">;
+  nextPost?: CollectionEntry<"posts">;
+};
 
-const post: Props = Astro.props;
+const { prevPost, nextPost } = Astro.props;
+const post: CollectionEntry<"posts"> = Astro.props;
 const { Content } = await post.render();
 const stats = getPostReadingStats(post.body);
 ---
@@ -158,8 +175,16 @@ const stats = getPostReadingStats(post.body);
             ))
           }
         </div>
-        <Content />
+        <Content components={{ a: ProseA }} />
       </article>
+    </div>
+
+    <div class="mx-auto max-w-3xl">
+      <PostFooter post={post} />
+    </div>
+
+    <div class="mx-auto max-w-3xl">
+      <PostNavigator prevPost={prevPost} nextPost={nextPost} />
     </div>
 
     <div class="mx-auto mt-10 max-w-3xl">

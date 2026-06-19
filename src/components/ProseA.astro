@@ -1,0 +1,103 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  href: string;
+  icon?: string;
+  class?: string;
+  children?: any;
+}
+
+const { href, icon: customIcon, class: className, ...rest } = Astro.props;
+
+/** 域名 → Iconify 图标映射 */
+const domainIconMap: Record<string, string> = {
+  // 专有域名（精确匹配）
+  "developer.mozilla.org": "simple-icons:mdnwebdocs",
+  "mp.weixin.qq.com": "ri:wechat-fill",
+  // 主域名匹配
+  "github.com": "ri:github-fill",
+  "bilibili.com": "ri:bilibili-fill",
+  "qq.com": "ri:qq-fill",
+  "zhihu.com": "ri:zhihu-line",
+  "vercel.com": "simple-icons:vercel",
+  "vercel.app": "simple-icons:vercel",
+  "pages.dev": "simple-icons:cloudflare",
+  "netlify.app": "simple-icons:netlify",
+  "google.com": "ri:google-fill",
+  "microsoft.com": "ri:microsoft-fill",
+  "taobao.com": "ri:taobao-fill",
+  "v2ex.com": "simple-icons:v2ex",
+  "creativecommons.org": "ri:creative-commons-line",
+  "iconify.design": "simple-icons:iconify",
+  "yesicon.app": "material-symbols:search-rounded",
+  "simpleicons.org": "simple-icons:simpleicons",
+  "catppuccin.com": "simple-icons:catppuccin",
+};
+
+function extractDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
+function getMainDomain(domain: string): string {
+  const parts = domain.split(".");
+  if (parts.length <= 2) return domain;
+  return parts.slice(-2).join(".");
+}
+
+function resolveIcon(): string | undefined {
+  if (customIcon) return customIcon;
+  if (!href || href.startsWith("#") || href.startsWith("/")) return undefined;
+  if (!href.startsWith("http")) return undefined;
+
+  const domain = extractDomain(href);
+  if (domainIconMap[domain]) return domainIconMap[domain];
+  const mainDomain = getMainDomain(domain);
+  if (domainIconMap[mainDomain]) return domainIconMap[mainDomain];
+  return undefined;
+}
+
+const resolvedIcon = resolveIcon();
+const isExternal =
+  href?.startsWith("http") && !href.includes("blog.081531.xyz");
+const linkClass = ["prose-link", className].filter(Boolean).join(" ");
+---
+
+<a href={href} class={linkClass} {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+  {resolvedIcon && (
+    <Icon name={resolvedIcon} width="15" height="15" class="prose-link-icon" />
+  )}
+  <slot />
+</a>
+
+<style>
+  .prose-link {
+    color: rgb(37 99 235);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s;
+  }
+
+  .prose-link:hover {
+    color: rgb(29 78 216);
+  }
+
+  :global(html.dark) .prose-link {
+    color: rgb(147 197 253);
+  }
+
+  :global(html.dark) .prose-link:hover {
+    color: rgb(191 219 254);
+  }
+
+  .prose-link-icon {
+    display: inline-block;
+    vertical-align: -0.125em;
+    margin-inline-end: 0.15em;
+    flex-shrink: 0;
+  }
+</style>

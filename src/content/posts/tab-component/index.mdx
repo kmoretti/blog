@@ -1,0 +1,194 @@
+---
+title: "Tab 标签页组件：切换展示文字与组件"
+description: "介绍 Tab 组件的设计——多标签页切换、命名插槽、居中布局，以及在文章中展示文字和组件交替切换的用法。"
+date: 2026-06-19
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Tab from "../../../components/Tab.astro";
+import Alert from "../../../components/Alert.astro";
+import Badge from "../../../components/Badge.astro";
+
+## 为什么需要 Tab
+
+在技术文章中，经常需要对比不同的实现方式、展示同一功能的多种配置、或者让读者在"组件效果"和"源代码"之间切换。Tab 组件将这些内容收纳在一个紧凑的标签页中，点击即可切换，避免页面过长。
+
+## 基本用法
+
+最简单的两标签页：
+
+<Tab tabs={["一个简单的", "Tab"]}>
+  <Fragment slot="tab1">
+
+# 一个简单的 Tab
+
+是这样。
+
+  </Fragment>
+  <Fragment slot="tab2">
+
+# 另一个 Tab
+
+点我可以看到不同的内容。
+
+  </Fragment>
+</Tab>
+
+## 多标签页
+
+支持任意数量的标签页，下面是一个三标签的例子：
+
+<Tab tabs={["当当当", "高级交互!", "就是藏得有点深"]}>
+  <Fragment slot="tab1">
+
+**当当当！** 这是第一个标签页，适合放开场白。
+
+  </Fragment>
+  <Fragment slot="tab2">
+
+**高级交互！** 标签页之间的切换是即时的，没有页面刷新。
+
+  </Fragment>
+  <Fragment slot="tab3">
+
+被你发现了~ 越深的标签页越适合放彩蛋或补充说明。
+
+  </Fragment>
+</Tab>
+
+## 嵌入其他组件
+
+Tab 的插槽中可以放入任意 Astro 组件：
+
+<Tab tabs={["Alert 示例", "Badge 示例", "组合使用"]}>
+  <Fragment slot="tab1">
+
+<Alert type="tip">
+这是嵌入在 Tab 中的 Alert 组件，类型为 tip。
+</Alert>
+
+<Alert type="warning" card={true}>
+卡片风格的警告也可以放在 Tab 中。
+</Alert>
+
+  </Fragment>
+  <Fragment slot="tab2">
+
+这里是各种 Badge 的展示：
+
+<Badge text="Astro" />
+<Badge text="TypeScript" />
+<Badge text="Tailwind" />
+<Badge link="https://github.com/kmoretti" text="kmoretti" />
+
+  </Fragment>
+  <Fragment slot="tab3">
+
+<Alert type="info">
+  Tab 和 Alert 可以组合使用，在标签页中展示不同类型的提示信息。
+</Alert>
+
+<Badge text="灵活" round={true} />
+<Badge text="组合" round={true} />
+
+  </Fragment>
+</Tab>
+
+## 指定初始标签
+
+通过 `active` 属性设置初始激活的标签页（从 1 开始）：
+
+<Tab tabs={["第一项", "第二项", "第三项"]} active={2}>
+  <Fragment slot="tab1">
+
+这是第一项内容，但默认不显示。
+
+  </Fragment>
+  <Fragment slot="tab2">
+
+这是第二项内容，因为 `active={2}` 所以默认展示。
+
+  </Fragment>
+  <Fragment slot="tab3">
+
+这是第三项内容。
+
+  </Fragment>
+</Tab>
+
+## 居中布局
+
+添加 `center` 属性可以让标签页居中显示：
+
+<Tab tabs={["左对齐", "对比"]} center>
+  <Fragment slot="tab1">
+
+`center={true}` 时，标签栏会居中对齐。
+
+  </Fragment>
+  <Fragment slot="tab2">
+
+适合标签页数量较少时使用。
+
+  </Fragment>
+</Tab>
+
+## Props 一览
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `tabs` | `string[]` | — | 标签页名称数组（必填） |
+| `active` | `number` | `1` | 初始激活的标签（从 1 开始） |
+| `center` | `boolean` | `false` | 标签栏是否居中 |
+
+## 核心实现
+
+### 插槽命名约定
+
+每个标签页的内容通过命名插槽 `tab1`、`tab2`、`tab3`… 传入：
+
+```mdx
+<Tab tabs={["标签A", "标签B"]}>
+  <Fragment slot="tab1">标签A 的内容</Fragment>
+  <Fragment slot="tab2">标签B 的内容</Fragment>
+</Tab>
+```
+
+### 客户端切换逻辑
+
+使用 `is:inline` 脚本实现无框架依赖的标签切换，并兼容 Astro View Transitions：
+
+```javascript
+function initTabs(root) {
+  const buttons = root.querySelectorAll("[role='tab']");
+  const panels = root.querySelectorAll("[role='tabpanel']");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const index = Number(btn.dataset.tabIndex);
+      // 切换 active 状态 + 显示/隐藏面板
+    });
+  });
+}
+
+// View Transitions 兼容
+document.addEventListener("astro:page-load", () => {
+  document.querySelectorAll("[data-tab-group]").forEach(initTabs);
+});
+```
+
+### 无障碍支持
+
+- `role="tablist"` 标识标签栏
+- `role="tab"` 标识每个标签按钮
+- `role="tabpanel"` 标识每个面板
+- `aria-selected` 标识当前激活的标签
+
+## 小结
+
+Tab 组件是文章中最实用的交互组件之一。它用最小的空间承载最多的信息，让读者按需切换查看。结合命名插槽机制，可以在标签页中嵌入任意 Markdown 内容或其他组件。

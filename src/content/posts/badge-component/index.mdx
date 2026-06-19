@@ -1,0 +1,167 @@
+---
+title: "Badge 徽标组件：自动图标与头像识别"
+description: "介绍 Badge 组件的核心能力——外部链接自动获取站点图标、GitHub 链接自动识别用户头像、支持圆形与方形两种形状，以及在文章中灵活嵌入的使用方式。"
+date: 2026-06-19
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Badge from "../../../components/Badge.astro";
+
+## 为什么需要 Badge
+
+在博客文章中，经常需要提到其他网站、GitHub 项目、开源作者等。如果用普通链接，读者很难一眼看出链接指向哪里；如果用纯文本，又缺少视觉辨识度。
+
+**Badge** 组件就是为这个场景设计的——一个小小的标签，能自动识别链接类型并显示对应的图标或头像，让文章中的引用更加直观。
+
+## 核心特性
+
+外部域名自动获取站点图标 <Badge link="https://blog.081531.xyz" text="喵洛阁" />，GitHub 链接能自动识别头像 <Badge link="https://github.com/kmoretti" text="kmoretti" />，也可以手动指定图片 <Badge img="/avatar.jpeg" text="自定义头像" />。
+
+## 基础用法
+
+### 带链接的 Badge
+
+传入 `link` 属性即可创建可点击的 Badge，外部链接会自动在新窗口打开：
+
+<Badge link="https://blog.081531.xyz" text="喵洛阁" />
+<Badge link="https://github.com/kmoretti" text="kmoretti" />
+<Badge link="https://docs.astro.build" text="Astro Docs" />
+
+### 纯文本 Badge
+
+不传 `link` 时，Badge 渲染为 `<span>`，不可点击：
+
+<Badge text="纯文本" />
+<Badge text="Astro" />
+<Badge text="TypeScript" />
+
+## 自动图标识别
+
+Badge 会根据链接类型自动选择图标来源：
+
+### 外部域名 → Favicon
+
+对于非 GitHub 的外部链接，自动通过 Google Favicon 服务获取站点图标：
+
+<Badge link="https://www.bilibili.com" text="Bilibili" />
+<Badge link="https://vercel.com" text="Vercel" />
+<Badge link="https://developer.mozilla.org" text="MDN" />
+
+### GitHub 链接 → 用户头像
+
+GitHub 链接会自动提取用户名并拉取头像，无需手动指定图片：
+
+<Badge link="https://github.com/kmoretti" text="kmoretti" />
+<Badge link="https://github.com/withastro/astro" text="Astro" />
+
+## 形状控制
+
+Badge 支持两种形状：
+
+- **圆形**（有图时默认）：图标和文字都使用圆角
+- **方形**（无图时默认）：使用小圆角
+
+### 默认形状规则
+
+有图默认圆形，无图默认方形：
+
+<Badge link="https://github.com/kmoretti" text="有图 → 默认圆形" />
+<Badge text="无图 → 默认方形" />
+
+### 手动指定
+
+通过 `round` 或 `square` 属性覆盖默认行为：
+
+<Badge text="纯文本圆形" round={true} />
+<Badge link="https://github.com/kmoretti" text="有图方形" square={true} />
+
+## 自定义图片
+
+通过 `img` 属性可以传入任意图片 URL，覆盖自动识别逻辑：
+
+<Badge img="/avatar.jpeg" text="本地图片" />
+<Badge img="https://www.google.com/s2/favicons?domain=github.com&sz=64" text="自定义图标" link="https://github.com" />
+
+## 插槽内容
+
+除了 `text` 属性，还可以通过默认插槽传入内容，支持内联 Markdown：
+
+<Badge link="https://blog.081531.xyz">**粗体**文字</Badge>
+<Badge link="/">`code` 文字</Badge>
+
+## 文本传入方式
+
+Badge 支持两种方式传入文本：
+
+```mdx
+{/* 方式一：text 属性 */}
+<Badge text="文本" />
+
+{/* 方式二：默认插槽 */}
+<Badge>插槽文本</Badge>
+```
+
+`text` 属性适合简短的纯文本；插槽适合需要格式化内容的场景。
+
+## 核心实现
+
+### 图标解析优先级
+
+```
+img 属性  →  GitHub 头像  →  域名 Favicon
+```
+
+```typescript
+if (img) {
+  resolvedImg = img;                           // 1. 手动指定的图片
+} else if (link) {
+  const ghUser = getGithubUsername(link);
+  if (ghUser) {
+    resolvedImg = getGithubAvatar(ghUser);     // 2. GitHub 头像
+  } else if (isExtLink(link)) {
+    resolvedImg = getFavicon(getDomain(link)); // 3. 域名 Favicon
+  }
+}
+```
+
+### 形状规则
+
+```typescript
+// 有图 → 默认圆形（square 覆盖）
+// 无图 → 默认方形（round 覆盖）
+const isRound = resolvedImg ? !square : !!round;
+```
+
+### 链接渲染
+
+| 场景 | 标签 | 行为 |
+|------|------|------|
+| 无 `link` | `<span>` | 纯展示 |
+| `link` 以 `#` 开头 | `<a>` | 页面内锚点 |
+| 外部链接 | `<a target="_blank">` | 新窗口打开 |
+| 内部链接 | `<a>` | 正常跳转 |
+
+## Props 一览
+
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `img` | `string` | — | 自定义图片 URL |
+| `text` | `string` | — | 显示文本（也可通过插槽传入） |
+| `link` | `string` | — | 链接地址 |
+| `round` | `boolean` | `false` | 指定圆形 |
+| `square` | `boolean` | `false` | 指定方形 |
+
+## 与其他组件组合
+
+Badge 是行内元素，可以自然地嵌入其他组件的插槽中：
+
+外部域名自动获取站点图标 <Badge link="https://blog.081531.xyz" text="喵洛阁" />，GitHub 链接能自动识别头像 <Badge link="https://github.com/kmoretti" text="kmoretti" />，也可指定方形 <Badge link="https://github.com/kmoretti/blog" text="blog" square={true} />。
+
+## 小结
+
+Badge 组件虽小，但在文章中提到其他网站、项目、作者时非常实用。自动识别 GitHub 头像和站点 Favicon 的特性，让你只需传一个链接就能得到带图标的标签，无需手动找图片。

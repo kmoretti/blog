@@ -1,0 +1,161 @@
+---
+title: "ProseA 链接组件：智能图标与优雅外链"
+description: "介绍 ProseA 组件如何自动识别内外部链接、匹配域名图标，并支持自定义 Iconify 图标。"
+date: 2026-06-19
+tags:
+  - Vue
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import ProseA from "../../../components/ProseA.astro";
+
+## 为什么需要 ProseA
+
+在博客文章中，链接是最常见的元素之一。但默认的 `<a>` 标签只是朴素的蓝色文字——没有图标区分来源，没有提示目标域名，外部链接也不会自动在新标签页打开。
+
+**ProseA** 是一个封装了这些增强逻辑的 Vue 组件，源自我的 Nuxt 博客项目。它做了三件事：
+
+1. **自动区分内部/外部链接**——站外链接默认在新标签页打开
+2. **自动匹配域名图标**——GitHub、Bilibili、微信等常见站点自动显示对应 Iconify 图标
+3. **支持自定义图标**——通过 `icon` 属性指定任意 Iconify 图标
+
+## 核心用法
+
+组件接收两个 props：
+
+```vue
+<script setup lang="ts">
+const props = defineProps<{
+  href: string;
+  icon?: string;
+}>();
+
+const icon = computed(() => props.icon || getDomainIcon(props.href));
+</script>
+
+<template>
+  <UtilLink v-tip="tip" class="z-link" :to="href">
+    <Icon v-if="icon" class="domain-icon" :name="icon" />
+    <slot />
+  </UtilLink>
+</template>
+```
+
+其中 `UtilLink` 是一个智能链接组件，会根据 `to` 属性自动选择渲染方式：
+
+- 以 `#` 开头 → 页内锚点 `<a>`
+- 无 `to` → 纯文本 `<span>`
+- 其他 → NuxtLink，外部链接自动加 `target="_blank"`
+
+## 内部链接 vs 外部链接
+
+内部链接（同站点路径）直接渲染为普通的 `<NuxtLink>`，无图标、无新标签页。例如 <ProseA href="/" icon="material-symbols:home-rounded">返回首页</ProseA> 就是一个内部链接。
+
+外部链接会自动在新标签页打开，并在鼠标悬停时通过 tooltip 展示目标域名。以下是一些常见的域名图标匹配示例：
+
+- [GitHub](https://github.com) → `ri:github-fill`
+- [Bilibili](https://www.bilibili.com) → `ri:bilibili-fill`
+- [QQ](https://www.qq.com) → `ri:qq-fill`
+- [知乎](https://www.zhihu.com) → `ri:zhihu-line`
+- [微信公众号文章](https://mp.weixin.qq.com/s/xxx) → `ri:wechat-fill`
+- [MDN Web Docs](https://developer.mozilla.org) → `simple-icons:mdnwebdocs`
+- [Vercel](https://vercel.com) → `simple-icons:vercel`
+
+## 自定义图标
+
+你可以将 `icon` 属性指定为任意 [Iconify](https://icon-sets.iconify.design/) 图标名称。例如：
+
+```vue
+<ProseA
+  href="https://example.com"
+  icon="material-symbols:rocket-launch-rounded"
+>
+  自定义图标链接
+</ProseA>
+```
+
+图标可以在 [Iconify Icons](https://icon-sets.iconify.design/) 或 [Yesicon](https://www.yesicon.app/) 搜索获取。
+
+下面是自定义图标的效果演示——指定 `icon="material-symbols:rocket-launch-rounded"`：<ProseA href="https://example.com" icon="material-symbols:rocket-launch-rounded">自定义图标链接</ProseA>
+
+## 图标匹配机制
+
+ProseA 的图标匹配分为两层，优先级从高到低：
+
+### 1. 专有域名匹配（优先级最高）
+
+完整域名精确匹配，适合子域名和主域名图标不同的情况：
+
+```ts
+export const domainIcons: Record<string, string> = {
+  "developer.mozilla.org": "simple-icons:mdnwebdocs",
+  "mp.weixin.qq.com": "ri:wechat-fill",
+};
+```
+
+### 2. 主域名匹配（兜底）
+
+提取 URL 的主域名进行匹配，覆盖大部分常见站点：
+
+```ts
+const mainDomainIcons: Record<string, string> = {
+  "github.com": "ri:github-fill",
+  "bilibili.com": "ri:bilibili-fill",
+  "qq.com": "ri:qq-fill",
+  "zhihu.com": "ri:zhihu-line",
+  "vercel.app": "simple-icons:vercel",
+  "pages.dev": "simple-icons:cloudflare",
+  "netlify.app": "simple-icons:netlify",
+  // ...更多站点
+};
+```
+
+### 为更多站点添加图标
+
+如果需要为新的站点匹配图标，只需在 `icon.ts` 中的 `domainIcons`（精确匹配）或 `mainDomainIcons`（主域名匹配）中添加一条映射即可。
+
+## 样式设计
+
+ProseA 的视觉风格很简洁——链接下方有一条主色调的渐变底线，悬停时底线扩展为完整背景高亮：
+
+```scss
+.z-link[href] {
+  margin: -0.1em -0.2em;
+  padding: 0.1em 0.2em;
+  background: linear-gradient(var(--c-primary-soft), var(--c-primary-soft))
+    no-repeat center bottom / 100% 0.1em;
+  color: var(--c-primary);
+  transition: all 0.2s;
+
+  &:hover {
+    border-radius: 0.3em;
+    background-size: 100% 100%;
+  }
+
+  .domain-icon {
+    margin-inline-end: 0.1em;
+  }
+}
+```
+
+这种设计的好处是：链接在不打扰阅读的前提下提供了足够的视觉提示，而域名图标让用户在点击前就能知道目标站点的来源。
+
+## 配套工具函数
+
+`icon.ts` 不仅服务于 ProseA，还提供了多个图标查询函数供其他组件使用：
+
+| 函数                    | 用途                       | 示例                                                      |
+| ----------------------- | -------------------------- | --------------------------------------------------------- |
+| `getDomainIcon(url)`    | 根据 URL 获取域名图标      | `getDomainIcon("https://github.com")` → `ri:github-fill`  |
+| `getFileIcon(filename)` | 根据文件名获取文件类型图标 | `getFileIcon("package.json")` → `catppuccin:package-json` |
+| `getLangIcon(ext)`      | 根据语言/扩展名获取图标    | `getLangIcon("ts")` → `catppuccin:typescript`             |
+| `getArchIcon(arch)`     | 根据平台/框架名获取图标    | `getArchIcon("Astro")` → `simple-icons:astro`             |
+
+这些函数统一使用 [Catppuccin](https://github.com/catppuccin/catppuccin) 图标集和 [Simple Icons](https://simpleicons.org/) 图标集，保证了视觉风格的一致性。
+
+## 小结
+
+ProseA 虽然只是一个简单的链接封装组件，但它体现了一个好的博客组件应该具备的特质：**对外部信息给出足够的上下文提示，同时保持阅读流的简洁**。自动匹配的域名图标、悬停时的域名 tooltip、外部链接的新标签页打开——这些细节堆叠起来，就是更好的阅读体验。

@@ -1,0 +1,184 @@
+---
+title: "Key 按键组件：会亮、能按、可触发事件"
+description: "介绍一个适合 Astro 博客的 Key 组件，支持组合键展示、macOS 图标风格、键盘按下高亮，以及按键和点击触发 press 事件。"
+date: 2026-06-19
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Key from "../../../components/Key.astro";
+import Tab from "../../../components/Tab.astro";
+
+## 为什么需要 Key
+
+有些文章不只是展示代码，还会频繁提到快捷键、操作步骤、按键序列或者交互提示。
+
+这个 **Key** 组件就是为这种场景准备的：它既能像截图里那样把按键渲染成一颗颗小键帽，也能在真正按下对应键位时点亮，还能通过 `press` 事件把动作抛给页面脚本。现在站内搜索的 `Ctrl/Cmd + K` 提示也已经用上它了。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+
+- 纯 Code
+
+<p>
+  <Key code="Escape" />
+  <Key code="F2" />
+  <Key code="Control" />
+  <Key code="A" />
+  <Key text="Space" />
+  <Key code="Tab" />
+  <Key code="Enter" />
+</p>
+
+- 指定修饰符、图标、文本（macOS 默认自动使用图标）
+
+<p>
+  <Key code="ArrowUp" icon />
+  <Key alt code="\\" icon />
+  <Key shift code="Tab" icon />
+  <Key text="空格" />
+  <Key code="ArrowRight" icon />
+  <Key code="Enter" icon />
+</p>
+
+- 组合键
+
+<p>
+  <Key ctrl shift code="A" />
+  <Key shift alt />
+  <Key cmd code="\\" icon />
+</p>
+
+<p>
+  热血组合技
+  <Key code="ArrowUp" icon />
+  <Key code="ArrowUp" icon />
+  <Key code="ArrowDown" icon />
+  <Key code="ArrowDown" icon />
+  <Key code="ArrowLeft" icon />
+  <Key code="ArrowRight" icon />
+  <Key code="ArrowLeft" icon />
+  <Key code="ArrowRight" icon />
+  <Key code="B" />
+  <Key code="A" />
+</p>
+
+  </Fragment>
+  <Fragment slot="tab2">
+
+```astro
+<Key code="Escape" />
+<Key ctrl shift code="A" />
+<Key cmd code="K" press="post-search:toggle" prevent />
+<Key code="ArrowUp" icon />
+<Key text="空格" />
+```
+
+  </Fragment>
+</Tab>
+
+## 基础用法
+
+最简单的用法就是直接传一个 `code`：
+
+<p>
+  <Key code="Escape" />
+  <Key code="Tab" />
+  <Key code="Enter" />
+</p>
+
+如果你不想显示原始键名，也可以直接传 `text`：
+
+<p>
+  <Key text="空格" />
+  <Key text="回车" />
+</p>
+
+## 组合键
+
+修饰符通过布尔属性组合：
+
+<p>
+  <Key ctrl code="K" />
+  <Key ctrl shift code="P" />
+  <Key cmd code="K" />
+  <Key alt shift code="A" />
+</p>
+
+其中 `cmd` 是一个“智能修饰键”：
+
+- 在 Windows / Linux 上显示并匹配 `Ctrl`
+- 在 macOS 上显示并匹配 `Cmd`
+
+## 图标模式
+
+当传入 `icon` 时，会优先使用图形符号来显示按键；如果运行环境是 macOS，默认也会自动偏向这种写法。
+
+<p>
+  <Key code="ArrowLeft" icon />
+  <Key code="ArrowRight" icon />
+  <Key shift code="Tab" icon />
+  <Key cmd code="K" icon />
+</p>
+
+## 事件触发
+
+Key 组件除了展示样式，还会真的监听键盘输入：
+
+- 按下和配置匹配的键时，键帽会高亮
+- 鼠标点击键帽时，也会触发同样的动作
+- 组件节点本身会派发一个 `press` 自定义事件
+- 如果传入 `press="event-name"`，还会额外向 `document` 派发同名事件
+
+站内搜索现在就是这样接入的：
+
+```astro
+<Key cmd code="K" press="post-search:toggle" prevent />
+
+<script is:inline>
+  document.addEventListener("post-search:toggle", () => {
+    // 打开或关闭搜索框
+  });
+</script>
+```
+
+上面这颗键帽按下 `Ctrl/Cmd + K` 时会亮，点击它也会触发同名事件。
+
+## Props 一览
+
+| 属性 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `text` | `string` | - | 直接指定显示文本 |
+| `code` | `string` | - | 要显示和匹配的按键名 |
+| `icon` | `boolean` | 自动 | 是否优先使用图标符号 |
+| `ctrl` | `boolean` | `false` | 是否包含 `Ctrl` |
+| `shift` | `boolean` | `false` | 是否包含 `Shift` |
+| `alt` | `boolean` | `false` | 是否包含 `Alt` |
+| `meta` | `boolean` | `false` | 是否包含 `Meta / Command` |
+| `win` | `boolean` | `false` | 是否包含 `Win` |
+| `cmd` | `boolean` | `false` | 智能使用 `Ctrl / Cmd` |
+| `prevent` | `boolean` | `false` | 触发时调用 `preventDefault()` |
+| `press` | `string` | - | 向 `document` 额外派发的事件名 |
+| `class` | `string` | - | 额外类名 |
+
+## 核心实现
+
+这个组件是一个纯 Astro 组件，但行为层用了一个很轻的内联脚本：
+
+1. 服务端先输出一份可直接显示的键帽文本
+2. 客户端根据系统环境决定是否替换成 macOS 风格符号
+3. 全局监听 `keydown` / `keyup` / `blur`
+4. 当按键和修饰符都匹配时，给对应键帽加上 `active` 状态
+5. 再派发组件级 `press` 事件，以及可选的文档级事件
+
+这样做的好处是：页面不需要引入框架，也不需要额外 hydration，就能拿到接近交互组件的体验。
+
+## 小结
+
+Key 组件很适合写教程、快捷键说明、搜索提示和操作引导。它既是一个视觉组件，也是一个轻量交互组件；放在 Astro 博客里，既能让文章更好看，也能让页面里的快捷键说明真正活起来。

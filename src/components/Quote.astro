@@ -1,0 +1,62 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  /** Iconify 图标名称 */
+  icon?: string;
+}
+
+const { icon = "material-symbols:chat" } = Astro.props;
+---
+
+<div class="quote">
+  <div class="icon-line">
+    <slot name="icon">
+      <Icon name={icon} />
+    </slot>
+  </div>
+  <div class="quote-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .quote {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: rgb(82 82 91);
+    isolation: isolate;
+    margin: 1.5em 0;
+  }
+
+  :global(html.dark) .quote {
+    color: rgb(161 161 170);
+  }
+
+  .quote-content :global(p) {
+    margin: 0;
+  }
+
+  .icon-line {
+    position: relative;
+    opacity: 0.5;
+    min-height: 0.5em;
+    margin-bottom: -0.5em;
+    mask-image: linear-gradient(#fff, transparent);
+    -webkit-mask-image: linear-gradient(#fff, transparent);
+    font-size: 4rem;
+    transition: all 0.25s ease;
+    z-index: -1;
+  }
+
+  @media (max-width: 640px) {
+    .icon-line {
+      font-size: 3rem;
+    }
+  }
+
+  .quote:hover > .icon-line {
+    opacity: 1;
+    transform: translateY(-0.5rem);
+  }
+</style>
