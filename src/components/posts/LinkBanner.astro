@@ -28,61 +28,71 @@ const isExternal = hasLink && link!.startsWith("http");
 const linkAttrs = hasLink
   ? {
       href: link!,
-      ...(isExternal
-        ? { target: "_blank", rel: "noopener noreferrer" }
-        : {}),
+      ...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {}),
     }
   : {};
-const titleAttr = hasLink
-  ? `${title} - ${resolvedDesc} - ${link}`
-  : title;
+const titleAttr = hasLink ? `${title} - ${resolvedDesc} - ${link}` : title;
 ---
 
-{lightbox && banner ? (
-  <div class="link-banner card" class:no-hover={!hasLink}>
-    <div class="link-banner-bg-wrap" data-lightbox-root>
-      <img class="link-banner-bg" src={banner} alt={title} loading="lazy" />
+{
+  lightbox && banner ? (
+    <div class="link-banner card" class:no-hover={!hasLink}>
+      <div class="link-banner-bg-wrap" data-lightbox-root>
+        <img class="link-banner-bg" src={banner} alt={title} loading="lazy" />
+      </div>
+      {hasLink ? (
+        <a class="link-banner-info" title={titleAttr} {...linkAttrs}>
+          <div class="link-banner-title">{title}</div>
+          {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+        </a>
+      ) : (
+        <div class="link-banner-info" title={titleAttr}>
+          <div class="link-banner-title">{title}</div>
+          {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+        </div>
+      )}
     </div>
-    {hasLink ? (
-      <a class="link-banner-info" title={titleAttr} {...linkAttrs}>
-        <div class="link-banner-title">{title}</div>
-        {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
-      </a>
-    ) : (
-      <div class="link-banner-info" title={titleAttr}>
+  ) : hasLink ? (
+    <a
+      href={link}
+      class="link-banner card"
+      title={titleAttr}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {banner && (
+        <img
+          class="link-banner-bg"
+          src={banner}
+          alt=""
+          loading="lazy"
+          data-lightbox-ignore
+        />
+      )}
+      <div class="link-banner-header" />
+      <div class="link-banner-info">
         <div class="link-banner-title">{title}</div>
         {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
       </div>
-    )}
-  </div>
-) : hasLink ? (
-  <a
-    href={link}
-    class="link-banner card"
-    title={titleAttr}
-    {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-  >
-    {banner && (
-      <img class="link-banner-bg" src={banner} alt="" loading="lazy" data-lightbox-ignore />
-    )}
-    <div class="link-banner-header" />
-    <div class="link-banner-info">
-      <div class="link-banner-title">{title}</div>
-      {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+    </a>
+  ) : (
+    <div class="link-banner card no-hover" title={titleAttr}>
+      {banner && (
+        <img
+          class="link-banner-bg"
+          src={banner}
+          alt=""
+          loading="lazy"
+          data-lightbox-ignore
+        />
+      )}
+      <div class="link-banner-header" />
+      <div class="link-banner-info">
+        <div class="link-banner-title">{title}</div>
+        {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+      </div>
     </div>
-  </a>
-) : (
-  <div class="link-banner card no-hover" title={titleAttr}>
-    {banner && (
-      <img class="link-banner-bg" src={banner} alt="" loading="lazy" data-lightbox-ignore />
-    )}
-    <div class="link-banner-header" />
-    <div class="link-banner-info">
-      <div class="link-banner-title">{title}</div>
-      {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
-    </div>
-  </div>
-)}
+  )
+}
 
 <style>
   .link-banner {
@@ -94,7 +104,9 @@ const titleAttr = hasLink
     overflow: hidden;
     text-decoration: none;
     background-color: rgb(255 255 255);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
   }
 
   :global(html.dark) .link-banner {
