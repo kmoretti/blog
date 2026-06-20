@@ -62,7 +62,9 @@
       @apply scroll-mt-24;
     }
     :not(pre) > code {
-      @apply whitespace-nowrap rounded border bg-zinc-200/50 px-1 py-0.5 font-mono text-sm font-medium text-black dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-white;
+      @apply inline-block max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap rounded border bg-zinc-200/50 px-1 py-0.5 align-middle font-mono text-sm font-medium text-black dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-white;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
     }
     pre:has(code) {
       @apply my-4 max-h-[600px] overflow-auto rounded-lg border p-4 font-mono text-sm font-medium dark:border-zinc-700;
@@ -154,7 +156,11 @@
       @apply text-blue-500 underline;
     }
     table {
-      @apply my-4 w-full table-auto border-collapse text-sm;
+      @apply my-4 block max-w-full border-collapse overflow-x-auto text-sm;
+      width: max-content;
+      min-width: 100%;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
       th {
         @apply border-b p-4 text-left font-medium dark:border-zinc-700;
       }
