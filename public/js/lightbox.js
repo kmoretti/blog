@@ -335,7 +335,11 @@
 
       return Array.from(
         root.querySelectorAll(this.options.imageSelector),
-      ).filter((img) => img.currentSrc || img.src);
+      ).filter(
+        (img) =>
+          (img.currentSrc || img.src) &&
+          !img.hasAttribute("data-lightbox-ignore"),
+      );
     }
 
     handleDocumentClick(event) {

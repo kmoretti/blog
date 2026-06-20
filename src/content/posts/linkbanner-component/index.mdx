@@ -1,0 +1,145 @@
+---
+title: "LinkBanner 链接横幅组件：图片卡片式外链展示"
+description: "介绍 LinkBanner 组件——用横幅图片 + 标题 + 描述的卡片式外链展示，支持自动提取域名作为描述，适合作为文章中的推荐链接或项目展示。"
+date: 2026-06-20
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import LinkBanner from "../../../components/posts/LinkBanner.astro";
+
+## 为什么需要 LinkBanner
+
+在博客文章中推荐其他网站、开源项目或外部资源时，普通的文字链接不够醒目，而完整的图片卡片又太重。
+
+**LinkBanner** 组件正好填补这个空缺——一张横幅图片 + 标题 + 一行描述，形成一个紧凑的卡片式链接，视觉醒目但不占太多空间。
+
+## 基本用法
+
+传入 `link`（链接）和 `title`（标题）即可创建一个 LinkBanner：
+
+<LinkBanner link="https://docs.astro.build" title="Astro 官方文档" />
+
+不传 `description` 时，组件会自动提取链接的域名作为描述文字。
+
+## 带横幅图片
+
+通过 `banner` 属性传入图片 URL，图片会以渐变遮罩融入卡片背景：
+
+<LinkBanner
+  link="https://blog.081531.xyz"
+  title="喵洛阁"
+  description="克喵的博客，记录生活、踩坑与折腾"
+  banner="/banner.png"
+/>
+
+## 带描述文字
+
+传入 `description` 属性覆盖默认的域名显示：
+
+<LinkBanner
+  link="https://github.com/kmoretti/blog"
+  title="博客源码"
+  description="基于 Astro 5 构建的个人博客，欢迎 Star"
+/>
+
+不传描述时自动显示域名：
+
+<LinkBanner link="https://www.bilibili.com" title="Bilibili" />
+
+## 自动外链处理
+
+外部链接会自动添加 `target="_blank"` 在新窗口打开，内部链接则正常跳转：
+
+<LinkBanner link="/" title="返回首页" description="这是一个内部链接" />
+
+## 灯箱模式
+
+设置 `lightbox={true}` 后，点击横幅图片会在灯箱中打开大图，标题和描述区域仍作为链接跳转：
+
+<LinkBanner
+  link="https://blog.081531.xyz"
+  title="喵洛阁"
+  description="点击上面的图片可以在灯箱中查看"
+  banner="/banner.png"
+  lightbox={true}
+/>
+
+灯箱模式下，图片和链接是分离的——图片区域点击打开灯箱，标题区域点击跳转链接。不传 `banner` 时 `lightbox` 不生效。
+
+## 纯展示（无链接）
+
+不传 `link` 时，组件变成纯展示卡片，不跳转、不显示悬浮效果：
+
+<LinkBanner
+  title="纯展示卡片"
+  description="没有链接，只是一个信息展示"
+  banner="/banner.png"
+/>
+
+搭配灯箱使用时，图片仍可点击放大查看：
+
+<LinkBanner
+  title="灯箱纯展示"
+  description="点击图片可以灯箱查看，但卡片本身不可点击"
+  banner="/banner.png"
+  lightbox={true}
+/>
+
+## Props 一览
+
+| 属性          | 类型      | 必填 | 说明                                         |
+| ------------- | --------- | ---- | -------------------------------------------- |
+| `link`        | `string`  | 否   | 链接地址（不填则为纯展示卡片）               |
+| `title`       | `string`  | 是   | 标题文字                                     |
+| `description` | `string`  | 否   | 描述文字（有链接时默认显示域名）             |
+| `banner`      | `string`  | 否   | 横幅图片地址                                 |
+| `lightbox`    | `boolean` | 否   | 点击横幅图片是否在灯箱中打开（默认 `false`） |
+
+## 核心实现
+
+### 域名自动提取
+
+当未传入 `description` 时，组件从 `link` 中提取域名作为描述：
+
+```typescript
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+const resolvedDesc = description ?? getDomain(link);
+```
+
+### 图片渐变遮罩
+
+横幅图片使用 `mask-image` 创建从上到下的渐变透明效果，让图片自然融入卡片背景：
+
+```css
+.link-banner-bg {
+  mask-image: linear-gradient(#fff 50%, transparent);
+  margin-bottom: -5%;
+}
+```
+
+### 悬浮效果
+
+鼠标悬浮时卡片微上浮并显示阴影：
+
+```css
+.link-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+```
+
+## 小结
+
+LinkBanner 是一个轻量但视觉突出的外链展示组件。一张横幅图、一行标题、一行描述，就能创建一个吸引眼球的卡片式链接。自动提取域名的特性让你不需要手动写描述，外部链接自动在新窗口打开——适合在文章中推荐项目、工具或参考资料。

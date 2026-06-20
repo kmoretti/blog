@@ -10,7 +10,7 @@ categories:
   - 博客魔改
 ---
 
-import Badge from "../../../components/Badge.astro";
+import Badge from "../../../components/posts/Badge.astro";
 
 ## 为什么需要 Badge
 
@@ -85,7 +85,11 @@ Badge 支持两种形状：
 通过 `img` 属性可以传入任意图片 URL，覆盖自动识别逻辑：
 
 <Badge img="/avatar.jpeg" text="本地图片" />
-<Badge img="https://www.google.com/s2/favicons?domain=github.com&sz=64" text="自定义图标" link="https://github.com" />
+<Badge
+  img="https://www.google.com/s2/favicons?domain=github.com&sz=64"
+  text="自定义图标"
+  link="https://github.com"
+/>
 
 ## 插槽内容
 
@@ -100,9 +104,11 @@ Badge 支持两种方式传入文本：
 
 ```mdx
 {/* 方式一：text 属性 */}
+
 <Badge text="文本" />
 
 {/* 方式二：默认插槽 */}
+
 <Badge>插槽文本</Badge>
 ```
 
@@ -118,11 +124,11 @@ img 属性  →  GitHub 头像  →  域名 Favicon
 
 ```typescript
 if (img) {
-  resolvedImg = img;                           // 1. 手动指定的图片
+  resolvedImg = img; // 1. 手动指定的图片
 } else if (link) {
   const ghUser = getGithubUsername(link);
   if (ghUser) {
-    resolvedImg = getGithubAvatar(ghUser);     // 2. GitHub 头像
+    resolvedImg = getGithubAvatar(ghUser); // 2. GitHub 头像
   } else if (isExtLink(link)) {
     resolvedImg = getFavicon(getDomain(link)); // 3. 域名 Favicon
   }
@@ -139,22 +145,22 @@ const isRound = resolvedImg ? !square : !!round;
 
 ### 链接渲染
 
-| 场景 | 标签 | 行为 |
-|------|------|------|
-| 无 `link` | `<span>` | 纯展示 |
-| `link` 以 `#` 开头 | `<a>` | 页面内锚点 |
-| 外部链接 | `<a target="_blank">` | 新窗口打开 |
-| 内部链接 | `<a>` | 正常跳转 |
+| 场景               | 标签                  | 行为       |
+| ------------------ | --------------------- | ---------- |
+| 无 `link`          | `<span>`              | 纯展示     |
+| `link` 以 `#` 开头 | `<a>`                 | 页面内锚点 |
+| 外部链接           | `<a target="_blank">` | 新窗口打开 |
+| 内部链接           | `<a>`                 | 正常跳转   |
 
 ## Props 一览
 
-| 属性 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `img` | `string` | — | 自定义图片 URL |
-| `text` | `string` | — | 显示文本（也可通过插槽传入） |
-| `link` | `string` | — | 链接地址 |
-| `round` | `boolean` | `false` | 指定圆形 |
-| `square` | `boolean` | `false` | 指定方形 |
+| 属性     | 类型      | 默认值  | 说明                         |
+| -------- | --------- | ------- | ---------------------------- |
+| `img`    | `string`  | —       | 自定义图片 URL               |
+| `text`   | `string`  | —       | 显示文本（也可通过插槽传入） |
+| `link`   | `string`  | —       | 链接地址                     |
+| `round`  | `boolean` | `false` | 指定圆形                     |
+| `square` | `boolean` | `false` | 指定方形                     |
 
 ## 与其他组件组合
 

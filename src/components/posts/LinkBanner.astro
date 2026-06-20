@@ -1,0 +1,165 @@
+---
+interface Props {
+  /** 链接地址（可选，不填则为纯展示卡片） */
+  link?: string;
+  /** 标题 */
+  title: string;
+  /** 描述（不填且无链接时为空） */
+  description?: string;
+  /** 横幅图片地址 */
+  banner?: string;
+  /** 是否允许灯箱打开横幅图片 */
+  lightbox?: boolean;
+}
+
+const { link, title, description, banner, lightbox = false } = Astro.props;
+
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+const resolvedDesc = description ?? (link ? getDomain(link) : "");
+const hasLink = !!link;
+const isExternal = hasLink && link!.startsWith("http");
+const linkAttrs = hasLink
+  ? {
+      href: link!,
+      ...(isExternal
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {}),
+    }
+  : {};
+const titleAttr = hasLink
+  ? `${title} - ${resolvedDesc} - ${link}`
+  : title;
+---
+
+{lightbox && banner ? (
+  <div class="link-banner card" class:no-hover={!hasLink}>
+    <div class="link-banner-bg-wrap" data-lightbox-root>
+      <img class="link-banner-bg" src={banner} alt={title} loading="lazy" />
+    </div>
+    {hasLink ? (
+      <a class="link-banner-info" title={titleAttr} {...linkAttrs}>
+        <div class="link-banner-title">{title}</div>
+        {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+      </a>
+    ) : (
+      <div class="link-banner-info" title={titleAttr}>
+        <div class="link-banner-title">{title}</div>
+        {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+      </div>
+    )}
+  </div>
+) : hasLink ? (
+  <a
+    href={link}
+    class="link-banner card"
+    title={titleAttr}
+    {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+  >
+    {banner && (
+      <img class="link-banner-bg" src={banner} alt="" loading="lazy" data-lightbox-ignore />
+    )}
+    <div class="link-banner-header" />
+    <div class="link-banner-info">
+      <div class="link-banner-title">{title}</div>
+      {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+    </div>
+  </a>
+) : (
+  <div class="link-banner card no-hover" title={titleAttr}>
+    {banner && (
+      <img class="link-banner-bg" src={banner} alt="" loading="lazy" data-lightbox-ignore />
+    )}
+    <div class="link-banner-header" />
+    <div class="link-banner-info">
+      <div class="link-banner-title">{title}</div>
+      {resolvedDesc && <div class="link-banner-desc">{resolvedDesc}</div>}
+    </div>
+  </div>
+)}
+
+<style>
+  .link-banner {
+    display: block;
+    line-height: 1.4;
+    max-width: 480px;
+    margin: 2rem auto;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    text-decoration: none;
+    background-color: rgb(255 255 255);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  :global(html.dark) .link-banner {
+    background-color: rgb(39 39 42);
+  }
+
+  .link-banner:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 12px rgb(0 0 0 / 0.08),
+      0 2px 4px rgb(0 0 0 / 0.04);
+  }
+
+  .no-hover:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  :global(html.dark) .link-banner:hover {
+    box-shadow:
+      0 4px 12px rgb(0 0 0 / 0.3),
+      0 2px 4px rgb(0 0 0 / 0.2);
+  }
+
+  :global(html.dark) .no-hover:hover {
+    box-shadow: none;
+  }
+
+  .link-banner-bg {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2.4;
+    margin-bottom: -5%;
+    mask-image: linear-gradient(#fff 50%, transparent);
+    -webkit-mask-image: linear-gradient(#fff 50%, transparent);
+    object-fit: cover;
+  }
+
+  .link-banner-bg-wrap {
+    cursor: pointer;
+  }
+
+  .link-banner-info {
+    display: block;
+    padding: 0.5em 1em 1em;
+    text-decoration: none;
+  }
+
+  .link-banner-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: rgb(24 24 27);
+  }
+
+  :global(html.dark) .link-banner-title {
+    color: rgb(244 244 245);
+  }
+
+  .link-banner-desc {
+    margin-top: 0.5em;
+    font-size: 0.8em;
+    color: rgb(113 113 122);
+  }
+
+  :global(html.dark) .link-banner-desc {
+    color: rgb(161 161 170);
+  }
+</style>
