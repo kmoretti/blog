@@ -1,0 +1,242 @@
+---
+import { SITE_URL } from "../../consts";
+
+interface Props {
+  /** 链接地址 */
+  link?: string;
+  /** 标题 */
+  title: string;
+  /** 描述，不传则尝试显示域名 */
+  description?: string;
+  /** 右侧图标或封面 */
+  icon?: string;
+  class?: string;
+}
+
+const { link, title, description, icon, class: className } = Astro.props;
+
+const siteHost = (() => {
+  try {
+    return new URL(SITE_URL).hostname;
+  } catch {
+    return "blog.081531.xyz";
+  }
+})();
+
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+function isExtLink(url: string): boolean {
+  return url.startsWith("http") && !url.includes(siteHost);
+}
+
+const hasLink = !!link;
+const isExternal = hasLink && isExtLink(link!);
+const resolvedDescription = description ?? (link ? getDomain(link) : "");
+const wrapperClass = ["link-card", className].filter(Boolean).join(" ");
+const fallbackText = (
+  title.trim().charAt(0) ||
+  resolvedDescription.charAt(0) ||
+  "L"
+).toUpperCase();
+const titleAttr = [title, resolvedDescription, link]
+  .filter(Boolean)
+  .join(" · ");
+---
+
+{
+  hasLink ? (
+    <a
+      href={link}
+      class={wrapperClass}
+      title={titleAttr}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      <div class="link-card-info">
+        <div class="link-card-title">{title}</div>
+        {resolvedDescription && (
+          <div class="link-card-description">{resolvedDescription}</div>
+        )}
+      </div>
+      <div class="link-card-icon-wrap" aria-hidden="true">
+        {icon ? (
+          <img
+            class="link-card-icon"
+            src={icon}
+            alt=""
+            loading="lazy"
+            data-lightbox-ignore
+          />
+        ) : (
+          <span class="link-card-fallback">{fallbackText}</span>
+        )}
+      </div>
+    </a>
+  ) : (
+    <div class={wrapperClass} title={titleAttr}>
+      <div class="link-card-info">
+        <div class="link-card-title">{title}</div>
+        {resolvedDescription && (
+          <div class="link-card-description">{resolvedDescription}</div>
+        )}
+      </div>
+      <div class="link-card-icon-wrap" aria-hidden="true">
+        {icon ? (
+          <img
+            class="link-card-icon"
+            src={icon}
+            alt=""
+            loading="lazy"
+            data-lightbox-ignore
+          />
+        ) : (
+          <span class="link-card-fallback">{fallbackText}</span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: 20rem;
+    max-width: min(100%, 22rem);
+    margin: 2rem auto;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgb(228 228 231 / 0.75);
+    border-radius: 1rem;
+    background: rgb(250 250 250 / 0.92);
+    box-shadow: 0 8px 24px -22px rgb(15 23 42 / 0.24);
+    color: inherit;
+    line-height: 1.4;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  :global(html.dark) .link-card {
+    border-color: rgb(63 63 70 / 0.9);
+    background: rgb(39 39 42 / 0.9);
+    box-shadow: 0 10px 26px -24px rgb(0 0 0 / 0.55);
+  }
+
+  a.link-card:hover {
+    transform: translateY(-2px);
+    border-color: rgb(96 165 250 / 0.35);
+    box-shadow:
+      0 14px 28px -24px rgb(59 130 246 / 0.28),
+      0 8px 18px -20px rgb(15 23 42 / 0.22);
+  }
+
+  :global(html.dark) a.link-card:hover {
+    border-color: rgb(96 165 250 / 0.28);
+    box-shadow:
+      0 14px 30px -26px rgb(59 130 246 / 0.22),
+      0 10px 20px -20px rgb(0 0 0 / 0.45);
+  }
+
+  .link-card-info {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .link-card-title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: rgb(24 24 27);
+    font-size: 1.1rem;
+    font-weight: 700;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  :global(html.dark) .link-card-title {
+    color: rgb(244 244 245);
+  }
+
+  .link-card-description {
+    overflow: hidden;
+    margin-top: 0.25rem;
+    color: rgb(113 113 122);
+    font-size: 0.92rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  :global(html.dark) .link-card-description {
+    color: rgb(161 161 170);
+  }
+
+  .link-card-icon-wrap {
+    display: flex;
+    width: 4.75rem;
+    height: 4.75rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 0.85rem;
+    background: rgb(228 228 231 / 0.7);
+  }
+
+  :global(html.dark) .link-card-icon-wrap {
+    background: rgb(63 63 70 / 0.65);
+  }
+
+  .link-card-icon,
+  .link-card-fallback {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+  }
+
+  .link-card-icon {
+    display: block;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+  }
+
+  a.link-card:hover .link-card-icon {
+    transform: scale(1.04);
+  }
+
+  .link-card-fallback {
+    display: grid;
+    place-items: center;
+    color: rgb(63 63 70);
+    font-size: 1.35rem;
+    font-weight: 800;
+    background:
+      radial-gradient(
+        circle at 30% 30%,
+        rgb(147 197 253 / 0.7),
+        transparent 45%
+      ),
+      rgb(228 228 231 / 0.9);
+  }
+
+  :global(html.dark) .link-card-fallback {
+    color: rgb(228 228 231);
+    background:
+      radial-gradient(
+        circle at 30% 30%,
+        rgb(96 165 250 / 0.32),
+        transparent 45%
+      ),
+      rgb(63 63 70 / 0.85);
+  }
+</style>

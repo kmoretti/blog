@@ -1,0 +1,213 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  /** 直接展示的文本，不传则使用默认插槽 */
+  text?: string;
+  /** 提示文本 */
+  tip?: string;
+  /** 图标名，false 表示不显示图标 */
+  icon?: string | boolean;
+  /** 是否点击复制文本 */
+  copy?: boolean;
+  class?: string;
+}
+
+const { text, tip, icon, copy = false, class: className } = Astro.props;
+
+const resolvedTip = tip || (copy ? "点击复制" : "");
+const resolvedIcon =
+  typeof icon === "undefined" ? (copy ? "tabler:copy" : false) : icon;
+const wrapperClass = ["tip", "post-tip", className].filter(Boolean).join(" ");
+const uid = `tip-${Math.random().toString(36).slice(2, 10)}`;
+const copiedIcon = "tabler:check";
+---
+
+<span
+  class={wrapperClass}
+  tabindex="0"
+  title={resolvedTip}
+  data-tip-root
+  data-tip-id={uid}
+  data-tip={resolvedTip}
+  data-tip-copy={copy ? "true" : "false"}
+  data-tip-text={text ?? ""}
+  data-tip-copied-icon={copiedIcon}
+  data-tip-default-icon={typeof resolvedIcon === "string" ? resolvedIcon : ""}
+>
+  <span class="tip-content">
+    <slot>{text}</slot>
+  </span>
+  {
+    typeof resolvedIcon === "string" && (
+      <span class="tip-icon" aria-hidden="true" data-tip-icon-wrap>
+        <Icon name={resolvedIcon} width="18" height="18" data-tip-icon />
+      </span>
+    )
+  }
+  {
+    resolvedTip && (
+      <span class="tip-bubble" role="tooltip">
+        {resolvedTip}
+      </span>
+    )
+  }
+</span>
+
+<script is:inline>
+  function initTips() {
+    const iconRegistry = {
+      "tabler:copy":
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
+      "tabler:check":
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M5 12l5 5L20 7"></path></svg>',
+    };
+
+    document.querySelectorAll("[data-tip-root]").forEach((node) => {
+      if (node.dataset.tipBound === "true") return;
+      node.dataset.tipBound = "true";
+
+      const isCopy = node.dataset.tipCopy === "true";
+      const iconWrap = node.querySelector("[data-tip-icon-wrap]");
+      const bubble = node.querySelector(".tip-bubble");
+      const defaultTip = node.dataset.tip || "";
+      const copiedIcon = node.dataset.tipCopiedIcon || "tabler:check";
+      const defaultIcon = node.dataset.tipDefaultIcon || "";
+
+      function setBubble(text) {
+        if (!bubble) return;
+        bubble.textContent = text;
+      }
+
+      function setIcon(iconName) {
+        if (!iconWrap || !iconName || !iconRegistry[iconName]) return;
+        iconWrap.innerHTML = iconRegistry[iconName];
+      }
+
+      async function handleCopy() {
+        if (!isCopy) return;
+        const content =
+          node.querySelector(".tip-content")?.textContent?.trim() ||
+          node.dataset.tipText ||
+          "";
+        if (!content) return;
+
+        try {
+          await navigator.clipboard.writeText(content);
+          node.dataset.tipState = "copied";
+          setBubble("已复制");
+          setIcon(copiedIcon);
+
+          window.clearTimeout(node._tipResetTimer);
+          node._tipResetTimer = window.setTimeout(() => {
+            node.dataset.tipState = "idle";
+            setBubble(defaultTip);
+            if (defaultIcon) setIcon(defaultIcon);
+          }, 1400);
+        } catch {
+          setBubble("复制失败");
+          window.clearTimeout(node._tipResetTimer);
+          node._tipResetTimer = window.setTimeout(() => {
+            setBubble(defaultTip);
+          }, 1400);
+        }
+      }
+
+      node.addEventListener("click", handleCopy);
+      node.addEventListener("keydown", (event) => {
+        if ((event.key === "Enter" || event.key === " ") && isCopy) {
+          event.preventDefault();
+          handleCopy();
+        }
+      });
+    });
+  }
+
+  initTips();
+  document.addEventListener("astro:page-load", initTips);
+</script>
+
+<style is:global>
+  .post-tip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    color: inherit;
+    text-decoration: underline dashed rgb(161 161 170);
+    text-underline-offset: 4px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .post-tip:focus-visible {
+    border-radius: 0.35rem;
+    box-shadow: 0 0 0 2px rgb(96 165 250 / 0.4);
+  }
+
+  .post-tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    color: rgb(161 161 170);
+    transform: translateY(1px);
+    transition: color 0.2s ease;
+  }
+
+  .post-tip:hover .tip-icon,
+  .post-tip:focus-visible .tip-icon,
+  .post-tip[data-tip-state="copied"] .tip-icon {
+    color: rgb(244 244 245);
+  }
+
+  html:not(.dark) .post-tip:hover .tip-icon,
+  html:not(.dark) .post-tip:focus-visible .tip-icon,
+  html:not(.dark) .post-tip[data-tip-state="copied"] .tip-icon {
+    color: rgb(39 39 42);
+  }
+
+  .post-tip .tip-bubble {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.65rem);
+    z-index: 30;
+    min-width: max-content;
+    max-width: 16rem;
+    padding: 0.38rem 0.58rem;
+    border-radius: 0.55rem;
+    background: rgb(39 39 42 / 0.96);
+    color: rgb(250 250 250);
+    font-size: 0.78rem;
+    line-height: 1.35;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 0.2rem);
+    transition:
+      opacity 0.16s ease,
+      transform 0.16s ease;
+    box-shadow: 0 10px 28px -18px rgb(0 0 0 / 0.5);
+  }
+
+  .post-tip .tip-bubble::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 0.55rem;
+    height: 0.55rem;
+    background: inherit;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  html:not(.dark) .post-tip .tip-bubble {
+    background: rgb(24 24 27 / 0.92);
+    color: rgb(250 250 250);
+  }
+
+  .post-tip:hover .tip-bubble,
+  .post-tip:focus-visible .tip-bubble {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+</style>

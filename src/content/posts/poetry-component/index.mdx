@@ -1,0 +1,138 @@
+---
+title: "Poetry 诗词组件：更适合排版短诗与摘句"
+description: "介绍 Poetry 组件的设计思路——用标题、作者、正文和尾注组织出更像诗词的排版形式。"
+date: 2026-06-24
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Poetry from "../../../components/posts/Poetry.astro";
+import Tab from "../../../components/posts/Tab.astro";
+
+export const syntaxExample = `<Poetry title="诗有诗的标题" author="一名作者" footer="可选的落款">
+  <p>如你所见，</p>
+  <p>我，</p>
+  <p>是一首——</p>
+  <p>诗。</p>
+</Poetry>`;
+
+## 为什么需要 Poetry
+
+有些内容不适合放进普通段落里。短诗、词句、摘抄、题记这类文本更依赖留白、行距和居中排版，直接塞进正文会少掉一点味道。
+
+**Poetry** 组件就是为这种场景准备的：保留诗词式的视觉节奏，把标题、作者、正文和尾注清晰分开，适合用在文章里的小段落展示。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+    <Poetry title="诗有诗的标题" author="一名作者" footer="可选的落款">
+      <p>如你所见，</p>
+      <p>我，</p>
+      <p>是一首——</p>
+      <p>诗。</p>
+    </Poetry>
+  </Fragment>
+  <Fragment slot="tab2">
+    <pre>
+      <code>{syntaxExample}</code>
+    </pre>
+  </Fragment>
+</Tab>
+
+## 基本用法
+
+最常见的用法就是传入标题和作者，再把正文按一行一段写进默认插槽：
+
+<Poetry title="山中" author="某位写作者">
+  <p>风从山脊吹来，</p>
+  <p>云在松间停住。</p>
+  <p>我不说话，</p>
+  <p>就已经很安静。</p>
+</Poetry>
+
+## 带尾注
+
+如果你还想补上一行落款、题记或说明，可以使用 `footer`：
+
+<Poetry title="深夜随记" author="未署名" footer="写于夏夜的窗边">
+  <p>月色落在桌角，</p>
+  <p>像一句没有寄出的回信。</p>
+</Poetry>
+
+## 只展示正文
+
+`title`、`author`、`footer` 都是可选的，所以它也可以只承担正文展示：
+
+<Poetry>
+  <p>落日沉进海里，</p>
+  <p>晚风把一天的锋利吹平。</p>
+</Poetry>
+
+## 字段说明
+
+这个组件字段很简单：
+
+```yaml
+title: 诗有诗的标题
+author: 一名作者
+footer: 可选的落款
+```
+
+正文内容通过默认插槽传入。
+
+## Props 一览
+
+| 属性     | 类型     | 必填 | 说明                 |
+| -------- | -------- | ---- | -------------------- |
+| `title`  | `string` | 否   | 诗词标题             |
+| `author` | `string` | 否   | 作者或来源           |
+| `footer` | `string` | 否   | 尾注、落款或补充说明 |
+| `class`  | `string` | 否   | 追加类名             |
+
+## 内容写法建议
+
+为了获得更像诗词的排版效果，推荐把每一行都写成一个单独的 `<p>`：
+
+```astro
+<Poetry title="..." author="...">
+  <p>第一行</p>
+  <p>第二行</p>
+  <p>第三行</p>
+</Poetry>
+```
+
+这样组件内部会把每一行单独居中，并保留适合阅读的行间距。
+
+## 核心实现
+
+### 宽度贴合内容
+
+参考旧版组件，`Poetry` 仍然保持内容宽度贴合：
+
+```ts
+const wrapperClass = ["poetry", className].filter(Boolean).join("");
+```
+
+配合样式里的 `width: fit-content` 和 `margin: 2rem auto`，整体会自然居中显示。
+
+### 诗句换行展示
+
+正文区域使用默认插槽，段落本身按居中小块处理：
+
+```css
+.poetry-content :global(p) {
+  width: fit-content;
+  margin: 0.5rem auto;
+}
+```
+
+所以无论是短句还是多行摘句，都能比较稳定地保持诗词式排版。
+
+## 小结
+
+Poetry 组件适合处理文章里那些“不是普通正文”的内容。它不复杂，但能把一段短诗、摘句或题记从正文里轻轻提出来，让排版更有呼吸感。

@@ -32,23 +32,54 @@ const wrapperClass = ["tab-wrapper", center && "tab-center"]
       ))
     }
   </div>
-  {
-    tabs.map((_, i) => {
-      const slotName = `tab${i + 1}`;
-      const content = Astro.slots.render(slotName);
-
-      return (
-        <div
-          class="tab-content"
-          role="tabpanel"
-          data-tab-index={i + 1}
-          style={active !== i + 1 ? "display: none" : ""}
-        >
-          <Fragment set:html={content} />
-        </div>
-      );
-    })
-  }
+  <div
+    class="tab-content"
+    role="tabpanel"
+    data-tab-index="1"
+    style={active !== 1 ? "display: none" : ""}
+  >
+    <slot name="tab1" />
+  </div>
+  <div
+    class="tab-content"
+    role="tabpanel"
+    data-tab-index="2"
+    style={active !== 2 ? "display: none" : ""}
+  >
+    <slot name="tab2" />
+  </div>
+  <div
+    class="tab-content"
+    role="tabpanel"
+    data-tab-index="3"
+    style={active !== 3 ? "display: none" : ""}
+  >
+    <slot name="tab3" />
+  </div>
+  <div
+    class="tab-content"
+    role="tabpanel"
+    data-tab-index="4"
+    style={active !== 4 ? "display: none" : ""}
+  >
+    <slot name="tab4" />
+  </div>
+  <div
+    class="tab-content"
+    role="tabpanel"
+    data-tab-index="5"
+    style={active !== 5 ? "display: none" : ""}
+  >
+    <slot name="tab5" />
+  </div>
+  <div
+    class="tab-content"
+    role="tabpanel"
+    data-tab-index="6"
+    style={active !== 6 ? "display: none" : ""}
+  >
+    <slot name="tab6" />
+  </div>
 </div>
 
 <script is:inline>

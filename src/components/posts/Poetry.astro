@@ -1,0 +1,86 @@
+---
+interface Props {
+  /** 标题 */
+  title?: string;
+  /** 作者 */
+  author?: string;
+  /** 尾注 */
+  footer?: string;
+  class?: string;
+}
+
+const { title, author, footer, class: className } = Astro.props;
+
+const wrapperClass = ["poetry", className].filter(Boolean).join(" ");
+---
+
+<section class={wrapperClass}>
+  {title && <h2 class="poetry-title">{title}</h2>}
+  {author && <div class="poetry-author">{author}</div>}
+  <div class="poetry-content">
+    <slot />
+  </div>
+  {footer && <div class="poetry-footer">{footer}</div>}
+</section>
+
+<style>
+  .poetry {
+    width: fit-content;
+    max-width: min(100%, 28rem);
+    margin: 1.25rem auto;
+    padding: 0.1rem 0.5rem;
+    color: rgb(39 39 42);
+    white-space: pre-wrap;
+  }
+
+  :global(html.dark) .poetry {
+    color: rgb(244 244 245);
+  }
+
+  .poetry-title,
+  .poetry-author,
+  .poetry-footer {
+    text-align: center;
+  }
+
+  .poetry-title {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .poetry-author {
+    margin-top: 0.18rem;
+    color: rgb(82 82 91);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  :global(html.dark) .poetry-author {
+    color: rgb(161 161 170);
+  }
+
+  .poetry-content {
+    margin-top: 0.45rem;
+    font-size: 1.18rem;
+    line-height: 1.72;
+  }
+
+  .poetry-content :global(p) {
+    width: fit-content;
+    margin: 0.08rem auto;
+  }
+
+  .poetry-footer {
+    margin-top: 0.28rem;
+    color: rgb(82 82 91);
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  :global(html.dark) .poetry-footer {
+    color: rgb(161 161 170);
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+title: "LinkCard 链接卡片组件：小而精致的资源推荐块"
+description: "介绍 LinkCard 组件的设计思路——标题、描述、图标和链接组成的紧凑信息卡，适合在文章中展示站点、项目或外部资源。"
+date: 2026-06-24
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import LinkCard from "../../../components/posts/LinkCard.astro";
+import Tab from "../../../components/posts/Tab.astro";
+
+## 为什么需要 LinkCard
+
+有些外部资源不值得上完整横幅，但又比普通文本链接更需要存在感，比如项目地址、工具站点、作者主页、参考资料。
+
+**LinkCard** 组件就是为这种场景准备的：一行标题、一行描述，右侧配一张小图标，形成紧凑但清晰的推荐卡片。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+    <LinkCard
+      link="#link-card"
+      title="标题"
+      description="这是一行描述，如果不提供描述会展示域名"
+      icon="https://picsum.photos/100/100"
+    />
+  </Fragment>
+  <Fragment slot="tab2">
+
+```astro
+<LinkCard
+  link="#link-card"
+  title="标题"
+  description="这是一行描述，如果不提供描述会展示域名"
+  icon="https://picsum.photos/100/100"
+/>
+```
+
+  </Fragment>
+</Tab>
+
+## 基本用法
+
+最常见的用法就是传入 `link`、`title` 和 `icon`：
+
+<LinkCard
+  link="https://docs.astro.build"
+  title="Astro 官方文档"
+  description="静态站点、内容站和组件开发的第一参考资料"
+  icon="https://www.google.com/s2/favicons?domain=docs.astro.build&sz=128"
+/>
+
+## 自动描述回退
+
+如果不传 `description`，组件会自动尝试从链接中提取域名作为说明文字：
+
+<LinkCard
+  link="https://github.com/kmoretti/blog"
+  title="博客源码仓库"
+  icon="https://github.com/kmoretti.png"
+/>
+
+## 纯展示卡片
+
+不传 `link` 时，组件仍然可以作为纯展示信息卡片使用：
+
+<LinkCard
+  title="纯展示卡片"
+  description="没有跳转，只负责展示一段信息"
+  icon="/avatar.jpeg"
+/>
+
+## 字段说明
+
+这版组件字段和你旧项目里的预览数据结构保持一致：
+
+```yaml
+icon: https://picsum.photos/100/100
+title: 标题
+description: 这是一行描述，如果不提供描述会展示域名
+link: "#link-card"
+```
+
+## Props 一览
+
+| 属性 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `link` | `string` | 否 | 链接地址，不传则渲染为纯展示卡片 |
+| `title` | `string` | 是 | 卡片标题 |
+| `description` | `string` | 否 | 卡片描述，不传时尝试显示域名 |
+| `icon` | `string` | 否 | 右侧图标或封面图地址 |
+| `class` | `string` | 否 | 追加类名 |
+
+## 核心实现
+
+### 域名回退
+
+当没有传入描述时，组件会从 `link` 中提取域名：
+
+```ts
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+const resolvedDescription = description ?? (link ? getDomain(link) : "");
+```
+
+### 外链判断
+
+外部链接会自动加上 `target="_blank"` 和 `rel="noopener noreferrer"`：
+
+```ts
+function isExtLink(url: string): boolean {
+  return url.startsWith("http") && !url.includes(siteHost);
+}
+```
+
+### 无图兜底
+
+如果没有传 `icon`，组件会自动用标题首字生成一个简洁的占位块，避免右侧区域塌掉。
+
+## 小结
+
+LinkCard 适合放在文章中部做轻量推荐。相比普通链接，它更容易被注意到；相比大图横幅，它又更节制。用来展示参考资料、作者主页、源码仓库、工具入口都很顺手。

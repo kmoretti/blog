@@ -1,0 +1,106 @@
+---
+interface Props {
+  /** 图片地址 */
+  src: string;
+  /** 图片宽度 */
+  width?: string | number;
+  /** 图片高度 */
+  height?: string | number;
+  /** 图片替代文本 */
+  alt?: string;
+  /** 说明文字 */
+  caption?: string;
+  /** 是否开启灯箱缩放 */
+  zoom?: boolean;
+  /** 兼容旧版字段：当前项目未接入代理服务，传值时仅附加 no-referrer */
+  mirror?: boolean | string;
+  /** 自定义滤镜 */
+  filter?: string;
+  class?: string;
+}
+
+const {
+  src,
+  width,
+  height,
+  alt = "",
+  caption = "",
+  zoom = true,
+  mirror,
+  filter,
+  class: className,
+} = Astro.props;
+
+const wrapperClass = ["pic", className].filter(Boolean).join(" ");
+const resolvedAlt = caption || alt;
+const hasCaptionSlot = Astro.slots.has("caption");
+const imgStyle = filter ? `filter: ${filter};` : undefined;
+const figureAttrs = zoom ? { "data-lightbox-root": true } : {};
+const imgAttrs = zoom ? {} : { "data-lightbox-ignore": true };
+const referrerPolicy = mirror ? "no-referrer" : undefined;
+---
+
+<figure class={wrapperClass} {...figureAttrs}>
+  <img
+    class="pic-image"
+    src={src}
+    alt={resolvedAlt}
+    width={width}
+    height={height}
+    loading="lazy"
+    style={imgStyle}
+    referrerpolicy={referrerPolicy}
+    {...imgAttrs}
+  />
+  {
+    (caption || hasCaptionSlot) && (
+      <figcaption class="pic-caption" aria-hidden="true">
+        <slot name="caption">{caption}</slot>
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .pic {
+    width: fit-content;
+    max-width: 100%;
+    margin: 2rem auto;
+  }
+
+  .pic-image {
+    display: block;
+    width: auto;
+    max-width: min(100%, 48rem);
+    height: auto;
+    border-radius: 0.9rem;
+    box-shadow: 0 14px 32px -28px rgb(15 23 42 / 0.28);
+    background: rgb(244 244 245);
+    object-fit: cover;
+  }
+
+  :global(html.dark) .pic-image {
+    box-shadow: 0 16px 34px -28px rgb(0 0 0 / 0.5);
+    background: rgb(39 39 42);
+  }
+
+  .pic[data-lightbox-root] .pic-image {
+    cursor: zoom-in;
+  }
+
+  .pic-caption {
+    margin-top: 0.75rem;
+    color: rgb(82 82 91);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  :global(html.dark) .pic-caption {
+    color: rgb(161 161 170);
+  }
+
+  .pic-caption :global(p) {
+    margin: 0;
+  }
+</style>

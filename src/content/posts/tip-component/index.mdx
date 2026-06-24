@@ -1,0 +1,157 @@
+---
+title: "Tip 提示组件：一条能悬浮提示、也能点击复制的小提示"
+description: "介绍 Tip 组件的设计思路——用于展示一条带虚线下划线的小提示，支持悬浮提示、Iconify 图标与点击复制。"
+date: 2026-06-24
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Tip from "../../../components/posts/Tip.astro";
+import Tab from "../../../components/posts/Tab.astro";
+
+export const syntaxExample = `<Tip tip="这是一条悬浮提示">我是一个小提示</Tip>
+
+<Tip copy>+V 点击就能复制</Tip>
+
+<Tip icon="material-symbols:info-outline-rounded" tip="这里是补充说明">
+  带图标的小提示
+</Tip>
+`;
+
+## 为什么需要 Tip
+
+有些信息不适合单独放进提示框、卡片或注释块里，它们往往只是正文里的一个轻量补充：
+
+- 一条简短说明
+- 一个悬浮提示
+- 一段可点击复制的命令
+- 一句带图标的小提醒
+
+**Tip** 组件就是为这种“小而轻”的场景准备的。它保持正文流里的阅读节奏，同时给交互留出一点反馈。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+    <div class="not-prose mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+      <Tip icon={false} tip="这是一条悬浮提示">
+        我是一条小提示
+      </Tip>
+      <span>，</span>
+      <Tip icon={false} tip="这里没有图标">
+        我没有图标
+      </Tip>
+      <span>，</span>
+      <Tip copy>+V 点击就能复制</Tip>
+      <span>，太方便了！</span>
+      <Tip icon="tabler:copy" copy text="复制" />
+    </div>
+  </Fragment>
+  <Fragment slot="tab2">
+    <pre>
+      <code>{syntaxExample}</code>
+    </pre>
+  </Fragment>
+</Tab>
+
+## 基本用法
+
+最简单的用法就是传一段提示内容：
+
+<Tip tip="一段简单的补充说明">悬浮我试试</Tip>
+
+## 点击复制
+
+开启 `copy` 后，组件会在点击时复制正文内容，并把图标切换成勾号：
+
+<Tip copy>pnpm add astro-icon</Tip>
+
+## 使用 Iconify 图标
+
+图标通过当前项目已经接入的 Iconify 能力渲染，你可以直接传图标名：
+
+<Tip icon="material-symbols:info-outline-rounded" tip="这里是提示内容">
+  这是一条带图标的提示
+</Tip>
+
+## 关闭图标
+
+如果不想显示图标，可以传 `icon={false}`：
+
+<Tip icon={false} tip="只保留文本和提示">
+  纯文本 Tip
+</Tip>
+
+## 字段说明
+
+参考用法大致如下：
+
+```yaml
+text: 我是一条小提示
+tip: 这里是悬浮提示文字
+icon: tabler:copy
+copy: true
+```
+
+正文也可以不传 `text`，而是直接写在组件标签内部。
+
+## Props 一览
+
+| 属性    | 类型                | 必填 | 说明                                  |
+| ------- | ------------------- | ---- | ------------------------------------- |
+| `text`  | `string`            | 否   | 直接显示的文本，不传则使用默认插槽    |
+| `tip`   | `string`            | 否   | 悬浮提示内容                          |
+| `icon`  | `string \| boolean` | 否   | Iconify 图标名；传 `false` 可关闭图标 |
+| `copy`  | `boolean`           | 否   | 是否点击复制文本，默认 `false`        |
+| `class` | `string`            | 否   | 追加类名                              |
+
+## 核心实现
+
+### 悬浮提示
+
+这版没有引入额外 Tooltip 库，而是直接在组件内部渲染一个提示气泡：
+
+```astro
+{
+  resolvedTip && (
+    <span class="tip-bubble" role="tooltip">
+      {resolvedTip}
+    </span>
+  )
+}
+```
+
+通过 `:hover` 和 `:focus-visible` 控制显隐，足够覆盖文章场景。
+
+### 点击复制
+
+当 `copy={true}` 时，组件会读取 `.tip-content` 的文本内容，通过 `navigator.clipboard.writeText()` 复制：
+
+```ts
+const content = node.querySelector(".tip-content")?.textContent?.trim() || "";
+await navigator.clipboard.writeText(content);
+```
+
+复制成功后会：
+
+- 提示文案切换成“已复制”
+- 图标从复制切换成勾号
+- 短暂延时后恢复默认状态
+
+### 图标来源
+
+图标使用项目里已经接入的 **astro-icon / Iconify** 渲染：
+
+```astro
+<Icon name={resolvedIcon} width="18" height="18" />
+```
+
+这样和项目里其他组件、文章页图标体系保持一致。
+
+## 小结
+
+Tip 组件的定位很轻：不抢正文，不做大块提示，只在需要的时候补上一点提示、复制或图标反馈。对于博客文章里的命令、术语、简注、短提示，这种尺寸刚刚好。

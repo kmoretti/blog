@@ -1,0 +1,136 @@
+---
+title: "Pic 图片组件：带说明文字与灯箱缩放"
+description: "介绍 Pic 组件的设计思路——用于展示图片，支持说明文字、尺寸属性以及点击打开灯箱缩放。"
+date: 2026-06-24
+tags:
+  - Astro
+  - 组件
+  - 博客魔改
+categories:
+  - 博客魔改
+---
+
+import Pic from "../../../components/posts/Pic.astro";
+import Tab from "../../../components/posts/Tab.astro";
+
+export const syntaxExample = `<Pic
+  src="https://picsum.photos/480/240"
+  caption="说明文字，还支持通过 width 或 height 属性指定尺寸"
+/>\n`;
+
+## 为什么需要 Pic
+
+在文章中插入图片时，直接写 Markdown 图片虽然简单，但一旦想补充说明文字、控制尺寸，或者支持点击后放大查看，就会开始分散到多个语法和样式里。
+
+**Pic** 组件就是为这个场景准备的：用统一的组件 API 展示图片，支持说明文字、尺寸控制，并且默认接入现有灯箱脚本。
+
+> 用于展示图片，支持说明文字，点击后打开灯箱缩放。
+
+## 效果预览
+
+<Tab tabs={["组件", "语法"]} center>
+  <Fragment slot="tab1">
+    <Pic
+      src="https://picsum.photos/480/240"
+      caption="说明文字，还支持通过 width 或 height 属性指定尺寸"
+    />
+  </Fragment>
+  <Fragment slot="tab2">
+    <pre><code>{syntaxExample}</code></pre>
+  </Fragment>
+</Tab>
+
+## 基本用法
+
+只传 `src` 也可以正常渲染：
+
+<Pic src="https://picsum.photos/640/360" />
+
+## 带说明文字
+
+通过 `caption` 增加一行居中的说明文字：
+
+<Pic
+  src="https://picsum.photos/700/400"
+  caption="这是一张带说明的图片，适合在文章中补充上下文。"
+/>
+
+## 指定尺寸
+
+可以通过 `width` 或 `height` 控制图片显示尺寸：
+
+<Pic
+  src="https://picsum.photos/800/480"
+  width={420}
+  caption="这里通过 width={420} 控制展示宽度。"
+/>
+
+## 关闭灯箱
+
+默认 `zoom={true}`，点击图片会进入灯箱。如果你只想展示图片，不想让它可点击放大，可以手动关闭：
+
+<Pic
+  src="https://picsum.photos/720/400"
+  zoom={false}
+  caption="关闭灯箱后，图片仍然展示，但不会触发放大。"
+/>
+
+## 字段说明
+
+字段参考旧项目中的预览写法：
+
+```yaml
+src: https://picsum.photos/480/240
+# mirror: # 是否借助第三方图片加载服务，见源代码
+caption: 说明文字，还支持通过 width 或 height 属性指定尺寸
+# zoom: false # 是否开启灯箱缩放，默认开启
+```
+
+## Props 一览
+
+| 属性 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `src` | `string` | 是 | 图片地址 |
+| `width` | `string \| number` | 否 | 图片宽度 |
+| `height` | `string \| number` | 否 | 图片高度 |
+| `alt` | `string` | 否 | 图片替代文本 |
+| `caption` | `string` | 否 | 图片说明文字 |
+| `zoom` | `boolean` | 否 | 是否允许点击后打开灯箱，默认 `true` |
+| `mirror` | `boolean \| string` | 否 | 兼容旧版字段，当前仅用于附加 `no-referrer` |
+| `filter` | `string` | 否 | 传入 CSS `filter` 值 |
+| `class` | `string` | 否 | 追加类名 |
+
+## 核心实现
+
+### 接入现有灯箱
+
+当前博客已经在文章页接入了全局 lightbox 脚本，所以组件只需要决定“让这张图参与灯箱”还是“忽略这张图”：
+
+```ts
+const figureAttrs = zoom ? { "data-lightbox-root": true } : {};
+const imgAttrs = zoom ? {} : { "data-lightbox-ignore": true };
+```
+
+开启 `zoom` 时，组件自身会作为最近的 `data-lightbox-root`，这样点击后只会把当前图片纳入灯箱范围，不会把整篇文章的所有图片串成一组。
+
+### 说明文字优先级
+
+图片的 `alt` 默认会优先取 `caption`，这样灯箱查看时也能拿到更友好的描述：
+
+```ts
+const resolvedAlt = caption || alt;
+```
+
+### mirror 字段兼容
+
+旧项目中的 `mirror` 字段用于第三方图片代理服务。当前 Astro 项目没有接入同款能力，所以这里保留了字段兼容性，传值时只会附加：
+
+```ts
+const referrerPolicy = mirror ? "no-referrer" : undefined;
+```
+
+这样对部分限制来源的外链图床会更友好，但不会额外引入新的图片服务依赖。
+
+## 小结
+
+Pic 组件适合承接文章里的绝大多数图片展示需求。它比原生 Markdown 图片更统一，也更容易维护：说明文字、尺寸控制、灯箱开关都集中在一个组件里，后续想统一调整样式也会更轻松。
