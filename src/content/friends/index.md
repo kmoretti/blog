@@ -22,7 +22,7 @@ description: 交换友链说明与要求
 
 请点击下方的按钮跳转**GitHub议题**添加友链~
 
-<div class="not-prose my-6 flex justify-center">
+<!-- <div class="not-prose my-6 flex justify-center">
   <a
     href="https://github.com/kmoretti/blog/issues/new?template=add-friend.yml"
     target="_blank"
@@ -31,7 +31,7 @@ description: 交换友链说明与要求
   >
     申请友链
   </a>
-</div>
+</div> -->
 
 <style>
   .friend-apply-btn {

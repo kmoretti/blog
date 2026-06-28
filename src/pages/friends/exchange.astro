@@ -1,11 +1,12 @@
 ---
 import { getEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import FriendLinkForm from "../../components/FriendLinkForm.astro";
+import { FRIENDLINK_API } from "../../consts";
 
 const pageTitle = "友情链接 | 喵洛阁";
 const pageDescription = "我的朋友们";
 
-// Load Markdown content from src/content/friends/index.md
 const entry = await getEntry("friends", "index");
 if (!entry) {
   throw new Error("Missing content entry: friends/index.md");
@@ -16,11 +17,11 @@ const { Content } = await entry.render();
 <Layout
   title={pageTitle}
   description={pageDescription}
-  className="max-w-100px flex flex-col justify-center"
+  className="max-w-3xl"
 >
   <main>
     <header class="mb-6 space-y-2">
-      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
+      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500 dark:text-zinc-400">
         <a href="/" class="hover:underline">喵洛阁</a>
         <span class="mx-1">/</span>
         <a href="/friends/" class="hover:underline">朋友们</a>
@@ -31,8 +32,13 @@ const { Content } = await entry.render();
       </h1>
       <hr class="dark:border-zinc-700" />
     </header>
+
     <article class="prose dark:prose-invert">
       <Content />
     </article>
+
+    <section class="mt-10">
+      <FriendLinkForm apiBase={FRIENDLINK_API} />
+    </section>
   </main>
 </Layout>

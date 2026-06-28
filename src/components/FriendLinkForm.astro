@@ -1,0 +1,638 @@
+---
+export interface Props {
+  mode?: "apply" | "update";
+  apiBase?: string;
+}
+
+const { mode = "apply", apiBase } = Astro.props;
+---
+
+<div
+  id="friendlink-form-root"
+  class:list={{ "friendlink-form-root": true }}
+  data-initial-mode={mode}
+  data-api-base={apiBase}
+>
+  <div class="fl-mode-tabs">
+    <button id="fl-tab-apply" class="fl-mode-btn" data-mode="apply">
+      申请友链
+    </button>
+    <button id="fl-tab-update" class="fl-mode-btn" data-mode="update">
+      更新友链
+    </button>
+  </div>
+
+  <div id="fl-form-container" class="fl-form-box">
+    <div id="fl-loading" class="fl-loading">
+      <div class="fl-spinner"></div>
+      <span>加载中...</span>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .friendlink-form-root {
+    --fl-bg: rgba(255, 255, 255, 0.88);
+    --fl-border: rgba(24, 24, 27, 0.08);
+    --fl-text: #18181b;
+    --fl-text-secondary: #52525b;
+    --fl-text-muted: #a1a1aa;
+    --fl-input-bg: #ffffff;
+    --fl-input-border: #d4d4d8;
+    --fl-input-text: #18181b;
+    --fl-input-placeholder: #a1a1aa;
+    --fl-accent: #18181b;
+    --fl-accent-hover: #27272a;
+    --fl-btn-disabled: #a1a1aa;
+    --fl-err-bg: #fef2f2;
+    --fl-err-border: #fecaca;
+    --fl-err-text: #dc2626;
+    --fl-success-bg: #f0fdf4;
+    --fl-success-icon-bg: #ecfdf5;
+    --fl-success-text: #059669;
+    --fl-shadow:
+      0 1px 3px rgba(24, 24, 27, 0.06), 0 1px 2px rgba(24, 24, 27, 0.04);
+    --fl-radius: 12px;
+  }
+
+  html.dark .friendlink-form-root {
+    --fl-bg: rgba(24, 24, 27, 0.84);
+    --fl-border: rgba(255, 255, 255, 0.08);
+    --fl-text: #f4f4f5;
+    --fl-text-secondary: #a1a1aa;
+    --fl-text-muted: #71717a;
+    --fl-input-bg: #3f3f46;
+    --fl-input-border: #52525b;
+    --fl-input-text: #f4f4f5;
+    --fl-input-placeholder: #71717a;
+    --fl-accent: #18181b;
+    --fl-accent-hover: #27272a;
+    --fl-btn-disabled: #52525b;
+    --fl-err-bg: rgba(127, 29, 29, 0.3);
+    --fl-err-border: rgba(220, 38, 38, 0.4);
+    --fl-err-text: #fca5a5;
+    --fl-success-bg: rgba(5, 46, 22, 0.3);
+    --fl-success-icon-bg: rgba(5, 46, 22, 0.5);
+    --fl-success-text: #4ade80;
+    --fl-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .fl-mode-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.25rem;
+    background: var(--fl-bg);
+    border: 1px solid var(--fl-border);
+    border-radius: var(--fl-radius);
+    padding: 4px;
+    box-shadow: var(--fl-shadow);
+    backdrop-filter: blur(12px);
+  }
+
+  .fl-mode-btn {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    border-radius: calc(var(--fl-radius) - 4px);
+    background: transparent;
+    color: var(--fl-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .fl-mode-btn:hover {
+    color: var(--fl-text);
+    background: rgba(128, 128, 128, 0.06);
+  }
+
+  html.dark .fl-mode-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .fl-mode-btn.active {
+    background: var(--fl-accent);
+    color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+
+  html.dark .fl-mode-btn.active {
+    background: #e4e4e7;
+    color: #18181b;
+  }
+
+  .fl-form-box {
+    background: var(--fl-bg);
+    border: 1px solid var(--fl-border);
+    border-radius: var(--fl-radius);
+    padding: 1.5rem;
+    box-shadow: var(--fl-shadow);
+    backdrop-filter: blur(12px);
+  }
+
+  .fl-form-box h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--fl-text);
+  }
+
+  .fl-form-box .fl-subtitle {
+    margin: 0 0 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--fl-text-muted);
+  }
+
+  .fl-field {
+    margin-bottom: 1rem;
+  }
+
+  .fl-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--fl-text);
+    margin-bottom: 0.375rem;
+  }
+
+  .fl-star {
+    color: #ef4444;
+  }
+
+  .fl-input {
+    width: 100%;
+    padding: 0.5625rem 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--fl-input-border);
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    color: var(--fl-input-text);
+    background: var(--fl-input-bg);
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+    font-family: inherit;
+  }
+
+  .fl-input::placeholder {
+    color: var(--fl-input-placeholder);
+  }
+
+  .fl-input:focus {
+    border-color: var(--fl-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--fl-accent) 15%, transparent);
+  }
+
+  html.dark .fl-input:focus {
+    border-color: #a1a1aa;
+    box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.2);
+  }
+
+  .fl-hint {
+    margin: 0.375rem 0 0;
+    font-size: 0.6875rem;
+    color: var(--fl-text-muted);
+  }
+
+  .fl-err-box {
+    display: none;
+    padding: 0.625rem 0.875rem;
+    background: var(--fl-err-bg);
+    border: 1px solid var(--fl-err-border);
+    border-radius: 8px;
+    color: var(--fl-err-text);
+    font-size: 0.8125rem;
+    margin-bottom: 1rem;
+  }
+
+  .fl-err-box.visible {
+    display: block;
+  }
+
+  .fl-btn {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--fl-accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    font-family: inherit;
+  }
+
+  .fl-btn:hover {
+    background: var(--fl-accent-hover);
+  }
+
+  .fl-btn:disabled {
+    background: var(--fl-btn-disabled);
+    cursor: not-allowed;
+  }
+
+  html.dark .fl-btn {
+    background: #e4e4e7;
+    color: #18181b;
+  }
+
+  html.dark .fl-btn:hover {
+    background: #d4d4d8;
+  }
+
+  html.dark .fl-btn:disabled {
+    background: #52525b;
+    color: #a1a1aa;
+  }
+
+  .fl-success {
+    display: none;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .fl-success.visible {
+    display: block;
+  }
+
+  .fl-success-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--fl-success-icon-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+
+  .fl-success-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--fl-success-text);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .fl-success h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--fl-text);
+  }
+
+  .fl-success p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--fl-text-secondary);
+    line-height: 1.6;
+  }
+
+  .fl-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 3rem;
+    color: var(--fl-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .fl-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--fl-border);
+    border-top-color: var(--fl-accent);
+    border-radius: 50%;
+    animation: fl-spin 0.7s linear infinite;
+  }
+
+  @keyframes fl-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .fl-form-box {
+      padding: 1.125rem;
+    }
+    .fl-mode-tabs {
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var root = document.getElementById("friendlink-form-root");
+    if (!root) return;
+
+    var initialMode = root.dataset.initialMode || "apply";
+    var apiBase =
+      root.dataset.apiBase ||
+      window.__FRIENDLINK_API_BASE__ ||
+      "https://verify.081531.xyz";
+    var API_URL = apiBase + "/api/submissions";
+
+    var containerEl = document.getElementById("fl-form-container");
+    var tabApply = document.getElementById("fl-tab-apply");
+    var tabUpdate = document.getElementById("fl-tab-update");
+    var currentMode = initialMode;
+
+    var FIELDS_APPLY = [
+      {
+        key: "name",
+        label: "站点名称",
+        required: true,
+        type: "text",
+        placeholder: "站点名称",
+      },
+      {
+        key: "url",
+        label: "站点地址",
+        required: true,
+        type: "url",
+        placeholder: "https://example.com",
+      },
+      {
+        key: "description",
+        label: "站点描述",
+        required: false,
+        type: "text",
+        placeholder: "例如：一个关于技术和设计的博客",
+      },
+      {
+        key: "avatar",
+        label: "头像地址",
+        required: true,
+        type: "url",
+        placeholder: "https://example.com/avatar.png",
+      },
+      {
+        key: "siteshot",
+        label: "站点截图",
+        required: false,
+        type: "url",
+        placeholder: "站点截图链接",
+      },
+      {
+        key: "feed",
+        label: "RSS 订阅",
+        required: false,
+        type: "url",
+        placeholder: "https://example.com/atom.xml",
+      },
+      {
+        key: "email",
+        label: "邮箱",
+        required: false,
+        type: "email",
+        placeholder: "用于接收审核结果通知（选填）",
+      },
+    ];
+
+    var FIELDS_UPDATE = [
+      {
+        key: "originalUrl",
+        label: "原站点地址",
+        required: true,
+        type: "url",
+        placeholder: "原网站地址",
+      },
+      {
+        key: "name",
+        label: "站点名称",
+        required: true,
+        type: "text",
+        placeholder: "站点名称",
+      },
+      {
+        key: "url",
+        label: "新站点地址",
+        required: true,
+        type: "url",
+        placeholder: "https://example.com",
+      },
+      {
+        key: "description",
+        label: "站点描述",
+        required: false,
+        type: "text",
+        placeholder: "例如：一个关于技术和设计的博客",
+      },
+      {
+        key: "avatar",
+        label: "头像地址",
+        required: true,
+        type: "url",
+        placeholder: "https://example.com/avatar.png",
+      },
+      {
+        key: "siteshot",
+        label: "站点截图",
+        required: false,
+        type: "url",
+        placeholder: "站点截图链接",
+      },
+      {
+        key: "feed",
+        label: "RSS 订阅",
+        required: false,
+        type: "url",
+        placeholder: "https://example.com/atom.xml",
+      },
+      {
+        key: "email",
+        label: "邮箱",
+        required: false,
+        type: "email",
+        placeholder: "用于接收审核结果通知（选填）",
+      },
+    ];
+
+    var formState = {};
+
+    function setActiveTab(mode) {
+      currentMode = mode;
+      tabApply.classList.toggle("active", mode === "apply");
+      tabUpdate.classList.toggle("active", mode === "update");
+      renderForm(mode);
+    }
+
+    function renderForm(mode) {
+      var fields = mode === "apply" ? FIELDS_APPLY : FIELDS_UPDATE;
+      var title = mode === "apply" ? "申请友链" : "更新友链";
+      var subtitle =
+        mode === "apply"
+          ? "请填写你的网站信息，提交后等待管理员审核。"
+          : "更新已存在的友链信息。";
+      var submitText = mode === "apply" ? "提交申请" : "提交更新";
+
+      var html = '<div class="fl-form-inner">';
+      html += "<h3>" + title + "</h3>";
+      html += '<p class="fl-subtitle">' + subtitle + "</p>";
+
+      html += '<div id="fl-error" class="fl-err-box"></div>';
+
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
+        html += '<div class="fl-field">';
+        html += '<label class="fl-label" for="fl-' + f.key + '">';
+        html += f.label;
+        if (f.required) html += ' <span class="fl-star">*</span>';
+        html += "</label>";
+        html +=
+          '<input class="fl-input" id="fl-' +
+          f.key +
+          '" type="' +
+          f.type +
+          '" ' +
+          (f.required ? "required" : "") +
+          ' placeholder="' +
+          f.placeholder +
+          '" value="' +
+          (formState[f.key] || "") +
+          '" />';
+        if (f.key === "email") {
+          html += '<p class="fl-hint">用于接收审核结果通知</p>';
+        }
+        if (f.key === "siteshot") {
+          html += '<p class="fl-hint">支持 siteshot 和 topimg 字段</p>';
+        }
+        html += "</div>";
+      }
+
+      html +=
+        '<button type="submit" class="fl-btn" id="fl-submit-btn">' +
+        submitText +
+        "</button>";
+      html += "</div>";
+
+      var successHtml = '<div id="fl-success" class="fl-success">';
+      successHtml += '<div class="fl-success-icon">';
+      successHtml +=
+        '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>';
+      successHtml += "</div>";
+      successHtml += "<h3>提交成功</h3>";
+      successHtml +=
+        "<p>感谢您！友链" +
+        (mode === "apply" ? "申请" : "更新请求") +
+        "已提交，等待管理员审核。</p>";
+      if (mode === "apply") {
+        successHtml += "<p>审核结果将通过邮件通知您。</p>";
+      }
+      successHtml += "</div>";
+
+      containerEl.innerHTML = html + successHtml;
+
+      attachFormHandler(mode);
+    }
+
+    function attachFormHandler(mode) {
+      var formInner = containerEl.querySelector(".fl-form-inner");
+      if (!formInner) return;
+
+      var inputs = formInner.querySelectorAll(".fl-input");
+      for (var i = 0; i < inputs.length; i++) {
+        (function (input) {
+          var key = input.id.replace("fl-", "");
+          input.addEventListener("input", function () {
+            formState[key] = input.value;
+          });
+        })(inputs[i]);
+      }
+
+      var submitBtn = document.getElementById("fl-submit-btn");
+      if (!submitBtn) return;
+
+      submitBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        handleSubmit(mode);
+      });
+    }
+
+    function handleSubmit(mode) {
+      var fields = mode === "apply" ? FIELDS_APPLY : FIELDS_UPDATE;
+      var errBox = document.getElementById("fl-error");
+      var submitBtn = document.getElementById("fl-submit-btn");
+      var successEl = document.getElementById("fl-success");
+
+      // Validate required fields
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
+        if (!f.required) continue;
+        var input = document.getElementById("fl-" + f.key);
+        if (!input || !input.value.trim()) {
+          showError(errBox, "请填写 " + f.label);
+          input && input.focus();
+          return;
+        }
+      }
+
+      // Build payload
+      var payload = {};
+      for (var key in formState) {
+        if (formState[key] && formState[key].trim()) {
+          payload[key] = formState[key].trim();
+        }
+      }
+      payload.type = mode;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "提交中...";
+
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(function (res) {
+          if (!res.ok) {
+            return res.json().then(function (data) {
+              throw new Error(data.error || "提交失败");
+            });
+          }
+          return res.json();
+        })
+        .then(function () {
+          if (errBox) errBox.classList.remove("visible");
+          var formInner = containerEl.querySelector(".fl-form-inner");
+          if (formInner) formInner.style.display = "none";
+          if (successEl) successEl.classList.add("visible");
+        })
+        .catch(function (err) {
+          showError(errBox, err.message || "发生未知错误，请稍后重试");
+        })
+        .finally(function () {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = mode === "apply" ? "提交申请" : "提交更新";
+          }
+        });
+    }
+
+    function showError(el, msg) {
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add("visible");
+    }
+
+    // Init tabs
+    tabApply.addEventListener("click", function () {
+      setActiveTab("apply");
+    });
+    tabUpdate.addEventListener("click", function () {
+      setActiveTab("update");
+    });
+
+    // Init with initial mode
+    setActiveTab(initialMode);
+  })();
+</script>

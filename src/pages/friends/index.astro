@@ -1,9 +1,10 @@
 ---
-import friendsData from "../../data/friends.json";
 import Layout from "../../layouts/Layout.astro";
+import { fetchFriends } from "../../lib/friends";
 
 const pageTitle = "友情链接 | 喵洛阁";
 const pageDescription = "我的朋友们";
+const friendsData = await fetchFriends();
 ---
 
 <Layout

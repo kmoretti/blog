@@ -3,6 +3,64 @@ import Layout from "../../layouts/Layout.astro";
 
 const pageTitle = "朋友圈 | 喵洛阁";
 const pageDescription = "友链朋友圈，看看朋友们最近在写什么。";
+
+const API_BASE = "https://fc.081531.xyz";
+const PAGE_SIZE = 20;
+
+interface ArticleItem {
+  title: string;
+  created: string;
+  link: string;
+  author: string;
+  avatar: string;
+}
+
+interface AllJsonResponse {
+  statistical_data: {
+    friends_num: number;
+    active_num: number;
+    error_num: number;
+    article_num: number;
+    last_updated_time: string;
+  };
+  article_data: ArticleItem[];
+}
+
+let allData: AllJsonResponse | null = null;
+let fetchError = false;
+try {
+  const response = await fetch(`${API_BASE}/all.json`);
+  if (response.ok) {
+    allData = (await response.json()) as AllJsonResponse;
+  } else {
+    fetchError = true;
+  }
+} catch {
+  fetchError = true;
+}
+
+const stats = allData?.statistical_data;
+const articles = allData?.article_data ?? [];
+
+const formatDate = (dateStr: string) => {
+  try {
+    const d = new Date(dateStr);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  } catch {
+    return dateStr;
+  }
+};
+
+const getInitials = (name: string) => {
+  return name.charAt(0).toUpperCase();
+};
+
+const initialArticles = articles.slice(0, PAGE_SIZE);
+const remainingArticles = articles.slice(PAGE_SIZE);
+const hasMore = remainingArticles.length > 0;
 ---
 
 <Layout
@@ -10,7 +68,7 @@ const pageDescription = "友链朋友圈，看看朋友们最近在写什么。"
   description={pageDescription}
   className="flex min-h-svh max-w-4xl flex-col"
 >
-  <main class="pb-16">
+  <main class="fcl-page pb-16">
     <header class="mb-6 space-y-2">
       <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
         <a href="/" class="hover:underline">喵洛阁</a>
@@ -40,135 +98,558 @@ const pageDescription = "友链朋友圈，看看朋友们最近在写什么。"
       <hr class="dark:border-zinc-700" />
     </header>
 
-    <div id="friend-circle-lite-root"></div>
+    <div class="fcl-root">
+      {
+        fetchError ? (
+          <p class="fcl-error">数据加载失败，请稍后再试。</p>
+        ) : articles.length === 0 ? (
+          <p class="fcl-empty">暂无文章数据。</p>
+        ) : (
+          <>
+            <div class="fcl-summary">
+              <span class="fcl-stat">共 {stats?.friends_num ?? 0} 位朋友</span>
+              <span class="fcl-stat">{stats?.active_num ?? 0} 位活跃</span>
+              <span class="fcl-stat">{stats?.article_num ?? 0} 篇文章</span>
+              <span class="fcl-updated">
+                更新于 {stats?.last_updated_time?.slice(0, 16) ?? ""}
+              </span>
+            </div>
 
-    <script is:inline>
-      if (typeof UserConfig === "undefined") {
-        var UserConfig = {
-          private_api_url: "https://fc.081531.xyz/",
-          page_turning_number: 20,
-          error_img: "https://i.p-i.vip/30/20240815-66bced9226a36.webp",
-        };
-      }
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://fastly.jsdelivr.net/gh/willow-god/Friend-Circle-Lite/main/fclite.min.css"
-    />
-    <script
-      async
-      src="https://fastly.jsdelivr.net/gh/willow-god/Friend-Circle-Lite/main/fclite.min.js"
-    ></script>
+            <ul class="fcl-list" data-fcl-list>
+              {initialArticles.map((item) => (
+                <li class="fcl-card">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="fcl-card__link"
+                  >
+                    <span class="fcl-card__avatar-wrap">
+                      {item.avatar ? (
+                        <img
+                          src={item.avatar}
+                          alt={item.author}
+                          class="fcl-card__avatar"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="fcl-card__avatar fcl-card__avatar--text">
+                          {getInitials(item.author)}
+                        </span>
+                      )}
+                    </span>
+                    <span class="fcl-card__body">
+                      <span class="fcl-card__meta">
+                        <span class="fcl-card__author">{item.author}</span>
+                        <time class="fcl-card__date">
+                          {formatDate(item.created)}
+                        </time>
+                      </span>
+                      <span class="fcl-card__title">{item.title}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-    <style is:inline>
-      /* ── FCircle Lite theme bridge ──
-         FCLite reads [data-theme] to pick its CSS vars.
-         We set data-theme on #friend-circle-lite-root based on the
-         site's html.dark class so the two stay in sync. */
-      #friend-circle-lite-root {
-        font-family: inherit;
-      }
+            {hasMore && (
+              <div class="fcl-more-wrap">
+                <button class="fcl-more" type="button" data-fcl-more>
+                  加载更多
+                </button>
+              </div>
+            )}
 
-      /* FCLite allows 3 lines but the 120px card can't fit them all —
-         clamp the title to 2 lines so nothing gets visually clipped. */
-      #friend-circle-lite-root .card-title {
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        max-height: 3em;
+            <div hidden data-fcl-remaining aria-hidden="true">
+              {remainingArticles.map((item, i) => (
+                <li class="fcl-card">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="fcl-card__link"
+                  >
+                    <span class="fcl-card__avatar-wrap">
+                      {item.avatar ? (
+                        <img
+                          src={item.avatar}
+                          alt={item.author}
+                          class="fcl-card__avatar"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="fcl-card__avatar fcl-card__avatar--text">
+                          {getInitials(item.author)}
+                        </span>
+                      )}
+                    </span>
+                    <span class="fcl-card__body">
+                      <span class="fcl-card__meta">
+                        <span class="fcl-card__author">{item.author}</span>
+                        <time class="fcl-card__date">
+                          {formatDate(item.created)}
+                        </time>
+                      </span>
+                      <span class="fcl-card__title">{item.title}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </div>
+          </>
+        )
       }
+    </div>
 
-      /* Tweak card aesthetics to match the blog's rounded style */
-      #friend-circle-lite-root .card {
-        border-radius: 0.75rem;
-        transition:
-          transform 0.2s ease,
-          border-color 0.2s ease;
-      }
-      #friend-circle-lite-root .card:hover {
-        transform: translateY(-3px);
-      }
-      #friend-circle-lite-root #random-article {
-        border-radius: 0.75rem;
-      }
-      #friend-circle-lite-root #load-more-btn {
-        font-family: inherit;
-        border-radius: 9999px;
-        letter-spacing: 0.02em;
-      }
-      #friend-circle-lite-root #load-more-btn:hover {
-        width: 180px;
-      }
-      #friend-circle-lite-root #stats-container {
-        font-size: 12px;
-        opacity: 0.6;
-      }
-      #friend-circle-lite-root .modal-content {
-        border-radius: 1rem;
-      }
-
-      @media (max-width: 640px) {
-        #friend-circle-lite-root .card {
-          border-radius: 0.5rem;
-          height: 120px;
-        }
-        #friend-circle-lite-root .card-title {
-          font-size: 14px;
-          -webkit-line-clamp: 2;
-          line-clamp: 2;
-          max-height: 3.2em;
-          line-height: 1.6;
-        }
-        #friend-circle-lite-root #random-article {
-          border-radius: 0.5rem;
-          padding: 14px;
-        }
-      }
-    </style>
-
-    <!-- Theme sync + view-transition re-init -->
     <script is:inline>
       (function () {
-        function syncTheme() {
-          var el = document.getElementById("friend-circle-lite-root");
-          if (!el) return;
-          var isDark = document.documentElement.classList.contains("dark");
-          el.setAttribute("data-theme", isDark ? "dark" : "light");
-        }
+        var moreBtn = document.querySelector("[data-fcl-more]");
+        var list = document.querySelector("[data-fcl-list]");
+        var remaining = document.querySelector("[data-fcl-remaining]");
+        if (!moreBtn || !list || !remaining) return;
 
-        function init() {
-          var el = document.getElementById("friend-circle-lite-root");
-          if (!el) return;
-          syncTheme();
-          // Wait for FCLite script to load and DOM to settle
-          if (typeof initialize_fc_lite === "function") {
-            requestAnimationFrame(function () {
-              requestAnimationFrame(function () {
-                initialize_fc_lite();
-              });
-            });
+        moreBtn.addEventListener("click", function () {
+          var items = remaining.children;
+          for (var i = 0; i < items.length; i++) {
+            list.appendChild(items[i].cloneNode(true));
           }
-        }
-
-        // Initial load (direct navigation)
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", init);
-        } else {
-          init();
-        }
-
-        // Astro view-transition: body is swapped, need to re-set
-        // data-theme and re-initialize FCircle on the new DOM.
-        document.addEventListener("astro:page-load", init);
-
-        // Watch for manual theme toggles (they toggle html.dark)
-        var observer = new MutationObserver(function () {
-          syncTheme();
-        });
-        observer.observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["class"],
+          remaining.innerHTML = "";
+          moreBtn.parentElement.removeChild(moreBtn);
         });
       })();
     </script>
+
+    <style is:inline>
+      .fcl-root {
+        --fcl-tape-0: #f5d742;
+        --fcl-tape-1: #f09bc0;
+        --fcl-tape-2: #86d993;
+        --fcl-tape-3: #87b9e8;
+        --fcl-tab-0: #7cb87c;
+        --fcl-tab-1: #6ba8d6;
+        --fcl-tab-2: #f5d742;
+        --fcl-tab-3: #e8a0b8;
+        --fcl-card-bg: rgba(255, 255, 255, 0.92);
+        --fcl-card-border: rgba(24, 24, 27, 0.1);
+        --fcl-card-shadow:
+          4px 5px 0 rgba(82, 64, 38, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
+        --fcl-avatar-border: rgba(82, 64, 38, 0.12);
+        --fcl-avatar-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
+        --fcl-ink: #18181b;
+        --fcl-muted: #71717a;
+        --fcl-accent: #2563eb;
+        --fcl-accent-soft: rgba(37, 99, 235, 0.1);
+      }
+
+      html.dark .fcl-root {
+        --fcl-tape-0: #a8862a;
+        --fcl-tape-1: #9e5f7a;
+        --fcl-tape-2: #4f7a55;
+        --fcl-tape-3: #4f6f8a;
+        --fcl-tab-0: #4a7a4a;
+        --fcl-tab-1: #3d6a8a;
+        --fcl-tab-2: #a8862a;
+        --fcl-tab-3: #8a5f70;
+        --fcl-card-bg: rgba(24, 24, 27, 0.88);
+        --fcl-card-border: rgba(255, 255, 255, 0.06);
+        --fcl-card-shadow:
+          4px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.12);
+        --fcl-avatar-border: rgba(225, 230, 245, 0.12);
+        --fcl-avatar-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
+        --fcl-ink: #e4e4e7;
+        --fcl-muted: #a1a1aa;
+        --fcl-accent: #93c5fd;
+        --fcl-accent-soft: rgba(147, 197, 253, 0.12);
+      }
+
+      .fcl-summary {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+
+      .fcl-stat,
+      .fcl-updated {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        border: 1px dashed rgba(24, 24, 27, 0.1);
+        background: rgba(24, 24, 27, 0.03);
+        color: var(--fcl-muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      html.dark .fcl-stat,
+      html.dark .fcl-updated {
+        border-color: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .fcl-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        align-items: stretch;
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .fcl-card {
+        --fcl-tilt: -0.25deg;
+        --fcl-tape-color: var(--fcl-tape-0);
+        --fcl-tab-color: var(--fcl-tab-0);
+        position: relative;
+        z-index: 1;
+        break-inside: avoid;
+      }
+
+      .fcl-card:nth-child(4n + 2) {
+        --fcl-tilt: 0.22deg;
+        --fcl-tape-color: var(--fcl-tape-1);
+        --fcl-tab-color: var(--fcl-tab-1);
+      }
+
+      .fcl-card:nth-child(4n + 3) {
+        --fcl-tilt: -0.12deg;
+        --fcl-tape-color: var(--fcl-tape-2);
+        --fcl-tab-color: var(--fcl-tab-2);
+      }
+
+      .fcl-card:nth-child(4n + 4) {
+        --fcl-tilt: 0.3deg;
+        --fcl-tape-color: var(--fcl-tape-3);
+        --fcl-tab-color: var(--fcl-tab-3);
+      }
+
+      .fcl-card:hover {
+        z-index: 10;
+      }
+
+      .fcl-card__link {
+        position: relative;
+        display: grid;
+        grid-template-columns: 58px minmax(0, 1fr);
+        align-items: start;
+        gap: 14px;
+        height: 100%;
+        min-height: 88px;
+        padding: 18px 18px 16px 16px;
+        border: 1px dashed var(--fcl-card-border);
+        border-radius: 10px;
+        background: var(--fcl-card-bg);
+        box-shadow: var(--fcl-card-shadow);
+        isolation: isolate;
+        transform: rotate(var(--fcl-tilt));
+        transition:
+          transform 0.22s ease,
+          border-color 0.22s ease,
+          box-shadow 0.22s ease;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .fcl-card__link::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 22px;
+        z-index: 2;
+        width: 38px;
+        height: 15px;
+        background-color: var(--fcl-tape-color);
+        background-image: repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(255, 255, 255, 0.35) 3px,
+          rgba(255, 255, 255, 0.35) 5px,
+          transparent 5px,
+          transparent 10px
+        );
+        box-shadow: 0 3px 8px rgba(82, 64, 38, 0.12);
+        filter: saturate(0.92);
+        transform: rotate(-3deg);
+        pointer-events: none;
+        border-radius: 2px;
+      }
+
+      html.dark .fcl-card__link::before {
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
+      }
+
+      .fcl-card__link::after {
+        content: "";
+        position: absolute;
+        top: 16px;
+        right: -6px;
+        z-index: -1;
+        width: 6px;
+        height: 48px;
+        border: 1px dashed rgba(82, 64, 38, 0.12);
+        border-left: 0;
+        border-radius: 0 8px 8px 0;
+        background: var(--fcl-tab-color);
+        box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
+        transition:
+          width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+          right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+      }
+
+      html.dark .fcl-card__link::after {
+        border-color: rgba(225, 230, 245, 0.1);
+        box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.16);
+      }
+
+      .fcl-card__link:hover {
+        transform: translateY(-3px) rotate(0deg);
+        border-color: var(--fcl-accent);
+        box-shadow:
+          6px 8px 0 rgba(82, 64, 38, 0.1),
+          0 4px 12px rgba(15, 23, 42, 0.1);
+      }
+
+      html.dark .fcl-card__link:hover {
+        box-shadow:
+          6px 8px 0 rgba(0, 0, 0, 0.26),
+          0 4px 12px rgba(0, 0, 0, 0.14);
+      }
+
+      .fcl-card__link:hover::after {
+        right: -12px;
+        width: 12px;
+      }
+
+      .fcl-card__avatar-wrap {
+        flex-shrink: 0;
+        display: inline-grid;
+        place-items: center;
+        width: 58px;
+        height: 58px;
+        margin-top: 2px;
+        border: 1px solid var(--fcl-avatar-border);
+        border-radius: 9px;
+        background: var(--fcl-card-bg);
+        box-shadow: var(--fcl-avatar-shadow);
+        transform: rotate(-2deg);
+        transition:
+          transform 0.22s ease,
+          border-color 0.22s ease,
+          box-shadow 0.22s ease;
+      }
+
+      .fcl-card__link:hover .fcl-card__avatar-wrap {
+        border-color: var(--fcl-accent);
+        box-shadow: 3px 5px 0 rgba(82, 64, 38, 0.1);
+        transform: rotate(0deg) translateY(-1px);
+      }
+
+      html.dark .fcl-card__link:hover .fcl-card__avatar-wrap {
+        box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.22);
+      }
+
+      .fcl-card__avatar {
+        display: inline-grid;
+        place-items: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 7px;
+        object-fit: cover;
+        background: var(--fcl-accent-soft);
+        color: var(--fcl-accent);
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      img.fcl-card__avatar {
+        background: transparent;
+      }
+
+      .fcl-card__body {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .fcl-card__meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 6px 8px;
+        color: var(--fcl-muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .fcl-card__author {
+        max-width: 240px;
+        min-width: 0;
+        min-height: 24px;
+        padding: 3px 10px;
+        border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px;
+        background: color-mix(in srgb, var(--fcl-tab-color) 50%, transparent);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--fcl-ink);
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      html.dark .fcl-card__author {
+        color: #e4e4e7;
+      }
+
+      .fcl-card__date {
+        min-width: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--fcl-muted);
+      }
+
+      .fcl-card__title {
+        display: block;
+        min-width: 0;
+        margin-top: 1px;
+        color: var(--fcl-ink);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.55;
+        overflow-wrap: anywhere;
+        transition: color 0.18s ease;
+      }
+
+      .fcl-card__title:hover {
+        color: var(--fcl-accent);
+      }
+
+      .fcl-more-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 28px;
+      }
+
+      .fcl-more {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 132px;
+        padding: 10px 24px;
+        border: 1px dashed rgba(24, 24, 27, 0.1);
+        border-radius: 999px;
+        background: rgba(24, 24, 27, 0.03);
+        color: var(--fcl-muted);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      html.dark .fcl-more {
+        border-color: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .fcl-more:hover {
+        color: var(--fcl-accent);
+        border-color: var(--fcl-accent);
+        transform: translateY(-1px);
+      }
+
+      html.dark .fcl-more:hover {
+        background: var(--fcl-accent-soft);
+      }
+
+      .fcl-error,
+      .fcl-empty {
+        padding: 18px 20px;
+        border: 1px dashed rgba(24, 24, 27, 0.1);
+        border-radius: 10px;
+        background: rgba(24, 24, 27, 0.03);
+        color: var(--fcl-muted);
+        font-size: 14px;
+        text-align: center;
+      }
+
+      html.dark .fcl-error,
+      html.dark .fcl-empty {
+        border-color: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      @media (max-width: 640px) {
+        .fcl-list {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .fcl-card__link {
+          grid-template-columns: 42px minmax(0, 1fr);
+          gap: 10px;
+          min-height: 76px;
+          padding: 16px 12px 14px;
+          transform: none;
+        }
+
+        .fcl-card__link:hover {
+          transform: translateY(-2px);
+        }
+
+        .fcl-card__link::before {
+          left: 16px;
+        }
+
+        .fcl-card__link::after {
+          top: 18px;
+          right: -5px;
+          width: 5px;
+          height: 38px;
+        }
+
+        .fcl-card__link:hover::after {
+          right: -9px;
+          width: 9px;
+        }
+
+        .fcl-card__avatar-wrap,
+        .fcl-card__avatar {
+          width: 42px;
+          height: 42px;
+        }
+
+        .fcl-card__avatar-wrap {
+          border-radius: 7px;
+        }
+
+        .fcl-card__avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 5px;
+          font-size: 15px;
+        }
+
+        .fcl-card__author {
+          max-width: 160px;
+        }
+      }
+    </style>
   </main>
 </Layout>

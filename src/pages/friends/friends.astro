@@ -1,17 +1,8 @@
 ---
-import friendsData from "../../data/friends.json";
 import Layout from "../../layouts/Layout.astro";
-
-interface FriendItem {
-  name: string;
-  url: string;
-  avatar: string;
-  snapshot?: string;
-  desc?: string;
-  feed?: string;
-  tags?: string;
-  links?: string;
-}
+import { fetchFriends } from "../../lib/friends";
+import type { FriendItem } from "../../lib/friends";
+import { LATENCY_API_URL } from "../../consts";
 
 interface RemoteLinkItem {
   name?: string;
@@ -28,7 +19,8 @@ interface RemoteLinkPayload {
 const pageTitle = "友链详情 | 喵洛阁";
 const pageDescription = "友情链接详细页面";
 
-const formatUrl = (value?: string) => value?.trim().replace(/^`|`$/g, "") ?? "";
+const normalizeUrl = (value?: string) =>
+  value?.trim().replace(/^`|`$/g, "").replace(/\/+$/, "") ?? "";
 const normalizeTagList = (value?: string) =>
   (value ?? "")
     .split(",")
@@ -58,17 +50,19 @@ const getLatencyTone = (latency?: number, reachable?: boolean) => {
   return "slow";
 };
 
+const friendsData = await fetchFriends();
+
 let latencyMap = new Map<string, { latency?: number; reachable?: boolean }>();
 
 try {
-  const response = await fetch("https://fc.081531.xyz/link.json");
+  const response = await fetch(LATENCY_API_URL);
   const remoteData = (await response.json()) as RemoteLinkPayload;
   latencyMap = new Map(
     (remoteData.link_data ?? []).flatMap((item) => {
       const entries: [string, { latency?: number; reachable?: boolean }][] = [];
       const payload = { latency: item.latency, reachable: item.reachable };
-      if (item.link) entries.push([formatUrl(item.link), payload]);
-      if (item.link_page) entries.push([formatUrl(item.link_page), payload]);
+      if (item.link) entries.push([normalizeUrl(item.link), payload]);
+      if (item.link_page) entries.push([normalizeUrl(item.link_page), payload]);
       return entries;
     }),
   );
@@ -76,17 +70,17 @@ try {
   latencyMap = new Map();
 }
 
-const friends = (friendsData as FriendItem[]).map((friend) => {
-  const siteUrl = formatUrl(friend.url);
-  const linksUrl = formatUrl(friend.links);
+const friends = friendsData.map((friend) => {
+  const siteUrl = normalizeUrl(friend.url);
+  const linksUrl = normalizeUrl(friend.links);
   const latencyInfo = latencyMap.get(siteUrl) ?? latencyMap.get(linksUrl);
 
   return {
     ...friend,
     url: siteUrl,
     links: linksUrl,
-    snapshot: formatUrl(friend.snapshot),
-    feed: formatUrl(friend.feed),
+    snapshot: normalizeUrl(friend.snapshot),
+    feed: normalizeUrl(friend.feed),
     desc: friend.desc?.trim() ?? "",
     tags: normalizeTagList(friend.tags),
     host: getHost(siteUrl),
@@ -156,7 +150,7 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       </div>
     </header>
 
-    <section class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <section class="friends-grid">
       {
         friends.map((friend) => (
           <article class="friend-card">
@@ -180,43 +174,58 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
               </span>
             </div>
 
-            <div class="friend-content">
-              <div class="friend-head">
+            <div class="friend-card__main">
+              <a
+                href={friend.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="friend-card__link"
+              >
                 <img
-                  src={friend.avatar}
-                  alt={friend.name}
-                  class="friend-avatar"
-                  loading="lazy"
-                />
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-start justify-between gap-3">
-                    <div class="min-w-0 space-y-1">
-                      <h2 class="truncate text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                        {friend.name}
-                      </h2>
-                      <p class="truncate text-sm text-zinc-500 dark:text-zinc-400">
-                        {friend.host}
-                      </p>
-                    </div>
-                    {friend.links && (
-                      <a
-                        href={friend.links}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="friend-link-btn relative z-20"
-                        aria-label={`${friend.name} 的友链页`}
-                      >
-                        友链页
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
+                    src={friend.avatar}
+                    alt={friend.name}
+                    class="friend-card__avatar"
+                    loading="lazy"
+                  />
+                <span class="friend-card__body">
+                  <strong class="friend-card__name">{friend.name}</strong>
+                  <span class="friend-card__host">{friend.host}</span>
+                  <span class="friend-card__desc">
+                    {friend.desc || "这个朋友暂时还没有补充简介。"}
+                  </span>
+                </span>
+              </a>
 
-              <p class="friend-desc">
-                {friend.desc || "这个朋友暂时还没有补充简介。"}
-              </p>
+              {friend.feed && (
+                <a
+                  href={friend.feed}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="friend-card__rss"
+                  aria-label={`${friend.name} 的 RSS`}
+                  title="RSS"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide"
+                  >
+                    <path d="M4 11a9 9 0 0 1 9 9" />
+                    <path d="M4 4a16 16 0 0 1 16 16" />
+                    <circle cx="5" cy="19" r="1" />
+                  </svg>
+                </a>
+              )}
+            </div>
 
+            <div class="friend-card__extra">
               {friend.tags.length > 0 && (
                 <div class="friend-tags">
                   {friend.tags.map((tag) => (
@@ -226,28 +235,16 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
               )}
 
               <div class="friend-meta-grid">
-                <a
-                  href={friend.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="friend-meta-box friend-meta-box--link"
-                >
+                <div class="friend-meta-box">
                   <div class="friend-meta-label">主站</div>
                   <div class="friend-meta-value">{friend.host}</div>
-                </a>
+                </div>
                 <div class="friend-meta-box">
                   <div class="friend-meta-label">订阅</div>
                   {friend.feed ? (
-                    <a
-                      href={friend.feed}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="friend-feed-link relative z-20"
-                    >
-                      Atom / RSS
-                    </a>
+                    <span class="friend-meta-value">已提供</span>
                   ) : (
-                    <div class="friend-meta-value">未提供</div>
+                    <span class="friend-meta-value">未提供</span>
                   )}
                 </div>
               </div>
@@ -260,93 +257,181 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
 
   <style is:inline>
     .friends-detail {
-      --friends-accent: #ffee6f;
-      --friends-accent-soft: rgba(255, 238, 111, 0.22);
-      --friends-card-bg: rgba(255, 255, 255, 0.88);
-      --friends-card-border: rgba(24, 24, 27, 0.08);
-      --friends-card-shadow: 0 18px 40px -28px rgba(15, 23, 42, 0.22);
+      --friends-tape-0: #f5d742;
+      --friends-tape-1: #f09bc0;
+      --friends-tape-2: #86d993;
+      --friends-tape-3: #87b9e8;
+      --friends-tab-0: #7cb87c;
+      --friends-tab-1: #6ba8d6;
+      --friends-tab-2: #f5d742;
+      --friends-tab-3: #e8a0b8;
+      --friends-card-bg: rgba(255, 255, 255, 0.92);
+      --friends-card-border: rgba(24, 24, 27, 0.10);
+      --friends-card-shadow: 4px 5px 0 rgba(82, 64, 38, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
+      --friends-avatar-border: rgba(82, 64, 38, 0.12);
+      --friends-avatar-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
       --friends-shot-fallback: linear-gradient(
         135deg,
-        rgba(255, 238, 111, 0.35),
+        rgba(245, 215, 66, 0.30),
         rgba(255, 255, 255, 0.92)
       );
       --friends-shot-mask: linear-gradient(
         to top,
         rgba(255, 255, 255, 0.98),
-        rgba(255, 255, 255, 0.22) 55%,
+        rgba(255, 255, 255, 0.15) 45%,
         rgba(255, 255, 255, 0.02)
       );
       --friends-tag-bg: rgba(24, 24, 27, 0.04);
       --friends-meta-bg: rgba(24, 24, 27, 0.03);
-      --friends-muted: #6b7280;
+      --friends-muted: #71717a;
+      --friends-ink: #18181b;
+      --friends-accent: #2563eb;
     }
 
     html.dark .friends-detail {
-      --friends-accent: #b1d5c8;
-      --friends-accent-soft: rgba(177, 213, 200, 0.2);
-      --friends-card-bg: rgba(24, 24, 27, 0.84);
-      --friends-card-border: rgba(255, 255, 255, 0.08);
-      --friends-card-shadow: 0 20px 42px -30px rgba(0, 0, 0, 0.42);
+      --friends-tape-0: #a8862a;
+      --friends-tape-1: #9e5f7a;
+      --friends-tape-2: #4f7a55;
+      --friends-tape-3: #4f6f8a;
+      --friends-tab-0: #4a7a4a;
+      --friends-tab-1: #3d6a8a;
+      --friends-tab-2: #a8862a;
+      --friends-tab-3: #8a5f70;
+      --friends-card-bg: rgba(24, 24, 27, 0.88);
+      --friends-card-border: rgba(255, 255, 255, 0.06);
+      --friends-card-shadow: 4px 5px 0 rgba(0, 0, 0, 0.20), 0 2px 8px rgba(0, 0, 0, 0.12);
+      --friends-avatar-border: rgba(225, 230, 245, 0.12);
+      --friends-avatar-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
       --friends-shot-fallback: linear-gradient(
         135deg,
-        rgba(177, 213, 200, 0.22),
-        rgba(24, 24, 27, 0.9)
+        rgba(168, 134, 42, 0.20),
+        rgba(24, 24, 27, 0.90)
       );
       --friends-shot-mask: linear-gradient(
         to top,
         rgba(24, 24, 27, 0.98),
-        rgba(24, 24, 27, 0.28) 55%,
+        rgba(24, 24, 27, 0.20) 45%,
         rgba(24, 24, 27, 0.04)
       );
       --friends-tag-bg: rgba(255, 255, 255, 0.06);
       --friends-meta-bg: rgba(255, 255, 255, 0.04);
       --friends-muted: #a1a1aa;
+      --friends-ink: #e4e4e7;
+      --friends-accent: #93c5fd;
+    }
+
+    .friends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      align-items: stretch;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
     .friend-card {
+      --fcl-tilt: -0.25deg;
+      --fcl-tape-color: var(--friends-tape-0);
+      --fcl-tab-color: var(--friends-tab-0);
       position: relative;
-      overflow: hidden;
-      border: 1px solid var(--friends-card-border);
-      border-radius: 1.5rem;
+      z-index: 1;
+      border-radius: 10px;
       background: var(--friends-card-bg);
       box-shadow: var(--friends-card-shadow);
-      backdrop-filter: blur(10px);
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
+      isolation: isolate;
+      transform: rotate(var(--fcl-tilt));
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .friend-card:nth-child(4n+2) {
+      --fcl-tilt: 0.22deg;
+      --fcl-tape-color: var(--friends-tape-1);
+      --fcl-tab-color: var(--friends-tab-1);
+    }
+
+    .friend-card:nth-child(4n+3) {
+      --fcl-tilt: -0.12deg;
+      --fcl-tape-color: var(--friends-tape-2);
+      --fcl-tab-color: var(--friends-tab-2);
+    }
+
+    .friend-card:nth-child(4n+4) {
+      --fcl-tilt: 0.3deg;
+      --fcl-tape-color: var(--friends-tape-3);
+      --fcl-tab-color: var(--friends-tab-3);
     }
 
     .friend-card:hover {
-      transform: translateY(-4px);
-      border-color: color-mix(
-        in srgb,
-        var(--friends-accent) 35%,
-        var(--friends-card-border)
+      z-index: 10;
+    }
+
+    .friend-card::before,
+    .friend-card::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .friend-card::before {
+      top: -8px;
+      left: 22px;
+      z-index: 5;
+      width: 38px;
+      height: 15px;
+      background-color: var(--fcl-tape-color);
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.35) 3px,
+        rgba(255, 255, 255, 0.35) 5px,
+        transparent 5px,
+        transparent 10px
       );
-      box-shadow: 0 24px 48px -30px
-        color-mix(in srgb, var(--friends-accent) 36%, transparent);
+      box-shadow: 0 3px 8px rgba(82, 64, 38, 0.12);
+      filter: saturate(0.92);
+      transform: rotate(-3deg);
+      border-radius: 2px;
     }
 
-    .friend-meta-box--link {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      transition:
-        border-color 0.2s ease,
-        background-color 0.2s ease;
+    html.dark .friend-card::before {
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
     }
 
-    .friend-meta-box--link:hover {
-      border-color: color-mix(in srgb, var(--friends-accent) 55%, transparent);
-      background: var(--friends-accent-soft);
+    .friend-card::after {
+      top: 16px;
+      right: -6px;
+      z-index: -1;
+      width: 6px;
+      height: 48px;
+      border: 1px dashed rgba(82, 64, 38, 0.12);
+      border-left: 0;
+      border-radius: 0 8px 8px 0;
+      background: var(--fcl-tab-color);
+      box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
+      transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    html.dark .friend-card::after {
+      border-color: rgba(225, 230, 245, 0.10);
+      box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.16);
+    }
+
+    .friend-card:hover {
+      transform: translateY(-3px) rotate(0deg);
+    }
+
+    .friend-card:hover::after {
+      right: -12px;
+      width: 12px;
     }
 
     .friend-shot {
       position: relative;
-      height: 10.5rem;
+      height: 10rem;
       overflow: hidden;
-      border-bottom: 1px solid var(--friends-card-border);
+      border-radius: 10px 10px 0 0;
       background: var(--friends-shot-fallback);
     }
 
@@ -354,14 +439,11 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       height: 100%;
       width: 100%;
       object-fit: cover;
-      transition:
-        transform 0.45s ease,
-        filter 0.45s ease;
+      transition: transform 0.45s ease;
     }
 
     .friend-card:hover .friend-shot-image {
       transform: scale(1.03);
-      filter: saturate(0.96);
     }
 
     .friend-shot-fallback {
@@ -378,16 +460,16 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
 
     .friend-latency {
       position: absolute;
-      top: 0.9rem;
-      right: 0.9rem;
-      z-index: 2;
+      top: 0.8rem;
+      right: 0.8rem;
+      z-index: 3;
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
       border-radius: 999px;
       border: 1px solid transparent;
-      padding: 0.35rem 0.7rem;
-      font-size: 0.75rem;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       backdrop-filter: blur(10px);
@@ -403,21 +485,17 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
 
     .friend-latency--fast,
     .friend-latency--ok {
-      background: color-mix(in srgb, var(--friends-accent) 20%, transparent);
-      border-color: color-mix(in srgb, var(--friends-accent) 45%, transparent);
-      color: color-mix(in srgb, var(--friends-accent) 20%, #0f172a);
+      background: color-mix(in srgb, #86d993 28%, transparent);
+      border-color: color-mix(in srgb, #86d993 50%, transparent);
+      color: #166534;
     }
 
     html.dark .friend-latency--fast,
     html.dark .friend-latency--ok {
-      background: #4ade80;
-      border-color: #22c55e;
+      background: #22c55e;
+      border-color: #16a34a;
       color: #fff;
       backdrop-filter: none;
-    }
-
-    html.dark .friend-latency-dot {
-      background: currentColor;
     }
 
     .friend-latency--slow {
@@ -459,137 +537,254 @@ const friends = (friendsData as FriendItem[]).map((friend) => {
       backdrop-filter: none;
     }
 
-    .friend-content {
+    .friend-card__main {
       position: relative;
-      z-index: 2;
-      padding: 1.2rem 1.25rem 1.25rem;
-    }
-
-    .friend-head {
       display: flex;
       align-items: flex-start;
-      gap: 0.95rem;
-      margin-top: -2.75rem;
+      gap: 12px;
+      padding: 14px 18px 0;
+      margin-top: -1.5rem;
     }
 
-    .friend-avatar {
-      height: 4.25rem;
-      width: 4.25rem;
-      flex: 0 0 auto;
-      border-radius: 1.2rem;
-      border: 3px solid color-mix(in srgb, var(--friends-card-bg) 90%, white);
+    .friend-card__link {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img.friend-card__avatar {
+      flex-shrink: 0;
+      display: block;
+      width: 58px;
+      height: 58px;
+      border: 1px solid var(--friends-avatar-border);
+      border-radius: 9px;
+      background: var(--friends-card-bg);
+      box-shadow: var(--friends-avatar-shadow);
       object-fit: cover;
-      background: #fff;
-      box-shadow: 0 10px 20px -14px rgba(15, 23, 42, 0.45);
+      transform: rotate(-2deg);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
     }
 
-    .friend-link-btn {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      border: 1px solid var(--friends-card-border);
-      background: transparent;
-      padding: 0.38rem 0.8rem;
-      font-size: 0.75rem;
-      color: inherit;
-      transition:
-        border-color 0.2s ease,
-        color 0.2s ease,
-        background-color 0.2s ease;
+    .friend-card:hover img.friend-card__avatar {
+      border-color: var(--friends-accent);
+      box-shadow: 3px 5px 0 rgba(82, 64, 38, 0.10);
+      transform: rotate(0deg) translateY(-1px);
     }
 
-    .friend-link-btn:hover {
-      border-color: color-mix(in srgb, var(--friends-accent) 55%, transparent);
-      background: var(--friends-accent-soft);
-      color: inherit;
+    html.dark .friend-card:hover img.friend-card__avatar {
+      box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.22);
     }
 
-    .friend-desc {
-      margin-top: 1rem;
-      min-height: 3rem;
+    .friend-card__body {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-top: 8px;
+    }
+
+    .friend-card__name {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--friends-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .friend-card:hover .friend-card__name {
+      color: var(--friends-accent);
+    }
+
+    .friend-card__host {
+      font-size: 11px;
       color: var(--friends-muted);
-      font-size: 0.94rem;
-      line-height: 1.75;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .friend-card__desc {
+      margin-top: 3px;
+      color: var(--friends-muted);
+      font-size: 12px;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .friend-card__rss {
+      flex-shrink: 0;
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-top: 6px;
+      border-radius: 50%;
+      color: var(--friends-muted);
+      background: transparent;
+      transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .friend-card__rss::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .friend-card:hover .friend-card__rss {
+      color: var(--friends-accent);
+      background: color-mix(in srgb, var(--friends-accent) 12%, transparent);
+    }
+
+    html.dark .friend-card:hover .friend-card__rss {
+      color: var(--friends-accent);
+      background: color-mix(in srgb, var(--friends-accent) 15%, transparent);
+    }
+
+    .friend-card__rss:hover {
+      transform: scale(1.12);
+    }
+
+    .friend-card__rss .lucide {
+      width: 13px;
+      height: 13px;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .friend-card:hover .friend-card__rss .lucide {
+      animation: fcl-rss-wiggle 0.7s ease;
+    }
+
+    @keyframes fcl-rss-wiggle {
+      0%   { transform: rotate(0)    scale(1); }
+      25%  { transform: rotate(-8deg) scale(1.08); }
+      50%  { transform: rotate(6deg)  scale(1.12); }
+      75%  { transform: rotate(-3deg) scale(1.06); }
+      100% { transform: rotate(0)    scale(1); }
+    }
+
+    .friend-card__extra {
+      padding: 12px 18px 16px;
     }
 
     .friend-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.55rem;
-      margin-top: 1rem;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
     }
 
     .friend-tag {
       border-radius: 999px;
       background: var(--friends-tag-bg);
-      padding: 0.32rem 0.7rem;
-      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
       color: var(--friends-muted);
     }
 
     .friend-meta-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin-top: 1.15rem;
+      gap: 0.7rem;
     }
 
     .friend-meta-box {
-      border: 1px solid var(--friends-card-border);
-      border-radius: 1rem;
+      border: 1px dashed var(--friends-card-border);
+      border-radius: 8px;
       background: var(--friends-meta-bg);
-      padding: 0.8rem 0.9rem;
+      padding: 0.6rem 0.8rem;
     }
 
     .friend-meta-label {
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       color: var(--friends-muted);
+      margin-bottom: 0.2rem;
     }
 
-    .friend-meta-value,
-    .friend-feed-link {
-      display: block;
-      margin-top: 0.35rem;
+    .friend-meta-value {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      color: #18181b;
-    }
-
-    html.dark .friend-meta-value,
-    html.dark .friend-feed-link {
-      color: #f4f4f5;
-    }
-
-    .friend-feed-link {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.18em;
-      color: inherit;
-    }
-
-    .friend-feed-link:hover {
-      color: color-mix(in srgb, var(--friends-accent) 30%, #18181b);
-    }
-
-    html.dark .friend-feed-link:hover {
-      color: var(--friends-accent);
+      color: var(--friends-ink);
     }
 
     @media (max-width: 640px) {
-      .friend-content {
-        padding: 1rem 1rem 1.05rem;
+      .friends-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
       }
 
-      .friend-head {
-        gap: 0.8rem;
+      .friend-card {
+        transform: none;
       }
 
-      .friend-avatar {
-        height: 3.8rem;
-        width: 3.8rem;
+      .friend-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .friend-card::before {
+        left: 16px;
+      }
+
+      .friend-card::after {
+        top: 18px;
+        right: -5px;
+        width: 5px;
+        height: 38px;
+      }
+
+      .friend-card:hover::after {
+        right: -9px;
+        width: 9px;
+      }
+
+      .friend-shot {
+        height: 8rem;
+      }
+
+      .friend-card__main {
+        padding: 12px 14px 0;
+        gap: 10px;
+      }
+
+      .friend-card__link {
+        gap: 10px;
+      }
+
+      img.friend-card__avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 7px;
+      }
+
+      .friend-card__extra {
+        padding: 10px 14px 14px;
+      }
+
+      .friend-card__rss {
+        margin-top: 4px;
+      }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .friends-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>

@@ -25,6 +25,17 @@ import { Icon } from "astro-icon/components";
   />
 </button>
 
+<style>
+  #tt-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    contain: paint;
+    will-change: clip-path;
+  }
+</style>
+
 <script>
   function attachThemeToggle() {
     const button = document.getElementById("theme-toggle");
@@ -32,18 +43,49 @@ import { Icon } from "astro-icon/components";
     if (button instanceof HTMLElement && button.dataset.bound === "1") return;
 
     button.addEventListener("click", () => {
-      const isDark = document.documentElement.classList.toggle("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-      document.dispatchEvent(
-        new CustomEvent("theme-changed", {
-          detail: { theme: isDark ? "dark" : "light" },
-        }),
+      if (document.getElementById("tt-overlay")) return;
+
+      const isDark = document.documentElement.classList.contains("dark");
+      const targetTheme = isDark ? "light" : "dark";
+      const sourceTheme = isDark ? "dark" : "light";
+
+      const rect = button.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const maxRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
       );
+
+      document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", targetTheme);
+      document.dispatchEvent(
+        new CustomEvent("theme-changed", { detail: { theme: targetTheme } }),
+      );
+
+      const overlay = document.createElement("div");
+      overlay.id = "tt-overlay";
+      overlay.style.background = sourceTheme === "dark" ? "#18181b" : "#ffffff";
+      overlay.style.clipPath = `circle(${maxRadius}px at ${x}px ${y}px)`;
+      document.documentElement.appendChild(overlay);
+
+      void overlay.offsetHeight;
+
+      overlay.style.transition = "clip-path 0.55s cubic-bezier(0.4, 0, 0.2, 1)";
+      overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+
+      overlay.addEventListener("transitionend", () => overlay.remove(), {
+        once: true,
+      });
+
+      setTimeout(() => {
+        if (overlay.parentNode) overlay.remove();
+      }, 1000);
     });
+
     if (button instanceof HTMLElement) button.dataset.bound = "1";
   }
 
-  // 初始化和页面切换时都重新绑定
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", attachThemeToggle, {
       once: true,
