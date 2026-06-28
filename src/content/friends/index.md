@@ -8,7 +8,7 @@ description: 交换友链说明与要求
 - 头像：<a href="javascript:void(0)" onclick="copyText(event, 'https://q2.qlogo.cn/headimg_dl?dst_uin=3149261770&spec=0', event.target, '点此复制头像链接')" style="cursor:pointer;text-decoration:underline;color:inherit">点此复制头像链接</a>
 - 介绍：<code onclick="copyText(event, '人生如逆旅，我亦是行人。', this)" style="cursor:pointer" title="点击复制">人生如逆旅，我亦是行人。</code>
 - Feed：<code onclick="copyText(event, 'https://blog.081531.xyz/rss.xml', this)" style="cursor:pointer" title="点击复制">https://blog.081531.xyz/rss.xml</code>
-- 截图：<code onclick="copyText(event, '暂未拍摄', this)" style="cursor:pointer" title="点击复制">暂未拍摄</code>
+- 截图：<code onclick="copyText(event, '暂未拍摄', this)" style="cursor:pointer" title="点击复制">https://imgbed.081531.xyz/file/telegram/image(1).png</code>
 
 ### 友链基本要求
 
