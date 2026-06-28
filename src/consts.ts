@@ -8,7 +8,7 @@ export const SITE_DESCRIPTION =
 
 export const EMAIL = "mcy@kemiaosw.top";
 
-export const FRIENDLINK_API = "https://fl.081531.xyz";
+export const FRIENDLINK_API = "https://verify.081531.xyz";
 export const FRIEND_DATA_URL =
   "https://cdn.050815.xyz/gh/kmoretti/friends-data@main/link.yml";
 export const LATENCY_API_URL = "https://fc.081531.xyz/link.json";
