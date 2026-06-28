@@ -376,6 +376,13 @@ const { mode = "apply", apiBase } = Astro.props;
         placeholder: "https://example.com/avatar.png",
       },
       {
+        key: "friendslink",
+        label: "友链页面地址",
+        required: true,
+        type: "url",
+        placeholder: "https://example.com/link/",
+      },
+      {
         key: "siteshot",
         label: "站点截图",
         required: false,
@@ -383,7 +390,7 @@ const { mode = "apply", apiBase } = Astro.props;
         placeholder: "站点截图链接",
       },
       {
-        key: "feed",
+        key: "feeds",
         label: "RSS 订阅",
         required: false,
         type: "url",
@@ -435,6 +442,13 @@ const { mode = "apply", apiBase } = Astro.props;
         placeholder: "https://example.com/avatar.png",
       },
       {
+        key: "friendslink",
+        label: "友链页面地址",
+        required: true,
+        type: "url",
+        placeholder: "https://example.com/link/",
+      },
+      {
         key: "siteshot",
         label: "站点截图",
         required: false,
@@ -442,7 +456,7 @@ const { mode = "apply", apiBase } = Astro.props;
         placeholder: "站点截图链接",
       },
       {
-        key: "feed",
+        key: "feeds",
         label: "RSS 订阅",
         required: false,
         type: "url",
