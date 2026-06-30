@@ -7,9 +7,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        // ASCII 使用 Noto Sans SC；CJK 因 unicode-range 规则自动回退到 Noto Serif SC。
-        // 末尾保留系统无衬线作为兜底。
-        sans: ["Noto Sans SC", "Noto Serif SC", ...defaultTheme.fontFamily.sans],
+        // Noto Sans SC 覆盖拉丁与 CJK，末尾保留系统无衬线作为兜底。
+        sans: ["Noto Sans SC", ...defaultTheme.fontFamily.sans],
         // 代码块统一使用 Noto Sans Mono。
         mono: ["Noto Sans Mono", ...defaultTheme.fontFamily.mono],
       },

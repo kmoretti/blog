@@ -1,8 +1,11 @@
-/* Self-host fonts via @fontsource to avoid Google Fonts & local system fonts */
+/* Self-host fonts via @fontsource */
+/* Noto Sans SC: covers both Latin (small) and CJC (via chinese-simplified subset) */
+/* CJK subset is large (~1.1 MB/weight), but loading only one CJK font instead of two
+   saves ~3 MB of font downloads. */
 @import "@fontsource/noto-sans-sc/latin-400.css";
 @import "@fontsource/noto-sans-sc/latin-700.css";
-@import "@fontsource/noto-serif-sc/chinese-simplified-400.css";
-@import "@fontsource/noto-serif-sc/chinese-simplified-700.css";
+@import "@fontsource/noto-sans-sc/chinese-simplified-400.css";
+@import "@fontsource/noto-sans-sc/chinese-simplified-700.css";
 @import "@fontsource/noto-sans-mono/latin-400.css";
 @import "@fontsource/noto-sans-mono/latin-700.css";
 @tailwind base;
