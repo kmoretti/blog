@@ -143,17 +143,17 @@ const {
       "#theme-toggle",
     ];
 
-    const links = new Set();
-    for (const sel of containers) {
-      document
-        .querySelectorAll(`${sel} a[href]`)
-        .forEach((el) => links.add(el));
-    }
+    const links = new Set(
+      containers.flatMap(
+        (sel) => [...document.querySelectorAll(`${sel} a[href]`)],
+      ),
+    );
 
-    const excluded = new Set();
-    for (const sel of excludeSelectors) {
-      document.querySelectorAll(sel).forEach((el) => excluded.add(el));
-    }
+    const excluded = new Set(
+      excludeSelectors.flatMap(
+        (sel) => [...document.querySelectorAll(sel)],
+      ),
+    );
 
     const baseUrl = location.protocol + "//" + location.host;
 
