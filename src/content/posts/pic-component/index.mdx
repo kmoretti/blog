@@ -36,7 +36,9 @@ export const syntaxExample = `<Pic
     />
   </Fragment>
   <Fragment slot="tab2">
-    <pre><code>{syntaxExample}</code></pre>
+    <pre>
+      <code>{syntaxExample}</code>
+    </pre>
   </Fragment>
 </Tab>
 
@@ -88,17 +90,17 @@ caption: 说明文字，还支持通过 width 或 height 属性指定尺寸
 
 ## Props 一览
 
-| 属性 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `src` | `string` | 是 | 图片地址 |
-| `width` | `string \| number` | 否 | 图片宽度 |
-| `height` | `string \| number` | 否 | 图片高度 |
-| `alt` | `string` | 否 | 图片替代文本 |
-| `caption` | `string` | 否 | 图片说明文字 |
-| `zoom` | `boolean` | 否 | 是否允许点击后打开灯箱，默认 `true` |
-| `mirror` | `boolean \| string` | 否 | 兼容旧版字段，当前仅用于附加 `no-referrer` |
-| `filter` | `string` | 否 | 传入 CSS `filter` 值 |
-| `class` | `string` | 否 | 追加类名 |
+| 属性      | 类型                | 必填 | 说明                                       |
+| --------- | ------------------- | ---- | ------------------------------------------ |
+| `src`     | `string`            | 是   | 图片地址                                   |
+| `width`   | `string \| number`  | 否   | 图片宽度                                   |
+| `height`  | `string \| number`  | 否   | 图片高度                                   |
+| `alt`     | `string`            | 否   | 图片替代文本                               |
+| `caption` | `string`            | 否   | 图片说明文字                               |
+| `zoom`    | `boolean`           | 否   | 是否允许点击后打开灯箱，默认 `true`        |
+| `mirror`  | `boolean \| string` | 否   | 兼容旧版字段，当前仅用于附加 `no-referrer` |
+| `filter`  | `string`            | 否   | 传入 CSS `filter` 值                       |
+| `class`   | `string`            | 否   | 追加类名                                   |
 
 ## 核心实现
 

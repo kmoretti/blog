@@ -4,19 +4,20 @@ import { EMAIL } from "../consts";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<header class="mb-6 flex items-center justify-between" transition:name="header">
-  <nav class="flex items-center gap-4">
+<header class="fp-header" transition:name="header">
+  <span class="fp-header-tape" aria-hidden="true"></span>
+  <nav class="fp-header-nav">
     <a href="/">首页</a>
     <a href="/posts/1/">归档</a>
     <a href="/friends/">朋友们</a>
     <a href="/about/">关于我</a>
   </nav>
-  <div class="flex items-center gap-2">
+  <div class="fp-header-actions">
     <a
       href={`mailto:${EMAIL}`}
       title="电子邮"
       aria-label="电子邮"
-      class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="fp-header-icon"
     >
       <Icon
         name="material-symbols:alternate-email"
@@ -30,7 +31,7 @@ import ThemeToggle from "./ThemeToggle.astro";
       title="开往 · 友链接力"
       target="_blank"
       aria-label="开往 · 友链接力"
-      class="inline-flex items-center text-zinc-500 no-underline hover:text-zinc-900 dark:hover:text-zinc-100"
+      class="fp-header-icon"
     >
       <Icon
         name="material-symbols:train-outline"
@@ -44,7 +45,129 @@ import ThemeToggle from "./ThemeToggle.astro";
 </header>
 
 <style>
-  a {
-    @apply font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100;
+  .fp-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+  }
+
+  .fp-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--fp-paper);
+    z-index: -1;
+    border-radius: 4px;
+    box-shadow: var(--fp-small-shadow);
+  }
+
+  .fp-header-tape {
+    position: absolute;
+    top: -8px;
+    left: 25%;
+    z-index: 2;
+    width: 60px;
+    height: 20px;
+    background-color: var(--fp-tape);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.25) 0 2px,
+      transparent 2px 7px
+    );
+    transform: translateX(-50%) rotate(-2deg);
+    border-radius: 2px;
+  }
+
+  html.dark .fp-header-tape {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.15) 0 2px,
+      transparent 2px 7px
+    );
+  }
+
+  .fp-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fp-header-nav a {
+    position: relative;
+    padding: 4px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fp-ink-soft);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    z-index: 1;
+  }
+
+  .fp-header-nav a::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 4px;
+    height: 12px;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    background-color: var(--fp-accent-soft);
+    background-image: repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--fp-accent) 25%, transparent) 0 2px,
+      transparent 2px 7px
+    );
+    opacity: 0;
+    transform: scaleX(0.36) rotate(-2deg);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    z-index: -1;
+  }
+
+  .fp-header-nav a:hover {
+    color: var(--fp-accent-strong);
+  }
+
+  .fp-header-nav a:hover::before {
+    opacity: 0.72;
+    transform: scaleX(1) rotate(-1deg);
+  }
+
+  .fp-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .fp-header-icon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--fp-ink-soft);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding: 4px;
+  }
+
+  .fp-header-icon:hover {
+    color: var(--fp-accent-strong);
+  }
+
+  @media (max-width: 480px) {
+    .fp-header {
+      padding: 8px 14px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .fp-header-nav {
+      gap: 2px;
+    }
+    .fp-header-nav a {
+      font-size: 13px;
+      padding: 3px 7px;
+    }
   }
 </style>

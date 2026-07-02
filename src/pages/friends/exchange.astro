@@ -1,8 +1,8 @@
 ---
 import { getEntry } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
 import FriendLinkForm from "../../components/FriendLinkForm.astro";
 import { FRIENDLINK_API } from "../../consts";
+import Layout from "../../layouts/Layout.astro";
 
 const pageTitle = "友情链接 | 喵洛阁";
 const pageDescription = "我的朋友们";
@@ -14,14 +14,13 @@ if (!entry) {
 const { Content } = await entry.render();
 ---
 
-<Layout
-  title={pageTitle}
-  description={pageDescription}
-  className="max-w-3xl"
->
+<Layout title={pageTitle} description={pageDescription} className="max-w-3xl">
   <main>
     <header class="mb-6 space-y-2">
-      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500 dark:text-zinc-400">
+      <nav
+        aria-label="Breadcrumb"
+        class="text-sm text-zinc-500 dark:text-zinc-400"
+      >
         <a href="/" class="hover:underline">喵洛阁</a>
         <span class="mx-1">/</span>
         <a href="/friends/" class="hover:underline">朋友们</a>

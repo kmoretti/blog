@@ -1,8 +1,7 @@
 ---
+import { LATENCY_API_URL } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
 import { fetchFriends } from "../../lib/friends";
-import type { FriendItem } from "../../lib/friends";
-import { LATENCY_API_URL } from "../../consts";
 
 interface RemoteLinkItem {
   name?: string;
@@ -182,11 +181,11 @@ const friends = friendsData.map((friend) => {
                 class="friend-card__link"
               >
                 <img
-                    src={friend.avatar}
-                    alt={friend.name}
-                    class="friend-card__avatar"
-                    loading="lazy"
-                  />
+                  src={friend.avatar}
+                  alt={friend.name}
+                  class="friend-card__avatar"
+                  loading="lazy"
+                />
                 <span class="friend-card__body">
                   <strong class="friend-card__name">{friend.name}</strong>
                   <span class="friend-card__host">{friend.host}</span>
@@ -266,13 +265,14 @@ const friends = friendsData.map((friend) => {
       --friends-tab-2: #f5d742;
       --friends-tab-3: #e8a0b8;
       --friends-card-bg: rgba(255, 255, 255, 0.92);
-      --friends-card-border: rgba(24, 24, 27, 0.10);
-      --friends-card-shadow: 4px 5px 0 rgba(82, 64, 38, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
+      --friends-card-border: rgba(24, 24, 27, 0.1);
+      --friends-card-shadow:
+        4px 5px 0 rgba(82, 64, 38, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
       --friends-avatar-border: rgba(82, 64, 38, 0.12);
       --friends-avatar-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
       --friends-shot-fallback: linear-gradient(
         135deg,
-        rgba(245, 215, 66, 0.30),
+        rgba(245, 215, 66, 0.3),
         rgba(255, 255, 255, 0.92)
       );
       --friends-shot-mask: linear-gradient(
@@ -299,18 +299,19 @@ const friends = friendsData.map((friend) => {
       --friends-tab-3: #8a5f70;
       --friends-card-bg: rgba(24, 24, 27, 0.88);
       --friends-card-border: rgba(255, 255, 255, 0.06);
-      --friends-card-shadow: 4px 5px 0 rgba(0, 0, 0, 0.20), 0 2px 8px rgba(0, 0, 0, 0.12);
+      --friends-card-shadow:
+        4px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.12);
       --friends-avatar-border: rgba(225, 230, 245, 0.12);
       --friends-avatar-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
       --friends-shot-fallback: linear-gradient(
         135deg,
-        rgba(168, 134, 42, 0.20),
-        rgba(24, 24, 27, 0.90)
+        rgba(168, 134, 42, 0.2),
+        rgba(24, 24, 27, 0.9)
       );
       --friends-shot-mask: linear-gradient(
         to top,
         rgba(24, 24, 27, 0.98),
-        rgba(24, 24, 27, 0.20) 45%,
+        rgba(24, 24, 27, 0.2) 45%,
         rgba(24, 24, 27, 0.04)
       );
       --friends-tag-bg: rgba(255, 255, 255, 0.06);
@@ -341,22 +342,25 @@ const friends = friendsData.map((friend) => {
       box-shadow: var(--friends-card-shadow);
       isolation: isolate;
       transform: rotate(var(--fcl-tilt));
-      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
     }
 
-    .friend-card:nth-child(4n+2) {
+    .friend-card:nth-child(4n + 2) {
       --fcl-tilt: 0.22deg;
       --fcl-tape-color: var(--friends-tape-1);
       --fcl-tab-color: var(--friends-tab-1);
     }
 
-    .friend-card:nth-child(4n+3) {
+    .friend-card:nth-child(4n + 3) {
       --fcl-tilt: -0.12deg;
       --fcl-tape-color: var(--friends-tape-2);
       --fcl-tab-color: var(--friends-tab-2);
     }
 
-    .friend-card:nth-child(4n+4) {
+    .friend-card:nth-child(4n + 4) {
       --fcl-tilt: 0.3deg;
       --fcl-tape-color: var(--friends-tape-3);
       --fcl-tab-color: var(--friends-tab-3);
@@ -410,11 +414,13 @@ const friends = friendsData.map((friend) => {
       border-radius: 0 8px 8px 0;
       background: var(--fcl-tab-color);
       box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
-      transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition:
+        width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     html.dark .friend-card::after {
-      border-color: rgba(225, 230, 245, 0.10);
+      border-color: rgba(225, 230, 245, 0.1);
       box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.16);
     }
 
@@ -567,12 +573,15 @@ const friends = friendsData.map((friend) => {
       box-shadow: var(--friends-avatar-shadow);
       object-fit: cover;
       transform: rotate(-2deg);
-      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
     }
 
     .friend-card:hover img.friend-card__avatar {
       border-color: var(--friends-accent);
-      box-shadow: 3px 5px 0 rgba(82, 64, 38, 0.10);
+      box-shadow: 3px 5px 0 rgba(82, 64, 38, 0.1);
       transform: rotate(0deg) translateY(-1px);
     }
 
@@ -632,7 +641,10 @@ const friends = friendsData.map((friend) => {
       border-radius: 50%;
       color: var(--friends-muted);
       background: transparent;
-      transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+      transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease;
     }
 
     .friend-card__rss::before {
@@ -670,11 +682,21 @@ const friends = friendsData.map((friend) => {
     }
 
     @keyframes fcl-rss-wiggle {
-      0%   { transform: rotate(0)    scale(1); }
-      25%  { transform: rotate(-8deg) scale(1.08); }
-      50%  { transform: rotate(6deg)  scale(1.12); }
-      75%  { transform: rotate(-3deg) scale(1.06); }
-      100% { transform: rotate(0)    scale(1); }
+      0% {
+        transform: rotate(0) scale(1);
+      }
+      25% {
+        transform: rotate(-8deg) scale(1.08);
+      }
+      50% {
+        transform: rotate(6deg) scale(1.12);
+      }
+      75% {
+        transform: rotate(-3deg) scale(1.06);
+      }
+      100% {
+        transform: rotate(0) scale(1);
+      }
     }
 
     .friend-card__extra {

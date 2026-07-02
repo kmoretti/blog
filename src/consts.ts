@@ -9,9 +9,27 @@ export const SITE_DESCRIPTION =
 export const EMAIL = "mcy@kemiaosw.top";
 
 export const FRIENDLINK_API = "https://verify.081531.xyz";
-export const FRIEND_DATA_URL =
-  "https://friends-api.081531.xyz/link.yml";
+export const FRIEND_DATA_URL = "https://friends-api.081531.xyz/link.yml";
 export const LATENCY_API_URL = "https://fc.081531.xyz/link.json";
+
+export const SAFEGO = {
+  enable: true,
+  enableBase64Encode: true,
+  enableTargetBlank: true,
+  urlParamName: "u",
+  applyContainers: ["article"],
+  excludeSelectors: [
+    ".friend-card a",
+    ".not-found-action",
+    ".header a",
+    "#theme-toggle",
+  ],
+  domainWhitelist: ["blog.081531.xyz", "081531.xyz", "localhost"],
+  avatar: "/favicon.ico",
+  title: "喵洛阁",
+  subtitle: "安全中心",
+  countdownTime: 4,
+};
 
 interface AboutLinkItem {
   label: string;

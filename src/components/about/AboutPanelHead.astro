@@ -10,17 +10,19 @@ const { kicker, title } = Astro.props;
 <div class="panel-head">
   <span>{kicker}</span>
   <h2>{title}</h2>
+  <span class="panel-head-underline" aria-hidden="true"></span>
 </div>
 
 <style>
   .panel-head {
+    position: relative;
     display: grid;
     gap: 0.3rem;
-    margin-bottom: 0.95rem;
+    margin-bottom: 1.1rem;
   }
 
-  .panel-head span {
-    color: var(--about-accent-strong, rgb(37 99 235 / 0.85));
+  .panel-head span:not(.panel-head-underline) {
+    color: var(--fp-accent-strong);
     font-family: "Noto Sans Mono", monospace;
     font-size: 0.78rem;
     font-weight: 800;
@@ -30,17 +32,25 @@ const { kicker, title } = Astro.props;
 
   .panel-head h2 {
     margin: 0;
-    color: rgb(24 24 27);
+    color: var(--fp-ink);
     font-size: clamp(1.1rem, 2vw, 1.35rem);
     font-weight: 800;
     line-height: 1.2;
   }
 
-  :global(html.dark) .panel-head span {
-    color: var(--about-accent-strong, rgb(96 165 250 / 0.9));
-  }
-
-  :global(html.dark) .panel-head h2 {
-    color: rgb(244 244 245);
+  .panel-head-underline {
+    display: block;
+    width: 2.2em;
+    max-width: 48%;
+    height: 6px;
+    margin-top: 2px;
+    background-color: var(--fp-accent);
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    opacity: 0.8;
   }
 </style>

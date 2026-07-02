@@ -1,0 +1,489 @@
+---
+const pageTitle = "安全跳转 | 喵洛阁";
+const pageDescription = "正在跳转至外部链接";
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <script is:inline>
+      (() => {
+        const STORAGE_KEY = "theme";
+        function getStoredTheme() {
+          try {
+            const t = localStorage.getItem(STORAGE_KEY);
+            return t === "dark" || t === "light" ? t : null;
+          } catch {
+            return null;
+          }
+        }
+        function resolveTheme() {
+          return (
+            getStoredTheme() ??
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light")
+          );
+        }
+        document.documentElement.classList.toggle(
+          "dark",
+          resolveTheme() === "dark",
+        );
+      })();
+    </script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      :root {
+        --sg-bg: #f7f3e9;
+        --sg-paper: #fffdf6;
+        --sg-warm: #f8f2e2;
+        --sg-ink: #2c3531;
+        --sg-ink-soft: #4a5751;
+        --sg-muted: #8a8678;
+        --sg-dash: #ddd0b5;
+        --sg-accent: #6fa67c;
+        --sg-accent-strong: #4f8862;
+        --sg-accent-soft: #d8e8d2;
+        --sg-shadow: 0 2px 6px rgba(82, 64, 38, 0.14);
+        --sg-tape: rgba(238, 201, 110, 0.72);
+      }
+      html.dark {
+        --sg-bg: #15171c;
+        --sg-paper: #1d2027;
+        --sg-warm: #272b34;
+        --sg-ink: #e6e8ee;
+        --sg-ink-soft: #aab0bd;
+        --sg-muted: #797f8c;
+        --sg-dash: rgba(225, 230, 245, 0.22);
+        --sg-accent: #82bf90;
+        --sg-accent-strong: #6ba87c;
+        --sg-accent-soft: #354a3a;
+        --sg-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        --sg-tape: rgba(180, 150, 80, 0.5);
+      }
+
+      html.dark .tape-stripes {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(0, 0, 0, 0.15) 0 2px,
+          transparent 2px 7px
+        );
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sg-bg);
+        font-family:
+          "Noto Sans SC",
+          "PingFang SC",
+          "Microsoft YaHei",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        padding: 1rem;
+      }
+
+      .sg-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 440px;
+      }
+
+      .sg-tape {
+        position: absolute;
+        width: 44px;
+        height: 26px;
+        background: var(--sg-tape);
+        border-radius: 2px;
+        opacity: 0.8;
+        z-index: 1;
+      }
+      .sg-tape--top-right {
+        top: -12px;
+        right: 24px;
+        transform: rotate(6deg);
+      }
+      .sg-tape::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.25) 0 2px,
+          transparent 2px 7px
+        );
+        border-radius: 2px;
+      }
+
+      .sg-card {
+        position: relative;
+        padding: 32px 28px 28px;
+        text-align: center;
+        background: var(--sg-paper);
+        border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px;
+        box-shadow: var(--sg-shadow);
+        animation: sg-fadein 0.4s ease;
+      }
+      @keyframes sg-fadein {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .sg-label {
+        display: inline-block;
+        padding: 3px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        color: var(--sg-ink-soft);
+        background: var(--sg-warm);
+        border: 1px solid var(--sg-dash);
+      }
+
+      .sg-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        margin: 14px auto 10px;
+        display: block;
+        object-fit: cover;
+        border: 2px solid var(--sg-dash);
+        background: var(--sg-paper);
+      }
+
+      .sg-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--sg-ink);
+        line-height: 1.4;
+      }
+
+      .sg-subtitle {
+        margin: 4px 0 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--sg-muted);
+        letter-spacing: 0.5px;
+      }
+
+      .sg-url-wrap {
+        margin: 16px 0 0;
+        padding: 12px 14px;
+        background: var(--sg-warm);
+        border-radius: 8px;
+        border: 1px dashed var(--sg-dash);
+      }
+      html.dark .sg-url-wrap {
+        border-style: solid;
+      }
+
+      .sg-url-label {
+        font-size: 11px;
+        color: var(--sg-muted);
+        margin-bottom: 4px;
+      }
+
+      .sg-url-text {
+        font-size: 13px;
+        color: var(--sg-ink-soft);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        display: block;
+      }
+
+      .sg-hint {
+        margin: 14px 0 0;
+        font-size: 12px;
+        color: var(--sg-muted);
+        line-height: 1.6;
+      }
+
+      .sg-progress-track {
+        width: 100%;
+        height: 6px;
+        margin-top: 16px;
+        background: var(--sg-warm);
+        border-radius: 999px;
+        overflow: hidden;
+        border: 1px solid var(--sg-dash);
+      }
+      html.dark .sg-progress-track {
+        border: none;
+      }
+
+      .sg-progress-fill {
+        height: 100%;
+        width: 100%;
+        background: var(--sg-accent);
+        border-radius: 999px;
+        transition: width 1s linear;
+      }
+
+      .sg-countdown {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--sg-muted);
+      }
+
+      .sg-actions {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .sg-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 100px;
+        padding: 8px 18px;
+        border: 0;
+        background: transparent;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        z-index: 1;
+        transition:
+          color 0.2s ease,
+          transform 0.2s ease;
+        color: var(--sg-ink-soft);
+      }
+      .sg-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--sg-warm);
+        z-index: -1;
+        border-radius: 4px;
+        box-shadow: inset 0 0 0 1px var(--sg-dash);
+        transition:
+          background 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      html.dark .sg-btn::before {
+        box-shadow: none;
+      }
+      .sg-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .sg-btn--cancel:hover {
+        color: #c0392b;
+      }
+      .sg-btn--cancel:hover::before {
+        background: #f5d6d6;
+        box-shadow: inset 0 0 0 1px #e74c3c;
+      }
+
+      .sg-btn--go:hover {
+        color: var(--sg-accent-strong);
+      }
+      .sg-btn--go:hover::before {
+        background: var(--sg-accent-soft);
+        box-shadow: inset 0 0 0 1px var(--sg-accent);
+      }
+
+      .sg-btn svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      .sg-hidden {
+        display: none;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 0.75rem;
+        }
+        .sg-card {
+          padding: 24px 18px 22px;
+        }
+        .sg-avatar {
+          width: 60px;
+          height: 60px;
+        }
+        .sg-btn {
+          min-width: 80px;
+          padding: 7px 14px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sg-wrap">
+      <span class="sg-tape sg-tape--top-right" aria-hidden="true"></span>
+      <div class="sg-card" role="alert">
+        <span class="sg-label">外部链接</span>
+        <img class="sg-avatar" src="/favicon.ico" alt="" id="sg-avatar" />
+        <h1 class="sg-title">喵洛阁</h1>
+        <p class="sg-subtitle">安全中心</p>
+
+        <div class="sg-url-wrap">
+          <div class="sg-url-label">即将前往</div>
+          <span class="sg-url-text" id="sg-url">—</span>
+        </div>
+
+        <p class="sg-hint">
+          您即将离开本站，前往第三方外部链接。<br />请注意账号和财产安全。
+        </p>
+
+        <div class="sg-progress-track">
+          <div class="sg-progress-fill" id="sg-progress"></div>
+        </div>
+        <p class="sg-countdown" id="sg-countdown">4 秒后自动跳转</p>
+
+        <div class="sg-actions">
+          <button class="sg-btn sg-btn--cancel" id="sg-cancel" type="button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line
+                x1="12"
+                y1="2"
+                x2="12"
+                y2="12"></line></svg
+            >
+            <span>返回上页</span>
+          </button>
+          <button class="sg-btn sg-btn--go" id="sg-go" type="button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><line x1="5" y1="12" x2="19" y2="12"></line><polyline
+                points="12 5 19 12 12 19"></polyline></svg
+            >
+            <span>继续前往</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const AVATAR = "/favicon.ico";
+        const TITLE = "喵洛阁";
+        const SUBTITLE = "安全中心";
+        const COUNTDOWN = 4;
+
+        const params = new URLSearchParams(location.search);
+        const raw = params.get("u") || "";
+        const refRaw = params.get("ref") || "";
+        let targetUrl = "";
+        let referrerUrl = "";
+
+        try {
+          targetUrl = atob(raw);
+        } catch {
+          targetUrl = raw;
+        }
+
+        try {
+          referrerUrl = atob(refRaw);
+        } catch {
+          referrerUrl = "";
+        }
+
+        if (!targetUrl || !/^https?:\/\//.test(targetUrl)) {
+          document.getElementById("sg-url").textContent = "无效链接";
+          document.getElementById("sg-go")?.remove();
+          document.getElementById("sg-progress")?.remove();
+          document.getElementById("sg-countdown")?.remove();
+          return;
+        }
+
+        const avatarEl = document.getElementById("sg-avatar");
+        const urlEl = document.getElementById("sg-url");
+        const progressEl = document.getElementById("sg-progress");
+        const countdownEl = document.getElementById("sg-countdown");
+        const cancelBtn = document.getElementById("sg-cancel");
+        const goBtn = document.getElementById("sg-go");
+
+        if (avatarEl) avatarEl.src = AVATAR;
+        if (urlEl) urlEl.textContent = targetUrl;
+
+        let remaining = COUNTDOWN;
+        if (countdownEl) countdownEl.textContent = `${remaining} 秒后自动跳转`;
+        if (progressEl) progressEl.style.width = "100%";
+
+        const timer = setInterval(() => {
+          remaining--;
+          if (countdownEl)
+            countdownEl.textContent =
+              remaining > 0 ? `${remaining} 秒后自动跳转` : "正在跳转…";
+          if (progressEl) {
+            const pct = (remaining / COUNTDOWN) * 100;
+            progressEl.style.width = `${pct}%`;
+          }
+          if (remaining <= 0) {
+            clearInterval(timer);
+            location.href = targetUrl;
+          }
+        }, 1000);
+
+        cancelBtn?.addEventListener("click", () => {
+          clearInterval(timer);
+          if (referrerUrl) {
+            location.href = referrerUrl;
+          } else if (document.referrer && /^https?:\/\//.test(document.referrer)) {
+            location.href = document.referrer;
+          } else {
+            location.href = "/";
+          }
+        });
+
+        goBtn?.addEventListener("click", () => {
+          clearInterval(timer);
+          location.href = targetUrl;
+        });
+      })();
+    </script>
+  </body>
+</html>

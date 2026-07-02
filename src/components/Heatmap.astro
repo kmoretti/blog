@@ -34,10 +34,10 @@ const grid = heatmapData.map((day) => ({
           data-count={day.wordCount}
         >
           {day.wordCount > 0 && (
-            <div class="tooltip absolute -top-10 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap bg-gray-900 px-2 py-1 text-xs text-white group-hover:block dark:bg-gray-200 dark:text-gray-800">
+            <div class="tooltip absolute -top-10 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap bg-[var(--fp-ink)] px-2 py-1 text-xs text-[var(--fp-paper)] group-hover:block">
               <div class="font-medium">{day.dateStr}</div>
               <div>{day.wordCount} 字</div>
-              <div class="absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900 dark:bg-gray-200" />
+              <div class="absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-[var(--fp-ink)]" />
             </div>
           )}
         </div>

@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 
 <button
   id="theme-toggle"
-  class="inline-flex items-center border-0 bg-transparent p-0 text-zinc-500 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+  class="theme-toggle-btn inline-flex items-center border-0 bg-transparent p-0"
   aria-label="Toggle theme"
   transition:persist
 >
@@ -26,6 +26,15 @@ import { Icon } from "astro-icon/components";
 </button>
 
 <style>
+  .theme-toggle-btn {
+    color: var(--fp-muted);
+    transition: color 0.2s;
+  }
+
+  .theme-toggle-btn:hover {
+    color: var(--fp-ink);
+  }
+
   #tt-overlay {
     position: fixed;
     inset: 0;

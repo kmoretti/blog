@@ -78,27 +78,16 @@ const renderParagraphs = (text: string) =>
 
 <style>
   .chat {
-    --chat-self-bg: rgb(37 99 235);
-    --chat-self-text: rgb(248 250 252);
-    --chat-self-shadow: rgb(37 99 235 / 0.28);
-    --chat-other-bg: rgb(244 244 245);
-    --chat-other-text: rgb(39 39 42);
-    --chat-other-border: rgb(228 228 231 / 0.85);
-    --chat-center-text: rgb(113 113 122);
-    --chat-name-text: rgb(82 82 91);
+    --chat-self-bg: var(--fp-accent);
+    --chat-self-text: rgb(255 255 255);
+    --chat-self-shadow: var(--fp-shadow);
+    --chat-other-bg: var(--fp-warm);
+    --chat-other-text: var(--fp-ink);
+    --chat-other-border: var(--fp-dash);
+    --chat-center-text: var(--fp-muted);
+    --chat-name-text: var(--fp-ink-soft);
     margin: 1.75rem 0;
     font-size: 0.95rem;
-  }
-
-  :global(html.dark) .chat {
-    --chat-self-bg: rgb(29 78 216 / 0.38);
-    --chat-self-text: rgb(239 246 255);
-    --chat-self-shadow: rgb(30 64 175 / 0.38);
-    --chat-other-bg: rgb(36 38 45);
-    --chat-other-text: rgb(244 244 245);
-    --chat-other-border: rgb(255 255 255 / 0.04);
-    --chat-center-text: rgb(161 161 170);
-    --chat-name-text: rgb(212 212 216);
   }
 
   .chat-row {
@@ -153,11 +142,7 @@ const renderParagraphs = (text: string) =>
     border-top-left-radius: 0.35rem;
     background: var(--chat-other-bg);
     color: var(--chat-other-text);
-    box-shadow: 0 10px 24px -24px rgb(15 23 42 / 0.22);
-  }
-
-  :global(html.dark) .chat-bubble-other {
-    box-shadow: none;
+    box-shadow: var(--fp-shadow);
   }
 
   .chat-bubble :global(p) {
@@ -194,7 +179,7 @@ const renderParagraphs = (text: string) =>
   .chat-empty {
     display: inline-block;
     margin: 1rem 0;
-    color: rgb(113 113 122);
+    color: var(--fp-muted);
     font-size: 0.95rem;
   }
 </style>

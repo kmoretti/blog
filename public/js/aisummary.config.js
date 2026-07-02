@@ -29,4 +29,4 @@
 
 // AISummary 静态摘要配置（前端浏览器使用）：
 var aisummaryTypingAnimate = true; // true 开启打字机动画；false 直接渲染文本
-var aisummaryPostSelector = '#content'; // 文章内容容器选择器
+var aisummaryPostSelector = "#content"; // 文章内容容器选择器

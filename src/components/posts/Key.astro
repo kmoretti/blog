@@ -141,7 +141,9 @@ const fallbackLabel = text
     };
 
     function isMac() {
-      return /mac/i.test(navigator.userAgent) || /mac/i.test(navigator.platform);
+      return (
+        /mac/i.test(navigator.userAgent) || /mac/i.test(navigator.platform)
+      );
     }
 
     function parseFlag(value) {
@@ -172,9 +174,11 @@ const fallbackLabel = text
       const lower = String(value).toLowerCase();
 
       if (lower === "esc") return "escape";
-      if (lower === "spacebar" || lower === "space" || lower === " ") return " ";
+      if (lower === "spacebar" || lower === "space" || lower === " ")
+        return " ";
       if (lower === "ctrl") return "control";
-      if (lower === "cmd" || lower === "command" || lower === "meta") return "meta";
+      if (lower === "cmd" || lower === "command" || lower === "meta")
+        return "meta";
       if (lower === "win" || lower === "super" || lower === "os") return "meta";
 
       return lower;
@@ -184,9 +188,7 @@ const fallbackLabel = text
       const keys = [];
       const mac = isMac();
       const useSymbol =
-        element.dataset.icon === "auto"
-          ? mac
-          : element.dataset.icon === "1";
+        element.dataset.icon === "auto" ? mac : element.dataset.icon === "1";
 
       if (element.dataset.text) {
         return {
@@ -216,7 +218,9 @@ const fallbackLabel = text
       const joiner = useSymbol ? "" : "+";
 
       return {
-        label: keys.map((key) => normalizeDisplay(key, useSymbol, mac)).join(joiner),
+        label: keys
+          .map((key) => normalizeDisplay(key, useSymbol, mac))
+          .join(joiner),
       };
     }
 
@@ -300,13 +304,17 @@ const fallbackLabel = text
       return target instanceof Element ? target.closest(keySelector) : null;
     }
 
-    document.addEventListener("click", (event) => {
-      const element = getKeyElement(event.target);
-      if (!(element instanceof HTMLElement)) return;
+    document.addEventListener(
+      "click",
+      (event) => {
+        const element = getKeyElement(event.target);
+        if (!(element instanceof HTMLElement)) return;
 
-      event.stopPropagation();
-      triggerPress(element, "mouse", event);
-    }, { capture: true });
+        event.stopPropagation();
+        triggerPress(element, "mouse", event);
+      },
+      { capture: true },
+    );
 
     document.addEventListener("keydown", (event) => {
       document.querySelectorAll(keySelector).forEach((element) => {
@@ -342,7 +350,9 @@ const fallbackLabel = text
     });
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", updateLabels, { once: true });
+      document.addEventListener("DOMContentLoaded", updateLabels, {
+        once: true,
+      });
     } else {
       updateLabels();
     }
@@ -359,12 +369,12 @@ const fallbackLabel = text
     min-width: 1.7em;
     margin: 0.08em;
     padding: 0.02em 0.34em 0.14em;
-    border: 1px solid rgb(82 82 91 / 0.8);
+    border: 1px solid var(--fp-dash);
     border-bottom-width: 2px;
     border-radius: 0.34rem;
-    background: rgb(63 63 70 / 0.78);
-    box-shadow: inset 0 -0.08rem 0 rgb(113 113 122 / 0.4);
-    color: rgb(228 228 231);
+    background: var(--fp-paper);
+    box-shadow: inset 0 -0.08rem 0 var(--fp-dash);
+    color: var(--fp-ink);
     font-family: "Noto Sans SC", sans-serif;
     font-size: 0.95em;
     font-weight: 500;
@@ -382,41 +392,21 @@ const fallbackLabel = text
   }
 
   .key:hover {
-    border-color: rgb(113 113 122 / 0.95);
-    background: rgb(82 82 91 / 0.88);
+    border-color: var(--fp-dash);
+    background: var(--fp-warm);
   }
 
   .key:focus-visible {
-    outline: 2px solid rgb(96 165 250 / 0.85);
+    outline: 2px solid var(--fp-accent);
     outline-offset: 2px;
   }
 
   .key:active,
   .key.active {
-    border-color: rgb(37 99 235 / 0.8);
-    background: rgb(30 64 175 / 0.35);
-    box-shadow: inset 0 -0.08rem 0 rgb(59 130 246 / 0.9);
-    color: rgb(239 246 255);
+    border-color: var(--fp-accent);
+    background: var(--fp-accent-soft);
+    box-shadow: inset 0 -0.08rem 0 var(--fp-accent);
+    color: var(--fp-accent-strong);
     transform: translateY(0.06em);
-  }
-
-  :global(html:not(.dark)) .key {
-    border-color: rgb(212 212 216);
-    background: rgb(244 244 245);
-    box-shadow: inset 0 -0.08rem 0 rgb(212 212 216 / 0.95);
-    color: rgb(63 63 70);
-  }
-
-  :global(html:not(.dark)) .key:hover {
-    border-color: rgb(161 161 170);
-    background: rgb(228 228 231);
-  }
-
-  :global(html:not(.dark)) .key:active,
-  :global(html:not(.dark)) .key.active {
-    border-color: rgb(96 165 250);
-    background: rgb(219 234 254);
-    box-shadow: inset 0 -0.08rem 0 rgb(96 165 250);
-    color: rgb(30 64 175);
   }
 </style>

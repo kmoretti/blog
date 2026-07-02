@@ -54,25 +54,16 @@ const renderParagraphs = (text: string) =>
 
 <style>
   .timeline {
-    --timeline-line: rgb(228 228 231);
-    --timeline-dot: rgb(161 161 170);
-    --timeline-card-bg: rgb(244 244 245);
-    --timeline-card-border: rgb(228 228 231 / 0.8);
-    --timeline-text: rgb(39 39 42);
-    --timeline-muted: rgb(82 82 91);
+    --timeline-line: var(--fp-dash);
+    --timeline-dot: var(--fp-accent);
+    --timeline-card-bg: var(--fp-paper);
+    --timeline-card-border: var(--fp-dash);
+    --timeline-text: var(--fp-ink);
+    --timeline-muted: var(--fp-ink-soft);
     position: relative;
     margin: 1.5rem 0;
     padding-inline-start: 2rem;
     font-size: 0.95rem;
-  }
-
-  :global(html.dark) .timeline {
-    --timeline-line: rgb(63 63 70);
-    --timeline-dot: rgb(161 161 170);
-    --timeline-card-bg: rgb(39 39 42);
-    --timeline-card-border: rgb(255 255 255 / 0.04);
-    --timeline-text: rgb(244 244 245);
-    --timeline-muted: rgb(212 212 216);
   }
 
   .timeline::before {
@@ -102,7 +93,8 @@ const renderParagraphs = (text: string) =>
     height: 0.85rem;
     border-radius: 999px;
     background: var(--timeline-dot);
-    box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--timeline-card-bg) 92%, transparent);
+    box-shadow: 0 0 0 0.18rem
+      color-mix(in srgb, var(--timeline-card-bg) 92%, transparent);
   }
 
   .timeline-body {
@@ -114,11 +106,7 @@ const renderParagraphs = (text: string) =>
     border-radius: 0.95rem;
     background: var(--timeline-card-bg);
     color: var(--timeline-text);
-    box-shadow: 0 10px 24px -22px rgb(15 23 42 / 0.22);
-  }
-
-  :global(html.dark) .timeline-body {
-    box-shadow: none;
+    box-shadow: var(--fp-shadow);
   }
 
   .timeline-body :global(p) {
@@ -133,7 +121,7 @@ const renderParagraphs = (text: string) =>
   .timeline-empty {
     display: inline-block;
     margin: 1rem 0;
-    color: rgb(113 113 122);
+    color: var(--fp-muted);
     font-size: 0.95rem;
   }
 </style>

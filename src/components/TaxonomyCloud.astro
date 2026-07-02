@@ -32,12 +32,14 @@ const maxCount = counts.length ? Math.max(...counts) : 0;
 
 <section class="flex flex-col gap-4">
   <div class="space-y-1">
-    <h1 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+    <h1 class="text-xl font-semibold" style="color: var(--fp-ink)">
       {title}
     </h1>
     {
       description && (
-        <p class="text-sm text-zinc-500 dark:text-zinc-400">{description}</p>
+        <p class="text-sm" style="color: var(--fp-muted)">
+          {description}
+        </p>
       )
     }
   </div>
@@ -48,20 +50,16 @@ const maxCount = counts.length ? Math.max(...counts) : 0;
         {items.map((item) => (
           <a
             href={`/${type}/${item.slug}/`}
-            class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 no-underline transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-zinc-200/80 dark:border-zinc-700 dark:bg-zinc-800/80 dark:hover:border-zinc-600 dark:hover:bg-zinc-700/80"
+            class="inline-flex items-center gap-2 rounded-full border border-[var(--fp-dash)] bg-[var(--fp-warm)] px-3 py-1.5 no-underline transition hover:-translate-y-0.5 hover:border-[var(--fp-accent)] hover:bg-[var(--fp-accent-soft)]"
             style={getCloudStyle(item.count, minCount, maxCount)}
           >
-            <span class="font-medium text-zinc-800 dark:text-zinc-100">
-              {item.name}
-            </span>
-            <span class="text-xs text-zinc-500 dark:text-zinc-400">
-              {item.count}
-            </span>
+            <span class="font-medium text-[var(--fp-ink)]">{item.name}</span>
+            <span class="text-xs text-[var(--fp-muted)]">{item.count}</span>
           </a>
         ))}
       </div>
     ) : (
-      <p class="text-sm text-zinc-500 dark:text-zinc-400">暂无内容。</p>
+      <p class="text-sm text-[var(--fp-muted)]">暂无内容。</p>
     )
   }
 </section>

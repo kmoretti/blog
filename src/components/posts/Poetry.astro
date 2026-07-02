@@ -29,12 +29,8 @@ const wrapperClass = ["poetry", className].filter(Boolean).join(" ");
     max-width: min(100%, 28rem);
     margin: 1.25rem auto;
     padding: 0.1rem 0.5rem;
-    color: rgb(39 39 42);
+    color: var(--fp-ink);
     white-space: pre-wrap;
-  }
-
-  :global(html.dark) .poetry {
-    color: rgb(244 244 245);
   }
 
   .poetry-title,
@@ -52,14 +48,10 @@ const wrapperClass = ["poetry", className].filter(Boolean).join(" ");
 
   .poetry-author {
     margin-top: 0.18rem;
-    color: rgb(82 82 91);
+    color: var(--fp-ink-soft);
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.35;
-  }
-
-  :global(html.dark) .poetry-author {
-    color: rgb(161 161 170);
   }
 
   .poetry-content {
@@ -75,12 +67,8 @@ const wrapperClass = ["poetry", className].filter(Boolean).join(" ");
 
   .poetry-footer {
     margin-top: 0.28rem;
-    color: rgb(82 82 91);
+    color: var(--fp-muted);
     font-size: 1rem;
     line-height: 1.45;
-  }
-
-  :global(html.dark) .poetry-footer {
-    color: rgb(161 161 170);
   }
 </style>

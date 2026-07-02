@@ -53,7 +53,10 @@ export async function getHeatmapData(days: number = 40): Promise<DayData[]> {
   return result;
 }
 
-export function getColorIntensity(wordCount: number, maxWordCount: number): string {
+export function getColorIntensity(
+  wordCount: number,
+  maxWordCount: number,
+): string {
   if (wordCount === 0) return "bg-gray-100 dark:bg-gray-800";
 
   const intensity = wordCount / maxWordCount;

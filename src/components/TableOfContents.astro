@@ -13,17 +13,16 @@ const items = headings.filter(
   ({ depth, slug, text }) => depth >= 2 && depth <= 4 && slug && text.trim(),
 );
 
-const panelClass =
-  "rounded-2xl border border-zinc-200 bg-zinc-50/80 p-4 dark:border-zinc-700 dark:bg-zinc-800/60";
+const panelClass = "toc-panel rounded-2xl border p-4";
 const linkClass =
-  "block rounded-lg px-3 py-2 text-sm text-zinc-600 no-underline transition hover:bg-zinc-200/70 hover:text-zinc-950 data-[active=true]:bg-zinc-200/70 data-[active=true]:font-medium data-[active=true]:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-700/70 dark:hover:text-zinc-50 dark:data-[active=true]:bg-zinc-700/70 dark:data-[active=true]:text-zinc-50";
+  "toc-link block rounded-lg px-3 py-2 text-sm no-underline transition";
 ---
 
 {
   items.length > 0 &&
     (mode === "mobile" ? (
       <details class={`mb-6 lg:hidden ${panelClass}`}>
-        <summary class="cursor-pointer list-none text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        <summary class="toc-heading cursor-pointer list-none text-sm font-semibold">
           文章目录
         </summary>
         <nav class="mt-3 space-y-1" aria-label="文章目录">
@@ -43,9 +42,7 @@ const linkClass =
     ) : (
       <aside class="hidden lg:block">
         <div class={`sticky top-24 ${panelClass}`}>
-          <p class="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-            文章目录
-          </p>
+          <p class="toc-heading mb-3 text-sm font-semibold">文章目录</p>
           <nav class="space-y-1" aria-label="文章目录">
             {items.map((item) => (
               <a
@@ -127,3 +124,30 @@ const linkClass =
     window.__blogTocCleanup = init();
   })();
 </script>
+
+<style>
+  .toc-panel {
+    border-color: var(--fp-dash);
+    background-color: var(--fp-paper);
+  }
+
+  .toc-heading {
+    color: var(--fp-ink);
+  }
+
+  .toc-link {
+    color: var(--fp-ink-soft);
+    border-radius: 0.5rem;
+  }
+
+  .toc-link:hover {
+    background-color: var(--fp-accent-soft);
+    color: var(--fp-ink);
+  }
+
+  .toc-link[data-active="true"] {
+    background-color: var(--fp-accent-soft);
+    font-weight: 500;
+    color: var(--fp-ink);
+  }
+</style>

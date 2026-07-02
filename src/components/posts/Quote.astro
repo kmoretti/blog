@@ -24,13 +24,13 @@ const { icon = "material-symbols:chat" } = Astro.props;
   .quote {
     font-size: 1.2rem;
     line-height: 1.5;
-    color: rgb(82 82 91);
+    color: var(--fp-ink-soft);
     isolation: isolate;
     margin: 1.5em 0;
-  }
-
-  :global(html.dark) .quote {
-    color: rgb(161 161 170);
+    padding: 1rem 1.5rem;
+    border-inline-start: 4px solid var(--fp-accent);
+    border-radius: 0.5rem;
+    background: var(--fp-warm);
   }
 
   .quote-content :global(p) {

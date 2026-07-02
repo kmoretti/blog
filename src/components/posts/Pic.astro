@@ -74,14 +74,9 @@ const referrerPolicy = mirror ? "no-referrer" : undefined;
     max-width: min(100%, 48rem);
     height: auto;
     border-radius: 0.9rem;
-    box-shadow: 0 14px 32px -28px rgb(15 23 42 / 0.28);
-    background: rgb(244 244 245);
+    box-shadow: 0 14px 32px -28px color-mix(in srgb, var(--fp-ink) 28%, transparent);
+    background: var(--fp-paper);
     object-fit: cover;
-  }
-
-  :global(html.dark) .pic-image {
-    box-shadow: 0 16px 34px -28px rgb(0 0 0 / 0.5);
-    background: rgb(39 39 42);
   }
 
   .pic[data-lightbox-root] .pic-image {
@@ -90,14 +85,10 @@ const referrerPolicy = mirror ? "no-referrer" : undefined;
 
   .pic-caption {
     margin-top: 0.75rem;
-    color: rgb(82 82 91);
+    color: var(--fp-muted);
     font-size: 0.95rem;
     line-height: 1.7;
     text-align: center;
-  }
-
-  :global(html.dark) .pic-caption {
-    color: rgb(161 161 170);
   }
 
   .pic-caption :global(p) {

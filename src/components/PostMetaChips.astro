@@ -10,8 +10,8 @@ interface Props {
 const { items, type } = Astro.props;
 const isTag = type === "tags";
 const chipClass = isTag
-  ? "border-amber-200/80 bg-amber-50/85 text-amber-700 hover:border-amber-300 hover:bg-amber-100/90 hover:text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/35 dark:text-amber-200 dark:hover:border-amber-800 dark:hover:bg-amber-900/50 dark:hover:text-amber-100"
-  : "border-sky-200/80 bg-sky-50/85 text-sky-700 hover:border-sky-300 hover:bg-sky-100/90 hover:text-sky-900 dark:border-sky-900/70 dark:bg-sky-950/35 dark:text-sky-200 dark:hover:border-sky-800 dark:hover:bg-sky-900/50 dark:hover:text-sky-100";
+  ? "border-[var(--fp-dash)] bg-[var(--fp-warm)] text-[var(--fp-ink-soft)] hover:border-[var(--fp-accent)] hover:bg-[var(--fp-accent-soft)]"
+  : "border-[var(--fp-dash)] bg-[var(--fp-warm)] text-[var(--fp-ink-soft)] hover:border-[var(--fp-accent)] hover:bg-[var(--fp-accent-soft)]";
 ---
 
 {

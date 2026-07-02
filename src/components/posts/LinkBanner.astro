@@ -100,38 +100,23 @@ const titleAttr = hasLink ? `${title} - ${resolvedDesc} - ${link}` : title;
     line-height: 1.4;
     max-width: 480px;
     margin: 2rem auto;
+    border: 1px solid var(--fp-dash);
     border-radius: 0.75rem;
     overflow: hidden;
     text-decoration: none;
-    background-color: rgb(255 255 255);
+    background-color: var(--fp-paper);
     transition:
       transform 0.2s,
       box-shadow 0.2s;
   }
 
-  :global(html.dark) .link-banner {
-    background-color: rgb(39 39 42);
-  }
-
   .link-banner:hover {
     transform: translateY(-2px);
-    box-shadow:
-      0 4px 12px rgb(0 0 0 / 0.08),
-      0 2px 4px rgb(0 0 0 / 0.04);
+    box-shadow: var(--fp-shadow);
   }
 
   .no-hover:hover {
     transform: none;
-    box-shadow: none;
-  }
-
-  :global(html.dark) .link-banner:hover {
-    box-shadow:
-      0 4px 12px rgb(0 0 0 / 0.3),
-      0 2px 4px rgb(0 0 0 / 0.2);
-  }
-
-  :global(html.dark) .no-hover:hover {
     box-shadow: none;
   }
 
@@ -158,20 +143,12 @@ const titleAttr = hasLink ? `${title} - ${resolvedDesc} - ${link}` : title;
   .link-banner-title {
     font-size: 1.2em;
     font-weight: 600;
-    color: rgb(24 24 27);
-  }
-
-  :global(html.dark) .link-banner-title {
-    color: rgb(244 244 245);
+    color: var(--fp-ink);
   }
 
   .link-banner-desc {
     margin-top: 0.5em;
     font-size: 0.8em;
-    color: rgb(113 113 122);
-  }
-
-  :global(html.dark) .link-banner-desc {
-    color: rgb(161 161 170);
+    color: var(--fp-muted);
   }
 </style>

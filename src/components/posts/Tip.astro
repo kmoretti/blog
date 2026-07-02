@@ -134,7 +134,7 @@ const copiedIcon = "tabler:check";
     align-items: center;
     gap: 0.28rem;
     color: inherit;
-    text-decoration: underline dashed rgb(161 161 170);
+    text-decoration: underline dashed var(--fp-muted);
     text-underline-offset: 4px;
     cursor: pointer;
     outline: none;
@@ -148,7 +148,7 @@ const copiedIcon = "tabler:check";
   .post-tip .tip-icon {
     display: inline-flex;
     align-items: center;
-    color: rgb(161 161 170);
+    color: var(--fp-muted);
     transform: translateY(1px);
     transition: color 0.2s ease;
   }
@@ -156,13 +156,7 @@ const copiedIcon = "tabler:check";
   .post-tip:hover .tip-icon,
   .post-tip:focus-visible .tip-icon,
   .post-tip[data-tip-state="copied"] .tip-icon {
-    color: rgb(244 244 245);
-  }
-
-  html:not(.dark) .post-tip:hover .tip-icon,
-  html:not(.dark) .post-tip:focus-visible .tip-icon,
-  html:not(.dark) .post-tip[data-tip-state="copied"] .tip-icon {
-    color: rgb(39 39 42);
+    color: var(--fp-ink);
   }
 
   .post-tip .tip-bubble {
@@ -174,8 +168,8 @@ const copiedIcon = "tabler:check";
     max-width: 16rem;
     padding: 0.38rem 0.58rem;
     border-radius: 0.55rem;
-    background: rgb(39 39 42 / 0.96);
-    color: rgb(250 250 250);
+    background: var(--fp-ink);
+    color: var(--fp-paper);
     font-size: 0.78rem;
     line-height: 1.35;
     text-align: center;
@@ -186,7 +180,7 @@ const copiedIcon = "tabler:check";
     transition:
       opacity 0.16s ease,
       transform 0.16s ease;
-    box-shadow: 0 10px 28px -18px rgb(0 0 0 / 0.5);
+    box-shadow: var(--fp-small-shadow);
   }
 
   .post-tip .tip-bubble::after {
@@ -198,11 +192,6 @@ const copiedIcon = "tabler:check";
     height: 0.55rem;
     background: inherit;
     transform: translateX(-50%) rotate(45deg);
-  }
-
-  html:not(.dark) .post-tip .tip-bubble {
-    background: rgb(24 24 27 / 0.92);
-    color: rgb(250 250 250);
   }
 
   .post-tip:hover .tip-bubble,

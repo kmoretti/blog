@@ -23,9 +23,16 @@ const scriptConfig = {
 };
 ---
 
-<div class="giscus-container">
-  <p class="giscus-hint">来过，就留下你的足迹吧！</p>
-  <div id="giscus-comments"></div>
+<div class="giscus-card">
+  <span class="giscus-tape" aria-hidden="true"></span>
+  <span class="giscus-tab" aria-hidden="true"></span>
+  <div class="giscus-header">
+    <p class="giscus-hint">来过，就留下你的足迹吧！</p>
+    <span class="giscus-underline" aria-hidden="true"></span>
+  </div>
+  <div class="giscus-body">
+    <div id="giscus-comments"></div>
+  </div>
 </div>
 
 <script is:inline define:vars={{ giscusConfig: scriptConfig }}>
@@ -94,7 +101,7 @@ const scriptConfig = {
       const container = document.getElementById("giscus-comments");
       if (container) {
         container.innerHTML =
-          '<p class="text-sm text-zinc-500 dark:text-zinc-400">Giscus 评论未配置。</p>';
+          '<p class="text-sm" style="color:var(--fp-muted)">Giscus 评论未配置。</p>';
       }
       return;
     }
@@ -165,18 +172,143 @@ const scriptConfig = {
 </script>
 
 <style is:global>
-  .giscus-container {
+  .giscus-card {
+    --gi-tilt: -0.12deg;
+    position: relative;
     margin-top: 2rem;
+    padding: 1.35rem 1.15rem 1.15rem;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    background: linear-gradient(
+      160deg,
+      var(--fp-paper) 0%,
+      color-mix(in srgb, var(--fp-warm) 90%, transparent) 100%
+    );
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 55%, transparent);
+    box-shadow:
+      var(--fp-shadow),
+      inset 0 1px color-mix(in srgb, var(--fp-paper) 70%, transparent);
+    transform: rotate(var(--gi-tilt));
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .giscus-card:hover {
+    transform: translateY(-2px) rotate(0deg);
+    border-color: color-mix(in srgb, var(--fp-accent) 35%, var(--fp-dash));
+    box-shadow:
+      var(--fp-small-shadow),
+      inset 0 1px color-mix(in srgb, var(--fp-paper) 70%, transparent);
+  }
+
+  .giscus-tape {
+    position: absolute;
+    top: -7px;
+    left: 28px;
+    z-index: 2;
+    width: 36px;
+    height: 14px;
+    background-color: rgba(200, 170, 230, 0.68);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.22) 0 2px,
+      transparent 2px 6px
+    );
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(82, 64, 38, 0.1);
+    transform: rotate(-3deg);
+    pointer-events: none;
+  }
+
+  html.dark .giscus-tape {
+    background-color: rgba(130, 100, 160, 0.56);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.12) 0 2px,
+      transparent 2px 6px
+    );
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .giscus-tab {
+    position: absolute;
+    top: 20px;
+    right: -5px;
+    z-index: -1;
+    width: 5px;
+    height: 44px;
+    border: 1px dashed color-mix(in srgb, var(--fp-dash) 50%, transparent);
+    border-left: 0;
+    border-radius: 0 6px 6px 0;
+    background: #b8a0d8;
+    box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.06);
+    pointer-events: none;
+    transition:
+      width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+      right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  html.dark .giscus-tab {
+    border-color: rgba(225, 230, 245, 0.08);
+    background: #7a5a8a;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.14);
+  }
+
+  .giscus-card:hover .giscus-tab {
+    right: -10px;
+    width: 10px;
+  }
+
+  .giscus-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.5rem;
   }
 
   .giscus-hint {
-    margin-bottom: 0.75rem;
-    text-align: center;
-    font-size: 0.875rem;
-    color: #71717a;
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--fp-ink-soft);
+    letter-spacing: 0.02em;
   }
 
-  .dark .giscus-hint {
-    color: #a1a1aa;
+  .giscus-underline {
+    display: block;
+    width: 3.5em;
+    height: 5px;
+    margin-top: 5px;
+    background-color: var(--fp-accent);
+    opacity: 0.65;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+  }
+
+  .giscus-body {
+    min-height: 200px;
+  }
+
+  .giscus-body iframe.giscus-frame {
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+  }
+
+  @media (max-width: 680px) {
+    .giscus-card {
+      border-radius: 255px 12px 225px 12px / 12px 225px 12px 255px;
+      padding: 1.15rem 0.95rem 1rem;
+      transform: none;
+    }
+
+    .giscus-tape {
+      left: 20px;
+    }
   }
 </style>

@@ -32,49 +32,27 @@ const { mode = "apply", apiBase } = Astro.props;
 
 <style is:global>
   .friendlink-form-root {
-    --fl-bg: rgba(255, 255, 255, 0.88);
-    --fl-border: rgba(24, 24, 27, 0.08);
-    --fl-text: #18181b;
-    --fl-text-secondary: #52525b;
-    --fl-text-muted: #a1a1aa;
-    --fl-input-bg: #ffffff;
-    --fl-input-border: #d4d4d8;
-    --fl-input-text: #18181b;
-    --fl-input-placeholder: #a1a1aa;
-    --fl-accent: #18181b;
-    --fl-accent-hover: #27272a;
-    --fl-btn-disabled: #a1a1aa;
-    --fl-err-bg: #fef2f2;
-    --fl-err-border: #fecaca;
-    --fl-err-text: #dc2626;
-    --fl-success-bg: #f0fdf4;
-    --fl-success-icon-bg: #ecfdf5;
-    --fl-success-text: #059669;
+    --fl-bg: var(--fp-paper);
+    --fl-border: var(--fp-dash);
+    --fl-text: var(--fp-ink);
+    --fl-text-secondary: var(--fp-ink-soft);
+    --fl-text-muted: var(--fp-muted);
+    --fl-input-bg: var(--fp-paper);
+    --fl-input-border: var(--fp-dash);
+    --fl-input-text: var(--fp-ink);
+    --fl-input-placeholder: var(--fp-muted);
+    --fl-accent: var(--fp-accent);
+    --fl-accent-hover: var(--fp-accent-strong);
+    --fl-btn-disabled: var(--fp-muted);
+    --fl-err-bg: color-mix(in srgb, var(--fp-accent) 10%, var(--fp-paper));
+    --fl-err-border: var(--fp-dash);
+    --fl-err-text: var(--fp-accent-strong);
+    --fl-success-bg: color-mix(in srgb, var(--fp-accent) 10%, var(--fp-paper));
+    --fl-success-icon-bg: color-mix(in srgb, var(--fp-accent) 15%, var(--fp-paper));
+    --fl-success-text: var(--fp-accent-strong);
     --fl-shadow:
-      0 1px 3px rgba(24, 24, 27, 0.06), 0 1px 2px rgba(24, 24, 27, 0.04);
+      0 1px 3px color-mix(in srgb, var(--fp-ink) 6%, transparent), 0 1px 2px color-mix(in srgb, var(--fp-ink) 4%, transparent);
     --fl-radius: 12px;
-  }
-
-  html.dark .friendlink-form-root {
-    --fl-bg: rgba(24, 24, 27, 0.84);
-    --fl-border: rgba(255, 255, 255, 0.08);
-    --fl-text: #f4f4f5;
-    --fl-text-secondary: #a1a1aa;
-    --fl-text-muted: #71717a;
-    --fl-input-bg: #3f3f46;
-    --fl-input-border: #52525b;
-    --fl-input-text: #f4f4f5;
-    --fl-input-placeholder: #71717a;
-    --fl-accent: #18181b;
-    --fl-accent-hover: #27272a;
-    --fl-btn-disabled: #52525b;
-    --fl-err-bg: rgba(127, 29, 29, 0.3);
-    --fl-err-border: rgba(220, 38, 38, 0.4);
-    --fl-err-text: #fca5a5;
-    --fl-success-bg: rgba(5, 46, 22, 0.3);
-    --fl-success-icon-bg: rgba(5, 46, 22, 0.5);
-    --fl-success-text: #4ade80;
-    --fl-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .fl-mode-tabs {
@@ -104,22 +82,13 @@ const { mode = "apply", apiBase } = Astro.props;
 
   .fl-mode-btn:hover {
     color: var(--fl-text);
-    background: rgba(128, 128, 128, 0.06);
-  }
-
-  html.dark .fl-mode-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--fp-warm);
   }
 
   .fl-mode-btn.active {
     background: var(--fl-accent);
-    color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  }
-
-  html.dark .fl-mode-btn.active {
-    background: #e4e4e7;
-    color: #18181b;
+    color: var(--fp-paper);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--fp-ink) 12%, transparent);
   }
 
   .fl-form-box {
@@ -157,7 +126,7 @@ const { mode = "apply", apiBase } = Astro.props;
   }
 
   .fl-star {
-    color: #ef4444;
+    color: var(--fp-accent-strong);
   }
 
   .fl-input {
@@ -183,11 +152,6 @@ const { mode = "apply", apiBase } = Astro.props;
   .fl-input:focus {
     border-color: var(--fl-accent);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--fl-accent) 15%, transparent);
-  }
-
-  html.dark .fl-input:focus {
-    border-color: #a1a1aa;
-    box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.2);
   }
 
   .fl-hint {
@@ -216,7 +180,7 @@ const { mode = "apply", apiBase } = Astro.props;
     padding: 0.625rem 1rem;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #fff;
+    color: var(--fp-paper);
     background: var(--fl-accent);
     border: none;
     border-radius: 8px;
@@ -232,20 +196,6 @@ const { mode = "apply", apiBase } = Astro.props;
   .fl-btn:disabled {
     background: var(--fl-btn-disabled);
     cursor: not-allowed;
-  }
-
-  html.dark .fl-btn {
-    background: #e4e4e7;
-    color: #18181b;
-  }
-
-  html.dark .fl-btn:hover {
-    background: #d4d4d8;
-  }
-
-  html.dark .fl-btn:disabled {
-    background: #52525b;
-    color: #a1a1aa;
   }
 
   .fl-success {
