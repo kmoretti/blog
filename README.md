@@ -6,20 +6,20 @@
 
 ## 技术栈
 
-| 层 | 技术 |
-| --- | --- |
-| 框架 | [Astro](https://astro.build) 5 — 静态站点生成 (SSG) |
-| 样式 | Tailwind CSS 3 + **`--fp-*` CSS Variables** 纸艺设计系统 |
-| 字体 | Noto Sans SC（中文）+ Noto Sans Mono（等宽） |
-| 图标 | astro-icon + Material Symbols + Iconify 图标集 |
-| 内容 | MDX + Astro Content Collections |
-| 评论 | Giscus（基于 GitHub Discussions） |
-| 搜索 | Pagefind（静态全文搜索） |
-| 分析 | Umami |
-| 构建 | `astro check && astro build && pagefind` |
-| 部署 | Cloudflare Pages |
-| 友链数据 | 远程 YAML + Friend-Circle-Lite API |
-| 包管理 | pnpm |
+| 层       | 技术                                                     |
+| -------- | -------------------------------------------------------- |
+| 框架     | [Astro](https://astro.build) 5 — 静态站点生成 (SSG)      |
+| 样式     | Tailwind CSS 3 + **`--fp-*` CSS Variables** 纸艺设计系统 |
+| 字体     | Noto Sans SC（中文）+ Noto Sans Mono（等宽）             |
+| 图标     | astro-icon + Material Symbols + Iconify 图标集           |
+| 内容     | MDX + Astro Content Collections                          |
+| 评论     | Giscus（基于 GitHub Discussions）                        |
+| 搜索     | Pagefind（静态全文搜索）                                 |
+| 分析     | Umami                                                    |
+| 构建     | `astro check && astro build && pagefind`                 |
+| 部署     | Cloudflare Pages                                         |
+| 友链数据 | 远程 YAML + Friend-Circle-Lite API                       |
+| 包管理   | pnpm                                                     |
 
 ## 特性
 
@@ -37,7 +37,7 @@
 
 ### 友链系统
 
-- **远程数据源**：从 `https://friends-api.081531.xyz/link.yml`（Butterfly 主题 YAML 格式）自动拉取友链数据
+- **远程数据源**：从 `https://friends-api.081531.xyz/source/_data/links.yml`（Butterfly 主题 YAML 格式）自动拉取友链数据
 - **友链详情页**：卡片式布局（胶带 + tab + 旋转），展示站点截图、延迟检测（整合 Friend-Circle-Lite 数据）、RSS 订阅、标签
 - **友链朋友圈**：RSS 文章流聚合页面，flatpaper 风格卡片
 - **友链申请/更新表单**：通过 `https://verify.081531.xyz` API 提交，双 tab 切换（Apply / Update）
@@ -152,9 +152,10 @@ export const EMAIL = "mcy@kemiaosw.top";
 ### 友链系统配置
 
 ```ts
-export const FRIENDLINK_API = "https://verify.081531.xyz";   // 友链申请 API
-export const FRIEND_DATA_URL = "https://friends-api.081531.xyz/link.yml";  // 远程友链 YAML
-export const LATENCY_API_URL = "https://fc.081531.xyz/link.json";  // 延迟检测数据
+export const FRIENDLINK_API = "https://verify.081531.xyz"; // 友链申请 API
+export const FRIEND_DATA_URL =
+  "https://friends-api.081531.xyz/source/_data/links.yml"; // 远程友链 YAML
+export const LATENCY_API_URL = "https://fc.081531.xyz/link.json"; // 延迟检测数据
 ```
 
 远程 YAML 数据格式（Butterfly 主题兼容）：
@@ -242,14 +243,16 @@ import { Alert } from "../../components/posts/Alert.astro";
 
 ```css
 :root {
-  --fp-bg: #f7f3e9;           /* 页面背景 */
-  --fp-paper: #fffdf6;         /* 卡片/纸张底色 */
-  --fp-ink: #2c3531;           /* 主文字色 */
-  --fp-accent: #6fa67c;        /* 强调色（植物绿） */
-  --fp-tape: rgba(238,201,110,0.72);  /* 胶带色 */
+  --fp-bg: #f7f3e9; /* 页面背景 */
+  --fp-paper: #fffdf6; /* 卡片/纸张底色 */
+  --fp-ink: #2c3531; /* 主文字色 */
+  --fp-accent: #6fa67c; /* 强调色（植物绿） */
+  --fp-tape: rgba(238, 201, 110, 0.72); /* 胶带色 */
   /* ... */
 }
-html.dark { /* 暗色模式覆盖值 */ }
+html.dark {
+  /* 暗色模式覆盖值 */
+}
 ```
 
 ### 设计风格更换
