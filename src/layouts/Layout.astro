@@ -144,15 +144,13 @@ const {
     ];
 
     const links = new Set(
-      containers.flatMap(
-        (sel) => [...document.querySelectorAll(`${sel} a[href]`)],
-      ),
+      containers.flatMap((sel) => [
+        ...document.querySelectorAll(`${sel} a[href]`),
+      ]),
     );
 
     const excluded = new Set(
-      excludeSelectors.flatMap(
-        (sel) => [...document.querySelectorAll(sel)],
-      ),
+      excludeSelectors.flatMap((sel) => [...document.querySelectorAll(sel)]),
     );
 
     const baseUrl = location.protocol + "//" + location.host;

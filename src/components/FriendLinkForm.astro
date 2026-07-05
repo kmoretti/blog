@@ -9,199 +9,454 @@ const { mode = "apply", apiBase } = Astro.props;
 
 <div
   id="friendlink-form-root"
-  class:list={{ "friendlink-form-root": true }}
+  class="fl-root"
   data-initial-mode={mode}
   data-api-base={apiBase}
 >
-  <div class="fl-mode-tabs">
-    <button id="fl-tab-apply" class="fl-mode-btn" data-mode="apply">
-      申请友链
-    </button>
-    <button id="fl-tab-update" class="fl-mode-btn" data-mode="update">
-      更新友链
-    </button>
+  <div class="fl-card">
+    <span class="fl-tape" aria-hidden="true"></span>
+    <span class="fl-tab" aria-hidden="true"></span>
+
+    <div class="fl-card-head">
+      <h3 class="fl-card-title">友链申请</h3>
+      <span class="fl-card-underline" aria-hidden="true"></span>
+    </div>
+
+    <div id="fl-conditions">
+      <p class="fl-cond-desc">请先确认满足以下条件：</p>
+      <label class="fl-checkbox"
+        ><input type="checkbox" id="fl-cb1" />
+        我已添加 <strong>喵洛阁</strong> 的友情链接</label
+      >
+      <label class="fl-checkbox"
+        ><input type="checkbox" id="fl-cb2" />
+        我的网站现在可以在中国大陆区域正常访问</label
+      >
+      <label class="fl-checkbox"
+        ><input type="checkbox" id="fl-cb3" />
+        网站内容符合中国大陆法律法规</label
+      >
+      <label class="fl-checkbox"
+        ><input type="checkbox" id="fl-cb4" />
+        我的链接主体为 <strong>个人</strong>，网站类型为 <strong>博客</strong
+        ></label
+      >
+      <label class="fl-checkbox"
+        ><input type="checkbox" id="fl-cb5" />
+        网站域名不是 us.kg 等免费域名（github.io、gitee.io 除外）</label
+      >
+      <p class="fl-cond-hint">请先勾选所有条件后再填写申请表单</p>
+    </div>
+
+    <div id="fl-options" style="display:none">
+      <div class="fl-mode-tabs">
+        <button id="fl-tab-apply" class="fl-mode-btn" data-mode="apply">
+          申请友链
+        </button>
+        <button id="fl-tab-update" class="fl-mode-btn" data-mode="update">
+          更新友链
+        </button>
+      </div>
+
+      <div id="fl-form-container"></div>
+    </div>
   </div>
 
-  <div id="fl-form-container" class="fl-form-box">
-    <div id="fl-loading" class="fl-loading">
-      <div class="fl-spinner"></div>
-      <span>加载中...</span>
+  <div id="fl-status-section" class="fl-card fl-status-card">
+    <span class="fl-tape fl-tape--green" aria-hidden="true"></span>
+    <span class="fl-tab fl-tab--green" aria-hidden="true"></span>
+
+    <div class="fl-status-head">
+      <div class="fl-card-head">
+        <h3 class="fl-card-title">申请列表</h3>
+        <span class="fl-card-underline" aria-hidden="true"></span>
+      </div>
+      <div class="fl-status-controls">
+        <div class="fl-dropdown" id="fl-status-dropdown">
+          <button class="fl-dropdown-trigger" id="fl-status-dropdown-trigger">
+            <span id="fl-status-dropdown-label">全部状态</span>
+            <span class="fl-dropdown-arrow">▾</span>
+          </button>
+          <div class="fl-dropdown-menu" id="fl-status-dropdown-menu">
+            <div class="fl-dropdown-item active" data-status="">全部状态</div>
+            <div class="fl-dropdown-item" data-status="pending">待审核</div>
+            <div class="fl-dropdown-item" data-status="approved">已通过</div>
+            <div class="fl-dropdown-item" data-status="rejected">已拒绝</div>
+          </div>
+        </div>
+        <div class="fl-search-wrap">
+          <span class="fl-search-icon" aria-hidden="true">🔍</span>
+          <input
+            id="fl-status-search"
+            type="text"
+            placeholder="搜索名称"
+            class="fl-search-input"
+          />
+        </div>
+        <span class="fl-status-count" id="fl-status-count"></span>
+      </div>
     </div>
+    <div id="fl-status-grid" class="fl-status-grid"></div>
+    <div id="fl-pagination" class="fl-pagination"></div>
   </div>
 </div>
 
 <style is:global>
-  .friendlink-form-root {
-    --fl-bg: var(--fp-paper);
-    --fl-border: var(--fp-dash);
-    --fl-text: var(--fp-ink);
-    --fl-text-secondary: var(--fp-ink-soft);
-    --fl-text-muted: var(--fp-muted);
+  /* ── Variables ── */
+  .fl-root {
+    --fl-card-bg: linear-gradient(
+      160deg,
+      var(--fp-paper) 0%,
+      color-mix(in srgb, var(--fp-warm) 90%, transparent) 100%
+    );
+    --fl-border: color-mix(in srgb, var(--fp-dash) 55%, transparent);
+    --fl-inner-bg: color-mix(in srgb, var(--fp-paper) 72%, transparent);
     --fl-input-bg: var(--fp-paper);
     --fl-input-border: var(--fp-dash);
-    --fl-input-text: var(--fp-ink);
-    --fl-input-placeholder: var(--fp-muted);
-    --fl-accent: var(--fp-accent);
-    --fl-accent-hover: var(--fp-accent-strong);
-    --fl-btn-disabled: var(--fp-muted);
-    --fl-err-bg: color-mix(in srgb, var(--fp-accent) 10%, var(--fp-paper));
-    --fl-err-border: var(--fp-dash);
-    --fl-err-text: var(--fp-accent-strong);
-    --fl-success-bg: color-mix(in srgb, var(--fp-accent) 10%, var(--fp-paper));
-    --fl-success-icon-bg: color-mix(in srgb, var(--fp-accent) 15%, var(--fp-paper));
+    --fl-err-text: #dc2626;
     --fl-success-text: var(--fp-accent-strong);
-    --fl-shadow:
-      0 1px 3px color-mix(in srgb, var(--fp-ink) 6%, transparent), 0 1px 2px color-mix(in srgb, var(--fp-ink) 4%, transparent);
-    --fl-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
+  /* ── Paper Card ── */
+  .fl-card {
+    --fl-tilt: -0.12deg;
+    position: relative;
+    padding: 1.5rem 1.35rem 1.35rem;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    background: var(--fl-card-bg);
+    border: 1px solid var(--fl-border);
+    box-shadow:
+      var(--fp-shadow),
+      inset 0 1px color-mix(in srgb, var(--fp-paper) 70%, transparent);
+    transform: rotate(var(--fl-tilt));
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .fl-card:hover {
+    transform: translateY(-1px) rotate(0deg);
+    box-shadow:
+      var(--fp-soft-shadow),
+      inset 0 1px color-mix(in srgb, var(--fp-paper) 70%, transparent);
+  }
+
+  .fl-status-card {
+    --fl-tilt: 0.15deg;
+  }
+
+  /* ── Tape ── */
+  .fl-tape {
+    position: absolute;
+    top: -7px;
+    left: 30px;
+    z-index: 2;
+    width: 36px;
+    height: 14px;
+    background-color: rgba(200, 170, 230, 0.68);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.22) 0 2px,
+      transparent 2px 6px
+    );
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(82, 64, 38, 0.1);
+    transform: rotate(-3deg);
+    pointer-events: none;
+  }
+
+  html.dark .fl-tape {
+    background-color: rgba(130, 100, 160, 0.56);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.12) 0 2px,
+      transparent 2px 6px
+    );
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .fl-tape--green {
+    background-color: rgba(134, 217, 147, 0.68);
+    transform: rotate(-2deg);
+  }
+
+  html.dark .fl-tape--green {
+    background-color: rgba(79, 122, 85, 0.56);
+  }
+
+  /* ── Tab ── */
+  .fl-tab {
+    position: absolute;
+    top: 20px;
+    right: -5px;
+    z-index: -1;
+    width: 5px;
+    height: 44px;
+    border: 1px dashed color-mix(in srgb, var(--fp-dash) 50%, transparent);
+    border-left: 0;
+    border-radius: 0 6px 6px 0;
+    background: #b8a0d8;
+    box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.06);
+    pointer-events: none;
+    transition:
+      width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+      right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  html.dark .fl-tab {
+    border-color: rgba(225, 230, 245, 0.08);
+    background: #7a5a8a;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.14);
+  }
+
+  .fl-card:hover .fl-tab {
+    right: -10px;
+    width: 10px;
+  }
+
+  .fl-tab--green {
+    background: #86d993;
+  }
+
+  html.dark .fl-tab--green {
+    background: #4f7a55;
+  }
+
+  /* ── Card Head ── */
+  .fl-card-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .fl-card-title {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--fp-ink);
+    line-height: 1.3;
+  }
+
+  .fl-card-underline {
+    display: block;
+    width: 2.2em;
+    max-width: 48%;
+    height: 5px;
+    margin-top: 4px;
+    background-color: var(--fp-accent);
+    opacity: 0.7;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+  }
+
+  /* ── Conditions ── */
+  .fl-cond-desc {
+    margin: 0 0 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--fp-ink-soft);
+    line-height: 1.6;
+  }
+
+  .fl-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    padding: 4px 0;
+    color: var(--fp-ink);
+    line-height: 1.5;
+  }
+
+  .fl-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    accent-color: var(--fp-accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .fl-checkbox strong {
+    font-weight: 700;
+    color: var(--fp-accent-strong);
+  }
+
+  .fl-cond-hint {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--fl-err-text);
+  }
+
+  /* ── Mode Tabs ── */
   .fl-mode-tabs {
     display: flex;
     gap: 0;
     margin-bottom: 1.25rem;
-    background: var(--fl-bg);
-    border: 1px solid var(--fl-border);
-    border-radius: var(--fl-radius);
+    background: var(--fl-inner-bg);
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 45%, transparent);
+    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
     padding: 4px;
-    box-shadow: var(--fl-shadow);
-    backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px color-mix(in srgb, var(--fp-paper) 80%, transparent);
   }
 
   .fl-mode-btn {
     flex: 1;
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    padding: 0.5625rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-family: inherit;
     border: none;
-    border-radius: calc(var(--fl-radius) - 4px);
+    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
     background: transparent;
-    color: var(--fl-text-secondary);
+    color: var(--fp-ink-soft);
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .fl-mode-btn:hover {
-    color: var(--fl-text);
-    background: var(--fp-warm);
+    color: var(--fp-ink);
+    background: color-mix(in srgb, var(--fp-warm) 80%, transparent);
   }
 
   .fl-mode-btn.active {
-    background: var(--fl-accent);
+    background: var(--fp-accent);
     color: var(--fp-paper);
     box-shadow: 0 1px 3px color-mix(in srgb, var(--fp-ink) 12%, transparent);
   }
 
-  .fl-form-box {
-    background: var(--fl-bg);
-    border: 1px solid var(--fl-border);
-    border-radius: var(--fl-radius);
-    padding: 1.5rem;
-    box-shadow: var(--fl-shadow);
-    backdrop-filter: blur(12px);
+  /* ── Form Fields ── */
+  .fl-form-inner {
+    animation: fl-fade-in 0.3s ease;
   }
 
-  .fl-form-box h3 {
+  @keyframes fl-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fl-form-inner h3 {
     margin: 0 0 0.25rem;
-    font-size: 1.0625rem;
-    font-weight: 600;
-    color: var(--fl-text);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--fp-ink);
   }
 
-  .fl-form-box .fl-subtitle {
+  .fl-form-inner .fl-subtitle {
     margin: 0 0 1.25rem;
-    font-size: 0.8125rem;
-    color: var(--fl-text-muted);
+    font-size: 0.75rem;
+    color: var(--fp-muted);
   }
 
   .fl-field {
-    margin-bottom: 1rem;
+    margin-bottom: 0.875rem;
   }
 
   .fl-label {
     display: block;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--fl-text);
-    margin-bottom: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--fp-ink);
+    margin-bottom: 0.3rem;
   }
 
   .fl-star {
-    color: var(--fp-accent-strong);
+    color: var(--fl-err-text);
   }
 
   .fl-input {
     width: 100%;
-    padding: 0.5625rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-family: inherit;
     border: 1px solid var(--fl-input-border);
-    border-radius: 8px;
+    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
     outline: none;
     box-sizing: border-box;
-    color: var(--fl-input-text);
+    color: var(--fp-ink);
     background: var(--fl-input-bg);
+    box-shadow: inset 0 1px color-mix(in srgb, var(--fp-paper) 60%, transparent);
     transition:
       border-color 0.15s ease,
       box-shadow 0.15s ease;
-    font-family: inherit;
   }
 
   .fl-input::placeholder {
-    color: var(--fl-input-placeholder);
+    color: var(--fp-muted);
   }
 
   .fl-input:focus {
-    border-color: var(--fl-accent);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--fl-accent) 15%, transparent);
+    border-color: var(--fp-accent);
+    box-shadow:
+      inset 0 1px color-mix(in srgb, var(--fp-paper) 60%, transparent),
+      0 0 0 2px color-mix(in srgb, var(--fp-accent) 15%, transparent);
   }
 
   .fl-hint {
-    margin: 0.375rem 0 0;
+    margin: 0.25rem 0 0;
     font-size: 0.6875rem;
-    color: var(--fl-text-muted);
+    color: var(--fp-muted);
   }
 
   .fl-err-box {
     display: none;
     padding: 0.625rem 0.875rem;
-    background: var(--fl-err-bg);
-    border: 1px solid var(--fl-err-border);
-    border-radius: 8px;
+    background: color-mix(in srgb, #dc2626 8%, var(--fp-paper));
+    border: 1px solid color-mix(in srgb, #dc2626 20%, var(--fp-dash));
+    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
     color: var(--fl-err-text);
-    font-size: 0.8125rem;
-    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.875rem;
   }
 
   .fl-err-box.visible {
     display: block;
   }
 
+  /* ── Submit Button ── */
   .fl-btn {
     width: 100%;
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    padding: 0.5625rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-family: inherit;
     color: var(--fp-paper);
-    background: var(--fl-accent);
+    background: var(--fp-accent);
     border: none;
-    border-radius: 8px;
+    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
     cursor: pointer;
     transition: background-color 0.15s ease;
-    font-family: inherit;
   }
 
   .fl-btn:hover {
-    background: var(--fl-accent-hover);
+    background: var(--fp-accent-strong);
   }
 
   .fl-btn:disabled {
-    background: var(--fl-btn-disabled);
+    background: var(--fp-muted);
     cursor: not-allowed;
   }
 
+  /* ── Success ── */
   .fl-success {
     display: none;
     text-align: center;
     padding: 2.5rem 1.5rem;
+    animation: fl-fade-in 0.3s ease;
   }
 
   .fl-success.visible {
@@ -212,7 +467,7 @@ const { mode = "apply", apiBase } = Astro.props;
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: var(--fl-success-icon-bg);
+    background: color-mix(in srgb, var(--fp-accent) 12%, var(--fp-paper));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -222,7 +477,7 @@ const { mode = "apply", apiBase } = Astro.props;
   .fl-success-icon svg {
     width: 24px;
     height: 24px;
-    stroke: var(--fl-success-text);
+    stroke: var(--fp-accent-strong);
     fill: none;
     stroke-width: 2;
     stroke-linecap: round;
@@ -231,50 +486,359 @@ const { mode = "apply", apiBase } = Astro.props;
 
   .fl-success h3 {
     margin: 0 0 0.25rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--fl-text);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--fp-ink);
   }
 
   .fl-success p {
     margin: 0;
-    font-size: 0.8125rem;
-    color: var(--fl-text-secondary);
+    font-size: 0.75rem;
+    color: var(--fp-ink-soft);
     line-height: 1.6;
   }
 
-  .fl-loading {
+  /* ── Status Controls ── */
+  .fl-status-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .fl-status-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .fl-dropdown {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .fl-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem;
+    font-family: inherit;
+    font-weight: 500;
+    border: 1px solid var(--fl-input-border);
+    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
+    background: var(--fp-paper);
+    color: var(--fp-ink-soft);
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .fl-dropdown-trigger:hover {
+    border-color: var(--fp-accent);
+  }
+
+  .fl-dropdown-arrow {
+    font-size: 0.625rem;
+    transition: transform 0.2s;
+  }
+
+  .fl-dropdown.open .fl-dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  .fl-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 110px;
+    background: var(--fp-paper);
+    border: 1px solid var(--fl-input-border);
+    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
+    box-shadow: var(--fp-soft-shadow);
+    display: none;
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .fl-dropdown.open .fl-dropdown-menu {
+    display: block;
+  }
+
+  .fl-dropdown-item {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem;
+    color: var(--fp-ink-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .fl-dropdown-item:hover {
+    background: color-mix(in srgb, var(--fp-accent) 10%, transparent);
+    color: var(--fp-accent-strong);
+  }
+
+  .fl-dropdown-item.active {
+    color: var(--fp-accent-strong);
+    font-weight: 600;
+    background: color-mix(in srgb, var(--fp-accent) 8%, transparent);
+  }
+
+  .fl-search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .fl-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.6875rem;
+    color: var(--fp-muted);
+    pointer-events: none;
+  }
+
+  .fl-search-input {
+    width: 100%;
+    padding: 0.375rem 0.75rem 0.375rem 1.75rem;
+    font-size: 0.6875rem;
+    font-family: inherit;
+    border: 1px solid var(--fl-input-border);
+    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
+    outline: none;
+    background: var(--fp-paper);
+    color: var(--fp-ink);
+    transition: border-color 0.2s ease;
+  }
+
+  .fl-search-input:focus {
+    border-color: var(--fp-accent);
+  }
+
+  .fl-status-count {
+    font-size: 0.6875rem;
+    color: var(--fp-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Status Grid ── */
+  .fl-status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+
+  .fl-status-grid .fl-status-empty,
+  .fl-status-grid .fl-status-loading,
+  .fl-status-grid .fl-status-error {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--fp-muted);
+    font-size: 0.8125rem;
+  }
+
+  .fl-status-grid .fl-status-error {
+    color: var(--fl-err-text);
+  }
+
+  .fl-status-grid .fl-status-item {
+    min-width: 0;
+    padding: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 50%, transparent);
+    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
+    background: var(--fl-inner-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    box-shadow: inset 0 1px color-mix(in srgb, var(--fp-paper) 80%, transparent);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .fl-status-grid .fl-status-item:hover {
+    border-color: color-mix(in srgb, var(--fp-accent) 40%, var(--fp-dash));
+    transform: translateY(-2px);
+  }
+
+  .fl-status-grid .fl-status-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .fl-status-grid .fl-status-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--fp-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .fl-status-grid .fl-status-desc {
+    font-size: 0.6875rem;
+    color: var(--fp-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .fl-status-grid .fl-status-top-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .fl-status-grid .fl-status-badge {
+    padding: 1px 8px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    border-radius: 255px 4px 225px 4px / 4px 225px 4px 255px;
+    white-space: nowrap;
+    line-height: 1.6;
+  }
+
+  .fl-status-grid .fl-status-type {
+    font-size: 0.5625rem;
+    color: var(--fp-muted);
+    padding: 1px 5px;
+    background: var(--fl-inner-bg);
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 40%, transparent);
+    border-radius: 3px;
+    line-height: 1.6;
+  }
+
+  .fl-status-grid .fl-status-badge.pending {
+    background: color-mix(in srgb, #facc15 18%, var(--fp-paper));
+    color: #a16207;
+  }
+
+  .fl-status-grid .fl-status-badge.approved {
+    background: color-mix(in srgb, #4ade80 18%, var(--fp-paper));
+    color: #15803d;
+  }
+
+  .fl-status-grid .fl-status-badge.rejected {
+    background: color-mix(in srgb, #f87171 18%, var(--fp-paper));
+    color: #dc2626;
+  }
+
+  html.dark .fl-status-grid .fl-status-badge.pending {
+    background: rgba(234, 179, 8, 0.2);
+    color: #facc15;
+  }
+
+  html.dark .fl-status-grid .fl-status-badge.approved {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+  }
+
+  html.dark .fl-status-grid .fl-status-badge.rejected {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+  }
+
+  /* ── Pagination ── */
+  .fl-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.625rem;
-    padding: 3rem;
-    color: var(--fl-text-muted);
-    font-size: 0.875rem;
+    gap: 0.35rem;
+    margin-top: 0.875rem;
+    flex-wrap: wrap;
   }
 
-  .fl-spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--fl-border);
-    border-top-color: var(--fl-accent);
-    border-radius: 50%;
-    animation: fl-spin 0.7s linear infinite;
+  .fl-pagination .fl-page-btn {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    font-size: 0.6875rem;
+    font-family: inherit;
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 50%, transparent);
+    border-radius: 255px 4px 225px 4px / 4px 225px 4px 255px;
+    background: var(--fp-paper);
+    color: var(--fp-ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
   }
 
-  @keyframes fl-spin {
-    to {
-      transform: rotate(360deg);
+  .fl-pagination .fl-page-btn:hover {
+    border-color: var(--fp-accent);
+    color: var(--fp-accent-strong);
+  }
+
+  .fl-pagination .fl-page-btn.active {
+    background: var(--fp-accent);
+    border-color: var(--fp-accent);
+    color: var(--fp-paper);
+  }
+
+  .fl-pagination .fl-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .fl-pagination .fl-page-dots {
+    color: var(--fp-muted);
+    font-size: 0.6875rem;
+    padding: 0 4px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .fl-status-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (max-width: 640px) {
-    .fl-form-box {
-      padding: 1.125rem;
+    .fl-card {
+      padding: 1.25rem 1rem 1rem;
+      border-radius: 255px 12px 225px 12px / 12px 225px 12px 255px;
+      transform: none;
     }
+
     .fl-mode-tabs {
+      border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
+    }
+
+    .fl-status-head {
       flex-direction: column;
-      gap: 4px;
+      align-items: flex-start;
+    }
+
+    .fl-status-controls {
+      width: 100%;
+      min-width: unset;
+    }
+
+    .fl-dropdown,
+    .fl-search-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .fl-status-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
@@ -284,17 +848,37 @@ const { mode = "apply", apiBase } = Astro.props;
     var root = document.getElementById("friendlink-form-root");
     if (!root) return;
 
-    var initialMode = root.dataset.initialMode || "apply";
     var apiBase =
       root.dataset.apiBase ||
       window.__FRIENDLINK_API_BASE__ ||
       "https://verify.081531.xyz";
     var API_URL = apiBase + "/api/submissions";
+    var initialMode = root.dataset.initialMode || "apply";
 
-    var containerEl = document.getElementById("fl-form-container");
+    /* ── Condition checkboxes ── */
+    var cbIds = ["fl-cb1", "fl-cb2", "fl-cb3", "fl-cb4", "fl-cb5"];
+    var condHint = root.querySelector(".fl-cond-hint");
+    var optionsEl = document.getElementById("fl-options");
+
+    function checkConditions() {
+      var all = cbIds.every(function (id) {
+        return document.getElementById(id).checked;
+      });
+      optionsEl.style.display = all ? "block" : "none";
+      condHint.style.display = all ? "none" : "block";
+    }
+
+    cbIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener("change", checkConditions);
+    });
+
+    /* ── Tabs ── */
+    var currentMode = initialMode;
     var tabApply = document.getElementById("fl-tab-apply");
     var tabUpdate = document.getElementById("fl-tab-update");
-    var currentMode = initialMode;
+    var containerEl = document.getElementById("fl-form-container");
+    var formState = {};
 
     var FIELDS_APPLY = [
       {
@@ -338,6 +922,7 @@ const { mode = "apply", apiBase } = Astro.props;
         required: false,
         type: "url",
         placeholder: "站点截图链接",
+        hint: "支持 siteshot 和 topimg 字段",
       },
       {
         key: "feeds",
@@ -352,6 +937,7 @@ const { mode = "apply", apiBase } = Astro.props;
         required: false,
         type: "email",
         placeholder: "用于接收审核结果通知（选填）",
+        hint: "用于接收审核结果通知",
       },
     ];
 
@@ -404,6 +990,7 @@ const { mode = "apply", apiBase } = Astro.props;
         required: false,
         type: "url",
         placeholder: "站点截图链接",
+        hint: "支持 siteshot 和 topimg 字段",
       },
       {
         key: "feeds",
@@ -418,10 +1005,9 @@ const { mode = "apply", apiBase } = Astro.props;
         required: false,
         type: "email",
         placeholder: "用于接收审核结果通知（选填）",
+        hint: "用于接收审核结果通知",
       },
     ];
-
-    var formState = {};
 
     function setActiveTab(mode) {
       currentMode = mode;
@@ -442,7 +1028,6 @@ const { mode = "apply", apiBase } = Astro.props;
       var html = '<div class="fl-form-inner">';
       html += "<h3>" + title + "</h3>";
       html += '<p class="fl-subtitle">' + subtitle + "</p>";
-
       html += '<div id="fl-error" class="fl-err-box"></div>';
 
       for (var i = 0; i < fields.length; i++) {
@@ -464,12 +1049,7 @@ const { mode = "apply", apiBase } = Astro.props;
           '" value="' +
           (formState[f.key] || "") +
           '" />';
-        if (f.key === "email") {
-          html += '<p class="fl-hint">用于接收审核结果通知</p>';
-        }
-        if (f.key === "siteshot") {
-          html += '<p class="fl-hint">支持 siteshot 和 topimg 字段</p>';
-        }
+        if (f.hint) html += '<p class="fl-hint">' + f.hint + "</p>";
         html += "</div>";
       }
 
@@ -489,13 +1069,10 @@ const { mode = "apply", apiBase } = Astro.props;
         "<p>感谢您！友链" +
         (mode === "apply" ? "申请" : "更新请求") +
         "已提交，等待管理员审核。</p>";
-      if (mode === "apply") {
-        successHtml += "<p>审核结果将通过邮件通知您。</p>";
-      }
+      if (mode === "apply") successHtml += "<p>审核结果将通过邮件通知您。</p>";
       successHtml += "</div>";
 
       containerEl.innerHTML = html + successHtml;
-
       attachFormHandler(mode);
     }
 
@@ -515,7 +1092,6 @@ const { mode = "apply", apiBase } = Astro.props;
 
       var submitBtn = document.getElementById("fl-submit-btn");
       if (!submitBtn) return;
-
       submitBtn.addEventListener("click", function (e) {
         e.preventDefault();
         handleSubmit(mode);
@@ -528,19 +1104,20 @@ const { mode = "apply", apiBase } = Astro.props;
       var submitBtn = document.getElementById("fl-submit-btn");
       var successEl = document.getElementById("fl-success");
 
-      // Validate required fields
       for (var i = 0; i < fields.length; i++) {
         var f = fields[i];
         if (!f.required) continue;
         var input = document.getElementById("fl-" + f.key);
         if (!input || !input.value.trim()) {
-          showError(errBox, "请填写 " + f.label);
+          if (errBox) {
+            errBox.textContent = "请填写 " + f.label;
+            errBox.classList.add("visible");
+          }
           input && input.focus();
           return;
         }
       }
 
-      // Build payload
       var payload = {};
       for (var key in formState) {
         if (formState[key] && formState[key].trim()) {
@@ -567,12 +1144,15 @@ const { mode = "apply", apiBase } = Astro.props;
         })
         .then(function () {
           if (errBox) errBox.classList.remove("visible");
-          var formInner = containerEl.querySelector(".fl-form-inner");
-          if (formInner) formInner.style.display = "none";
+          var fi = containerEl.querySelector(".fl-form-inner");
+          if (fi) fi.style.display = "none";
           if (successEl) successEl.classList.add("visible");
         })
         .catch(function (err) {
-          showError(errBox, err.message || "发生未知错误，请稍后重试");
+          if (errBox) {
+            errBox.textContent = err.message || "发生未知错误，请稍后重试";
+            errBox.classList.add("visible");
+          }
         })
         .finally(function () {
           if (submitBtn) {
@@ -582,21 +1162,218 @@ const { mode = "apply", apiBase } = Astro.props;
         });
     }
 
-    function showError(el, msg) {
-      if (!el) return;
-      el.textContent = msg;
-      el.classList.add("visible");
-    }
-
-    // Init tabs
     tabApply.addEventListener("click", function () {
       setActiveTab("apply");
     });
     tabUpdate.addEventListener("click", function () {
       setActiveTab("update");
     });
-
-    // Init with initial mode
     setActiveTab(initialMode);
+
+    /* ── Status List ── */
+    var gridEl = document.getElementById("fl-status-grid");
+    var countEl = document.getElementById("fl-status-count");
+    var paginationEl = document.getElementById("fl-pagination");
+    var searchEl = document.getElementById("fl-status-search");
+    var dropdownEl = document.getElementById("fl-status-dropdown");
+    var dropdownTrigger = document.getElementById("fl-status-dropdown-trigger");
+    var dropdownMenu = document.getElementById("fl-status-dropdown-menu");
+    var dropdownLabel = document.getElementById("fl-status-dropdown-label");
+    var dropdownItems = document.querySelectorAll(
+      "#fl-status-dropdown .fl-dropdown-item",
+    );
+    var currentStatus = "";
+    var currentPage = 1;
+    var pageSize = 9;
+    var searchTimer = null;
+
+    if (dropdownTrigger) {
+      dropdownTrigger.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dropdownEl.classList.toggle("open");
+      });
+    }
+
+    dropdownItems.forEach(function (item) {
+      item.addEventListener("click", function () {
+        dropdownEl.classList.remove("open");
+        currentStatus = this.getAttribute("data-status");
+        dropdownLabel.textContent = this.textContent;
+        dropdownItems.forEach(function (i) {
+          i.classList.remove("active");
+        });
+        this.classList.add("active");
+        currentPage = 1;
+        renderStatus();
+      });
+    });
+
+    document.addEventListener("click", function () {
+      if (dropdownEl) dropdownEl.classList.remove("open");
+    });
+
+    if (searchEl) {
+      searchEl.addEventListener("input", function () {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(function () {
+          currentPage = 1;
+          renderStatus();
+        }, 200);
+      });
+    }
+
+    function getStatusText(s) {
+      if (s === "pending") return "待审核";
+      if (s === "approved") return "已通过";
+      if (s === "rejected") return "已拒绝";
+      return "";
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      var d = document.createElement("div");
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function renderStatus() {
+      var keyword = searchEl ? searchEl.value.trim().toLowerCase() : "";
+      var url = API_URL + "?public=1";
+      if (currentStatus) url += "&status=" + currentStatus;
+      if (keyword) url += "&search=" + encodeURIComponent(keyword);
+
+      if (gridEl) {
+        gridEl.innerHTML = '<div class="fl-status-loading">加载中...</div>';
+      }
+      if (countEl) countEl.textContent = "";
+      if (paginationEl) paginationEl.innerHTML = "";
+
+      fetch(url)
+        .then(function (r) {
+          if (!r.ok) throw new Error("请求失败");
+          return r.json();
+        })
+        .then(function (data) {
+          var list = data.submissions || [];
+          var total = list.length;
+          var totalPages = Math.ceil(total / pageSize) || 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+          var start = (currentPage - 1) * pageSize;
+          var pageItems = list.slice(start, start + pageSize);
+
+          if (!gridEl) return;
+
+          if (pageItems.length === 0) {
+            gridEl.innerHTML = '<div class="fl-status-empty">暂无数据</div>';
+            if (countEl) countEl.textContent = "共 0 条";
+            return;
+          }
+
+          if (countEl) countEl.textContent = "共 " + total + " 条";
+
+          var html = "";
+          pageItems.forEach(function (item) {
+            var statusText = getStatusText(item.status);
+            var typeText = item.type === "update" ? "更新" : "新增";
+            var nameText = escapeHtml(item.name);
+            var descText = escapeHtml(item.description || "暂无描述");
+            html +=
+              '<div class="fl-status-item">' +
+              '<div class="fl-status-top">' +
+              '<div class="fl-status-name" title="' +
+              nameText +
+              '">' +
+              nameText +
+              "</div>" +
+              '<div class="fl-status-top-right">' +
+              '<span class="fl-status-badge ' +
+              item.status +
+              '">' +
+              statusText +
+              "</span>" +
+              '<span class="fl-status-type">' +
+              typeText +
+              "</span>" +
+              "</div>" +
+              "</div>" +
+              '<div class="fl-status-desc" title="' +
+              descText +
+              '">' +
+              descText +
+              "</div>" +
+              "</div>";
+          });
+          gridEl.innerHTML = html;
+          renderPagination(totalPages);
+        })
+        .catch(function () {
+          if (gridEl)
+            gridEl.innerHTML =
+              '<div class="fl-status-error">加载失败，请稍后重试</div>';
+        });
+    }
+
+    function renderPagination(totalPages) {
+      if (!paginationEl) return;
+      if (totalPages <= 1) {
+        paginationEl.innerHTML = "";
+        return;
+      }
+
+      var prevDisabled = currentPage <= 1 ? "disabled" : "";
+      var nextDisabled = currentPage >= totalPages ? "disabled" : "";
+      var html = "";
+      html +=
+        '<button class="fl-page-btn" onclick="window._flGoPage(' +
+        (currentPage - 1) +
+        ')" ' +
+        prevDisabled +
+        ">‹</button>";
+
+      var pages = [];
+      if (totalPages <= 7) {
+        for (var i = 1; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        if (currentPage > 3) pages.push("...");
+        for (
+          var i = Math.max(2, currentPage - 1);
+          i <= Math.min(totalPages - 1, currentPage + 1);
+          i++
+        )
+          pages.push(i);
+        if (currentPage < totalPages - 2) pages.push("...");
+        pages.push(totalPages);
+      }
+
+      pages.forEach(function (p) {
+        if (p === "...") {
+          html += '<span class="fl-page-dots">…</span>';
+        } else {
+          html +=
+            '<button class="fl-page-btn' +
+            (p === currentPage ? " active" : "") +
+            '" onclick="window._flGoPage(' +
+            p +
+            ')">' +
+            p +
+            "</button>";
+        }
+      });
+      html +=
+        '<button class="fl-page-btn" onclick="window._flGoPage(' +
+        (currentPage + 1) +
+        ')" ' +
+        nextDisabled +
+        ">›</button>";
+      paginationEl.innerHTML = html;
+    }
+
+    window._flGoPage = function (page) {
+      currentPage = page;
+      renderStatus();
+    };
+
+    renderStatus();
   })();
 </script>

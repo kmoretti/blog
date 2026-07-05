@@ -35,13 +35,13 @@ const { tag, posts } = Astro.props;
 >
   <main class="flex flex-col gap-5 pb-16">
     <section class="space-y-1">
-      <p class="text-sm text-zinc-500 dark:text-zinc-400">
+      <p class="text-sm" style="color: var(--fp-muted)">
         <a href="/tags/" class="no-underline hover:underline">标签</a>
         <span class="mx-1">/</span>
         <span>{tag.name}</span>
       </p>
       <h1 class="text-xl font-semibold">{tag.name}</h1>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400">
+      <p class="text-sm" style="color: var(--fp-muted)">
         共 {posts.length} 篇文章
       </p>
     </section>
@@ -53,12 +53,12 @@ const { tag, posts } = Astro.props;
             <a href={`/posts/${post.slug}/`} class="group flex flex-col gap-1">
               <div class="flex justify-between gap-3">
                 <span class="group-hover:underline">{post.data.title}</span>
-                <span class="text-nowrap text-zinc-500">
+                <span class="text-nowrap" style="color: var(--fp-muted)">
                   {formatDate(post.data.date)}
                 </span>
               </div>
               {post.data.description && (
-                <span class="text-sm text-zinc-400 dark:text-zinc-400">
+                <span class="text-sm" style="color: var(--fp-muted)">
                   {post.data.description}
                 </span>
               )}

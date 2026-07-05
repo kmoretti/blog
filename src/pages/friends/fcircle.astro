@@ -70,32 +70,30 @@ const hasMore = remainingArticles.length > 0;
 >
   <main class="fcl-page pb-16">
     <header class="mb-6 space-y-2">
-      <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
-        <a href="/" class="hover:underline">喵洛阁</a>
+      <nav aria-label="Breadcrumb" class="fp-breadcrumb">
+        <a href="/">喵洛阁</a>
         <span class="mx-1">/</span>
-        <a href="/friends/" class="hover:underline">朋友们</a>
+        <a href="/friends/">朋友们</a>
         <span class="mx-1">/</span>
       </nav>
       <div class="flex items-start justify-between gap-4">
-        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-          朋友圈
-        </h1>
+        <h1 class="fp-heading text-2xl font-semibold">朋友圈</h1>
         <div class="flex shrink-0 gap-2">
           <a
             href="/friends/"
-            class="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
+            class="fp-link-btn inline-flex items-center rounded-full px-3 py-1.5 text-sm transition"
           >
             朋友们
           </a>
           <a
             href="/friends/friends/"
-            class="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
+            class="fp-link-btn inline-flex items-center rounded-full px-3 py-1.5 text-sm transition"
           >
             详细
           </a>
         </div>
       </div>
-      <hr class="dark:border-zinc-700" />
+      <hr class="fp-divider" />
     </header>
 
     <div class="fcl-root">
@@ -220,6 +218,49 @@ const hasMore = remainingArticles.length > 0;
     </script>
 
     <style is:inline>
+      .fp-breadcrumb {
+        color: var(--fp-muted);
+        font-size: 0.8125rem;
+      }
+      .fp-breadcrumb a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .fp-breadcrumb a:hover {
+        text-decoration: underline;
+      }
+      .fp-breadcrumb strong {
+        color: var(--fp-ink);
+        font-weight: 600;
+      }
+      .fp-heading {
+        color: var(--fp-ink);
+      }
+      .fp-subtext {
+        color: var(--fp-ink-soft);
+      }
+      .fp-muted {
+        color: var(--fp-muted);
+      }
+      .fp-link-btn {
+        border: 1px solid var(--fp-dash);
+        background: var(--fp-paper);
+        color: var(--fp-ink-soft);
+      }
+      .fp-link-btn:hover {
+        border-color: var(--fp-accent);
+        color: var(--fp-ink);
+      }
+      .fp-divider {
+        border-color: var(--fp-dash);
+      }
+      .fp-divider-text {
+        color: var(--fp-dash);
+      }
+      .fp-tag {
+        border: 1px solid var(--fp-dash);
+      }
+
       .fcl-root {
         --fcl-tape-0: #f5d742;
         --fcl-tape-1: #f09bc0;

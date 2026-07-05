@@ -472,7 +472,10 @@ const pageDescription = "正在跳转至外部链接";
           clearInterval(timer);
           if (referrerUrl) {
             location.href = referrerUrl;
-          } else if (document.referrer && /^https?:\/\//.test(document.referrer)) {
+          } else if (
+            document.referrer &&
+            /^https?:\/\//.test(document.referrer)
+          ) {
             location.href = document.referrer;
           } else {
             location.href = "/";

@@ -43,7 +43,7 @@ const latestPosts = sortedPosts.slice(0, 2);
                 class="group flex justify-between gap-3"
               >
                 <span class="group-hover:underline">{post.data.title}</span>
-                <span class="text-nowrap text-zinc-500">
+                <span class="text-nowrap" style="color: var(--fp-muted)">
                   {formatDate(post.data.date)}
                 </span>
               </a>
@@ -54,7 +54,8 @@ const latestPosts = sortedPosts.slice(0, 2);
       <li>
         <a
           href="/posts/1/"
-          class="text-zinc-500 hover:underline dark:text-zinc-500"
+          class="hover:underline"
+          style="color: var(--fp-muted)"
         >
           所有文章 &rarr;
         </a>

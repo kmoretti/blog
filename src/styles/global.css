@@ -4,50 +4,56 @@
 
 /* Noto Sans SC — Latin */
 @font-face {
-  font-family: 'Noto Sans SC';
+  font-family: "Noto Sans SC";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-latin-400-normal.woff2") format("woff2");
+  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-latin-400-normal.woff2")
+    format("woff2");
 }
 @font-face {
-  font-family: 'Noto Sans SC';
+  font-family: "Noto Sans SC";
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-latin-700-normal.woff2") format("woff2");
+  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-latin-700-normal.woff2")
+    format("woff2");
 }
 
 /* Noto Sans SC — CJK */
 @font-face {
-  font-family: 'Noto Sans SC';
+  font-family: "Noto Sans SC";
   font-style: normal;
   font-display: optional;
   font-weight: 400;
-  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-400-normal.woff2") format("woff2");
+  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-400-normal.woff2")
+    format("woff2");
 }
 @font-face {
-  font-family: 'Noto Sans SC';
+  font-family: "Noto Sans SC";
   font-style: normal;
   font-display: optional;
   font-weight: 700;
-  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-700-normal.woff2") format("woff2");
+  src: url("../../node_modules/@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-700-normal.woff2")
+    format("woff2");
 }
 
 /* Noto Sans Mono — Latin (small, ~11 KB each) */
 @font-face {
-  font-family: 'Noto Sans Mono';
+  font-family: "Noto Sans Mono";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url("../../node_modules/@fontsource/noto-sans-mono/files/noto-sans-mono-latin-400-normal.woff2") format("woff2");
+  src: url("../../node_modules/@fontsource/noto-sans-mono/files/noto-sans-mono-latin-400-normal.woff2")
+    format("woff2");
 }
 @font-face {
-  font-family: 'Noto Sans Mono';
+  font-family: "Noto Sans Mono";
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url("../../node_modules/@fontsource/noto-sans-mono/files/noto-sans-mono-latin-700-normal.woff2") format("woff2");
+  src: url("../../node_modules/@fontsource/noto-sans-mono/files/noto-sans-mono-latin-700-normal.woff2")
+    format("woff2");
 }
 @tailwind base;
 @tailwind components;

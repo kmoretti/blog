@@ -16,23 +16,19 @@ const { Content } = await entry.render();
 
 <Layout title={pageTitle} description={pageDescription} className="max-w-3xl">
   <main>
-    <header class="mb-6 space-y-2">
-      <nav
-        aria-label="Breadcrumb"
-        class="text-sm text-zinc-500 dark:text-zinc-400"
-      >
-        <a href="/" class="hover:underline">喵洛阁</a>
-        <span class="mx-1">/</span>
-        <a href="/friends/" class="hover:underline">朋友们</a>
-        <span class="mx-1">/</span>
+    <header class="exch-header">
+      <nav aria-label="Breadcrumb" class="exch-breadcrumb">
+        <a href="/">喵洛阁</a>
+        <span>/</span>
+        <a href="/friends/">朋友们</a>
+        <span>/</span>
+        <strong>交换友链</strong>
       </nav>
-      <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-        交换友链
-      </h1>
-      <hr class="dark:border-zinc-700" />
+      <h1 class="exch-title">交换友链</h1>
+      <span class="exch-title-bar" aria-hidden="true"></span>
     </header>
 
-    <article class="prose dark:prose-invert">
+    <article class="exch-content">
       <Content />
     </article>
 
@@ -41,3 +37,166 @@ const { Content } = await entry.render();
     </section>
   </main>
 </Layout>
+
+<style>
+  .exch-header {
+    margin-bottom: 2rem;
+  }
+
+  .exch-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--fp-muted);
+  }
+
+  .exch-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .exch-breadcrumb a:hover {
+    color: var(--fp-accent-strong);
+    text-decoration: underline;
+  }
+
+  .exch-breadcrumb strong {
+    color: var(--fp-ink);
+    font-weight: 600;
+  }
+
+  .exch-title {
+    margin: 0 0 0.25rem;
+    font-size: clamp(1.5rem, 3vw, 1.75rem);
+    font-weight: 800;
+    color: var(--fp-ink);
+    line-height: 1.2;
+  }
+
+  .exch-title-bar {
+    display: block;
+    width: 3em;
+    max-width: 56%;
+    height: 6px;
+    margin-top: 4px;
+    background-color: var(--fp-accent);
+    opacity: 0.65;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+  }
+
+  .exch-content {
+    color: var(--fp-ink-soft);
+    line-height: 1.8;
+    font-size: 0.9375rem;
+  }
+
+  .exch-content :global(a) {
+    color: var(--fp-accent-strong);
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--fp-accent) 45%,
+      transparent
+    );
+    text-underline-offset: 3px;
+  }
+
+  .exch-content :global(a:hover) {
+    color: var(--fp-accent);
+  }
+
+  .exch-content :global(strong),
+  .exch-content :global(b) {
+    color: var(--fp-ink);
+    font-weight: 700;
+  }
+
+  .exch-content :global(h2) {
+    position: relative;
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--fp-ink);
+    border-bottom: 1px solid var(--fp-dash);
+  }
+
+  .exch-content :global(h2::after) {
+    content: "";
+    display: block;
+    margin-top: 6px;
+    width: 2em;
+    height: 5px;
+    background-color: var(--fp-accent);
+    opacity: 0.6;
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 8'><path d='M1 4.5 C 10 2.5 16 5 24 3.6 C 32 2.2 40 5.2 47 3.4' fill='none' stroke='black' stroke-width='5'/></svg>");
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+  }
+
+  .exch-content :global(h3) {
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--fp-ink);
+  }
+
+  .exch-content :global(p) {
+    margin: 0.75rem 0;
+    color: var(--fp-ink-soft);
+    line-height: 1.8;
+  }
+
+  .exch-content :global(ul),
+  .exch-content :global(ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    color: var(--fp-ink-soft);
+    line-height: 1.8;
+  }
+
+  .exch-content :global(li) {
+    margin: 0.25rem 0;
+  }
+
+  .exch-content :global(code) {
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    border: 1px solid var(--fp-dash);
+    background: var(--fp-warm);
+    font-family: "Noto Sans Mono", monospace;
+    font-size: 0.85em;
+    color: var(--fp-ink);
+  }
+
+  .exch-content :global(blockquote) {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--fp-accent);
+    background: color-mix(in srgb, var(--fp-accent) 6%, var(--fp-paper));
+    border-radius: 0 6px 6px 0;
+    color: var(--fp-ink-soft);
+  }
+
+  .exch-content :global(blockquote p) {
+    margin: 0;
+  }
+
+  .exch-content :global(hr) {
+    border: none;
+    border-top: 1px solid var(--fp-dash);
+    margin: 1.5rem 0;
+  }
+</style>

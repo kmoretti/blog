@@ -15,24 +15,22 @@ const friendsData = await fetchFriends();
   <main class="space-y-6">
     <header class="mb-6 flex items-start justify-between gap-4">
       <div class="space-y-2">
-        <nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
-          <a href="/" class="hover:underline">喵洛阁</a>
+        <nav aria-label="Breadcrumb" class="fp-breadcrumb">
+          <a href="/">喵洛阁</a>
           <span class="mx-1">/</span>
         </nav>
-        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
-          朋友们
-        </h1>
+        <h1 class="fp-heading text-2xl font-semibold">朋友们</h1>
       </div>
       <div class="flex shrink-0 gap-2">
         <a
           href="/friends/fcircle/"
-          class="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
+          class="fp-link-btn inline-flex items-center rounded-full px-3 py-1.5 text-sm transition"
         >
           朋友圈
         </a>
         <a
           href="/friends/friends/"
-          class="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-100"
+          class="fp-link-btn inline-flex items-center rounded-full px-3 py-1.5 text-sm transition"
         >
           详细
         </a>
@@ -56,7 +54,10 @@ const friendsData = await fetchFriends();
               class="w-12 rounded-full object-cover sm:w-14 md:w-16"
               loading="lazy"
             />
-            <span class="pointer-events-none absolute bottom-[-2rem] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-200 dark:text-gray-800">
+            <span
+              class="pointer-events-none absolute bottom-[-2rem] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-sm opacity-0 transition-opacity group-hover:opacity-100"
+              style="background: var(--fp-ink); color: var(--fp-paper);"
+            >
               {friend.name}
             </span>
           </a>
@@ -64,19 +65,58 @@ const friendsData = await fetchFriends();
       }
     </div>
     <div class="mt-6 flex justify-center gap-4">
-      <a
-        href="/friends/exchange/"
-        class="text-zinc-500 hover:underline dark:text-zinc-500"
-      >
+      <a href="/friends/exchange/" class="fp-muted hover:underline">
         交换友链 &rarr;
       </a>
-      <span class="text-zinc-300 dark:text-zinc-700">|</span>
-      <a
-        href="/friends/fcircle/"
-        class="text-zinc-500 hover:underline dark:text-zinc-500"
-      >
+      <span class="fp-divider-text">|</span>
+      <a href="/friends/fcircle/" class="fp-muted hover:underline">
         朋友圈 &rarr;
       </a>
     </div>
   </main>
+
+  <style is:inline>
+    .fp-breadcrumb {
+      color: var(--fp-muted);
+      font-size: 0.8125rem;
+    }
+    .fp-breadcrumb a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .fp-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .fp-breadcrumb strong {
+      color: var(--fp-ink);
+      font-weight: 600;
+    }
+    .fp-heading {
+      color: var(--fp-ink);
+    }
+    .fp-subtext {
+      color: var(--fp-ink-soft);
+    }
+    .fp-muted {
+      color: var(--fp-muted);
+    }
+    .fp-link-btn {
+      border: 1px solid var(--fp-dash);
+      background: var(--fp-paper);
+      color: var(--fp-ink-soft);
+    }
+    .fp-link-btn:hover {
+      border-color: var(--fp-accent);
+      color: var(--fp-ink);
+    }
+    .fp-divider {
+      border-color: var(--fp-dash);
+    }
+    .fp-divider-text {
+      color: var(--fp-dash);
+    }
+    .fp-tag {
+      border: 1px solid var(--fp-dash);
+    }
+  </style>
 </Layout>
