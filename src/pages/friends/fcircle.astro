@@ -3,64 +3,6 @@ import Layout from "../../layouts/Layout.astro";
 
 const pageTitle = "朋友圈 | 喵洛阁";
 const pageDescription = "友链朋友圈，看看朋友们最近在写什么。";
-
-const API_BASE = "https://fc.081531.xyz";
-const PAGE_SIZE = 20;
-
-interface ArticleItem {
-  title: string;
-  created: string;
-  link: string;
-  author: string;
-  avatar: string;
-}
-
-interface AllJsonResponse {
-  statistical_data: {
-    friends_num: number;
-    active_num: number;
-    error_num: number;
-    article_num: number;
-    last_updated_time: string;
-  };
-  article_data: ArticleItem[];
-}
-
-let allData: AllJsonResponse | null = null;
-let fetchError = false;
-try {
-  const response = await fetch(`${API_BASE}/all.json`);
-  if (response.ok) {
-    allData = (await response.json()) as AllJsonResponse;
-  } else {
-    fetchError = true;
-  }
-} catch {
-  fetchError = true;
-}
-
-const stats = allData?.statistical_data;
-const articles = allData?.article_data ?? [];
-
-const formatDate = (dateStr: string) => {
-  try {
-    const d = new Date(dateStr);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-  } catch {
-    return dateStr;
-  }
-};
-
-const getInitials = (name: string) => {
-  return name.charAt(0).toUpperCase();
-};
-
-const initialArticles = articles.slice(0, PAGE_SIZE);
-const remainingArticles = articles.slice(PAGE_SIZE);
-const hasMore = remainingArticles.length > 0;
 ---
 
 <Layout
@@ -97,123 +39,160 @@ const hasMore = remainingArticles.length > 0;
     </header>
 
     <div class="fcl-root">
-      {
-        fetchError ? (
-          <p class="fcl-error">数据加载失败，请稍后再试。</p>
-        ) : articles.length === 0 ? (
-          <p class="fcl-empty">暂无文章数据。</p>
-        ) : (
-          <>
-            <div class="fcl-summary">
-              <span class="fcl-stat">共 {stats?.friends_num ?? 0} 位朋友</span>
-              <span class="fcl-stat">{stats?.active_num ?? 0} 位活跃</span>
-              <span class="fcl-stat">{stats?.article_num ?? 0} 篇文章</span>
-              <span class="fcl-updated">
-                更新于 {stats?.last_updated_time?.slice(0, 16) ?? ""}
-              </span>
-            </div>
-
-            <ul class="fcl-list" data-fcl-list>
-              {initialArticles.map((item) => (
-                <li class="fcl-card">
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="fcl-card__link"
-                  >
-                    <span class="fcl-card__avatar-wrap">
-                      {item.avatar ? (
-                        <img
-                          src={item.avatar}
-                          alt={item.author}
-                          class="fcl-card__avatar"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span class="fcl-card__avatar fcl-card__avatar--text">
-                          {getInitials(item.author)}
-                        </span>
-                      )}
-                    </span>
-                    <span class="fcl-card__body">
-                      <span class="fcl-card__meta">
-                        <span class="fcl-card__author">{item.author}</span>
-                        <time class="fcl-card__date">
-                          {formatDate(item.created)}
-                        </time>
-                      </span>
-                      <span class="fcl-card__title">{item.title}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            {hasMore && (
-              <div class="fcl-more-wrap">
-                <button class="fcl-more" type="button" data-fcl-more>
-                  加载更多
-                </button>
-              </div>
-            )}
-
-            <div hidden data-fcl-remaining aria-hidden="true">
-              {remainingArticles.map((item, i) => (
-                <li class="fcl-card">
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="fcl-card__link"
-                  >
-                    <span class="fcl-card__avatar-wrap">
-                      {item.avatar ? (
-                        <img
-                          src={item.avatar}
-                          alt={item.author}
-                          class="fcl-card__avatar"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span class="fcl-card__avatar fcl-card__avatar--text">
-                          {getInitials(item.author)}
-                        </span>
-                      )}
-                    </span>
-                    <span class="fcl-card__body">
-                      <span class="fcl-card__meta">
-                        <span class="fcl-card__author">{item.author}</span>
-                        <time class="fcl-card__date">
-                          {formatDate(item.created)}
-                        </time>
-                      </span>
-                      <span class="fcl-card__title">{item.title}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </div>
-          </>
-        )
-      }
+      <div id="fcl-content" class="fcl-content">
+        <div class="fcl-loading">加载中...</div>
+      </div>
     </div>
 
     <script is:inline>
       (function () {
-        var moreBtn = document.querySelector("[data-fcl-more]");
-        var list = document.querySelector("[data-fcl-list]");
-        var remaining = document.querySelector("[data-fcl-remaining]");
-        if (!moreBtn || !list || !remaining) return;
+        var API_BASE = "https://fc.081531.xyz";
+        var PAGE_SIZE = 20;
+        var CACHE_KEY = "fcl_articles_cache";
+        var CACHE_TTL = 5 * 60 * 1000;
+        var contentEl = document.getElementById("fcl-content");
+        if (!contentEl) return;
 
-        moreBtn.addEventListener("click", function () {
-          var items = remaining.children;
-          for (var i = 0; i < items.length; i++) {
-            list.appendChild(items[i].cloneNode(true));
+        function formatDate(dateStr) {
+          try {
+            var d = new Date(dateStr);
+            var y = d.getFullYear();
+            var m = String(d.getMonth() + 1).padStart(2, "0");
+            var day = String(d.getDate()).padStart(2, "0");
+            return y + "-" + m + "-" + day;
+          } catch {
+            return dateStr;
           }
-          remaining.innerHTML = "";
-          moreBtn.parentElement.removeChild(moreBtn);
-        });
+        }
+
+        function getInitials(name) {
+          return name.charAt(0).toUpperCase();
+        }
+
+        function buildCard(item) {
+          var avatarHtml = item.avatar
+            ? '<img src="' + item.avatar + '" alt="' + item.author + '" class="fcl-card__avatar" loading="lazy" />'
+            : '<span class="fcl-card__avatar fcl-card__avatar--text">' + getInitials(item.author) + '</span>';
+          return (
+            '<li class="fcl-card">' +
+              '<a href="' + item.link + '" target="_blank" rel="noopener noreferrer" class="fcl-card__link">' +
+                '<span class="fcl-card__avatar-wrap">' + avatarHtml + '</span>' +
+                '<span class="fcl-card__body">' +
+                  '<span class="fcl-card__meta">' +
+                    '<span class="fcl-card__author">' + item.author + '</span>' +
+                    '<time class="fcl-card__date">' + formatDate(item.created) + '</time>' +
+                  '</span>' +
+                  '<span class="fcl-card__title">' + item.title + '</span>' +
+                '</span>' +
+              '</a>' +
+            '</li>'
+          );
+        }
+
+        function renderStats(stats) {
+          return (
+            '<div class="fcl-summary">' +
+              '<span class="fcl-stat">共 ' + (stats && stats.friends_num != null ? stats.friends_num : 0) + ' 位朋友</span>' +
+              '<span class="fcl-stat">' + (stats && stats.active_num != null ? stats.active_num : 0) + ' 位活跃</span>' +
+              '<span class="fcl-stat">' + (stats && stats.article_num != null ? stats.article_num : 0) + ' 篇文章</span>' +
+              '<span class="fcl-updated">更新于 ' + (stats && stats.last_updated_time ? stats.last_updated_time.slice(0, 16) : "") + '</span>' +
+            '</div>'
+          );
+        }
+
+        function renderArticles(articles) {
+          if (articles.length === 0) {
+            return '<p class="fcl-empty">暂无文章数据。</p>';
+          }
+          var first = articles.slice(0, PAGE_SIZE);
+          var rest = articles.slice(PAGE_SIZE);
+          var html = '<ul class="fcl-list" data-fcl-list>';
+          for (var i = 0; i < first.length; i++) {
+            html += buildCard(first[i]);
+          }
+          html += "</ul>";
+          if (rest.length > 0) {
+            html += '<div class="fcl-more-wrap"><button class="fcl-more" type="button" data-fcl-more>加载更多</button></div>';
+            html += '<div hidden data-fcl-remaining aria-hidden="true">';
+            for (var j = 0; j < rest.length; j++) {
+              html += '<li class="fcl-card">' + buildCard(rest[j]).replace(/^<li class="fcl-card">|<\/li>$/g, "") + "</li>";
+            }
+            html += "</div>";
+          }
+          return html;
+        }
+
+        function loadMore() {
+          var moreBtn = document.querySelector("[data-fcl-more]");
+          var list = document.querySelector("[data-fcl-list]");
+          var remaining = document.querySelector("[data-fcl-remaining]");
+          if (!moreBtn || !list || !remaining) return;
+          moreBtn.addEventListener("click", function () {
+            var items = remaining.children;
+            for (var i = 0; i < items.length; i++) {
+              list.appendChild(items[i].cloneNode(true));
+            }
+            remaining.innerHTML = "";
+            moreBtn.parentElement.removeChild(moreBtn);
+          });
+        }
+
+        function tryCache() {
+          try {
+            var raw = sessionStorage.getItem(CACHE_KEY);
+            if (!raw) return null;
+            var cached = JSON.parse(raw);
+            if (Date.now() - cached.ts > CACHE_TTL) return null;
+            return cached.data;
+          } catch {
+            return null;
+          }
+        }
+
+        function saveCache(data) {
+          try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data }));
+          } catch {}
+        }
+
+        function render(data) {
+          var stats = data && data.statistical_data;
+          var articles = (data && data.article_data) || [];
+          var errorHtml = '<p class="fcl-error">数据加载失败，请稍后再试。</p>';
+          if (!data) {
+            contentEl.innerHTML = errorHtml;
+            return;
+          }
+          contentEl.innerHTML = renderStats(stats) + renderArticles(articles);
+          loadMore();
+        }
+
+        var cached = tryCache();
+        if (cached) {
+          render(cached);
+          fetch(API_BASE + "/all.json")
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) {
+              if (d) {
+                saveCache(d);
+                render(d);
+              }
+            })
+            .catch(function () {});
+        } else {
+          fetch(API_BASE + "/all.json")
+            .then(function (r) {
+              if (!r.ok) throw new Error("fail");
+              return r.json();
+            })
+            .then(function (d) {
+              saveCache(d);
+              render(d);
+            })
+            .catch(function () {
+              render(null);
+            });
+        }
       })();
     </script>
 
@@ -229,18 +208,8 @@ const hasMore = remainingArticles.length > 0;
       .fp-breadcrumb a:hover {
         text-decoration: underline;
       }
-      .fp-breadcrumb strong {
-        color: var(--fp-ink);
-        font-weight: 600;
-      }
       .fp-heading {
         color: var(--fp-ink);
-      }
-      .fp-subtext {
-        color: var(--fp-ink-soft);
-      }
-      .fp-muted {
-        color: var(--fp-muted);
       }
       .fp-link-btn {
         border: 1px solid var(--fp-dash);
@@ -254,11 +223,12 @@ const hasMore = remainingArticles.length > 0;
       .fp-divider {
         border-color: var(--fp-dash);
       }
-      .fp-divider-text {
-        color: var(--fp-dash);
-      }
-      .fp-tag {
-        border: 1px solid var(--fp-dash);
+
+      .fcl-loading {
+        padding: 2rem;
+        text-align: center;
+        color: var(--fp-muted);
+        font-size: 0.875rem;
       }
 
       .fcl-root {
@@ -272,8 +242,7 @@ const hasMore = remainingArticles.length > 0;
         --fcl-tab-3: #e8a0b8;
         --fcl-card-bg: rgba(255, 255, 255, 0.92);
         --fcl-card-border: rgba(24, 24, 27, 0.1);
-        --fcl-card-shadow:
-          4px 5px 0 rgba(82, 64, 38, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
+        --fcl-card-shadow: 4px 5px 0 rgba(82, 64, 38, 0.08), 0 2px 8px rgba(15, 23, 42, 0.06);
         --fcl-avatar-border: rgba(82, 64, 38, 0.12);
         --fcl-avatar-shadow: 2px 3px 0 rgba(82, 64, 38, 0.08);
         --fcl-ink: #18181b;
@@ -293,8 +262,7 @@ const hasMore = remainingArticles.length > 0;
         --fcl-tab-3: #8a5f70;
         --fcl-card-bg: rgba(24, 24, 27, 0.88);
         --fcl-card-border: rgba(255, 255, 255, 0.06);
-        --fcl-card-shadow:
-          4px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.12);
+        --fcl-card-shadow: 4px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.12);
         --fcl-avatar-border: rgba(225, 230, 245, 0.12);
         --fcl-avatar-shadow: 2px 3px 0 rgba(0, 0, 0, 0.18);
         --fcl-ink: #e4e4e7;
@@ -451,15 +419,11 @@ const hasMore = remainingArticles.length > 0;
       .fcl-card__link:hover {
         transform: translateY(-3px) rotate(0deg);
         border-color: var(--fcl-accent);
-        box-shadow:
-          6px 8px 0 rgba(82, 64, 38, 0.1),
-          0 4px 12px rgba(15, 23, 42, 0.1);
+        box-shadow: 6px 8px 0 rgba(82, 64, 38, 0.1), 0 4px 12px rgba(15, 23, 42, 0.1);
       }
 
       html.dark .fcl-card__link:hover {
-        box-shadow:
-          6px 8px 0 rgba(0, 0, 0, 0.26),
-          0 4px 12px rgba(0, 0, 0, 0.14);
+        box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.26), 0 4px 12px rgba(0, 0, 0, 0.14);
       }
 
       .fcl-card__link:hover::after {
