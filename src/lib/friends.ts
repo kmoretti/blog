@@ -29,57 +29,76 @@ export interface FriendItem {
   links?: string;
 }
 
-export async function fetchFriends(): Promise<FriendItem[]> {
+export interface FriendGroup {
+  name: string;
+  description: string;
+  friends: FriendItem[];
+}
+
+const normalizeFriend = (item: YAMLItem): FriendItem | null => {
+  const name = (item.name ?? "").trim();
+  const url = (item.link ?? "").trim();
+
+  if (!name || !url) return null;
+
+  const tags = Array.isArray(item.tags)
+    ? item.tags.join(",")
+    : (item.tags ?? "");
+
+  return {
+    name,
+    url,
+    avatar: (item.avatar ?? "").trim(),
+    desc: (item.descr ?? "").trim(),
+    snapshot: (item.siteshot ?? "").trim(),
+    feed: (item.feeds ?? "").trim(),
+    tags: tags.trim(),
+    links: (item.friendslink ?? "").trim(),
+  };
+};
+
+async function loadFriendGroups(): Promise<FriendGroup[]> {
+  const response = await fetch(FRIEND_DATA_URL);
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch friends data: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const text = await response.text();
+  const groups = yamlLoad(text) as YAMLGroup[] | null;
+
+  if (!Array.isArray(groups)) {
+    throw new Error("Unexpected YAML structure: expected an array of groups");
+  }
+
+  return groups.flatMap((group) => {
+    const friends = (Array.isArray(group.link_list) ? group.link_list : [])
+      .map(normalizeFriend)
+      .filter((friend): friend is FriendItem => friend !== null);
+
+    if (friends.length === 0) return [];
+
+    return [
+      {
+        name: (group.class_name ?? "未分组").trim() || "未分组",
+        description: (group.class_desc ?? "").trim(),
+        friends,
+      },
+    ];
+  });
+}
+
+export async function fetchFriendGroups(): Promise<FriendGroup[]> {
   try {
-    const response = await fetch(FRIEND_DATA_URL);
-
-    if (!response.ok) {
-      console.warn(
-        `Failed to fetch friends data: ${response.status} ${response.statusText}`,
-      );
-      return [];
-    }
-
-    const text = await response.text();
-    const groups = yamlLoad(text) as YAMLGroup[] | null;
-
-    if (!Array.isArray(groups)) {
-      console.warn("Unexpected YAML structure: expected an array of groups");
-      return [];
-    }
-
-    const friends: FriendItem[] = [];
-
-    for (const group of groups) {
-      const items = group.link_list;
-      if (!Array.isArray(items)) continue;
-
-      for (const item of items) {
-        const name = (item.name ?? "").trim();
-        const url = (item.link ?? "").trim();
-
-        if (!name || !url) continue;
-
-        const tags = Array.isArray(item.tags)
-          ? item.tags.join(",")
-          : (item.tags ?? "");
-
-        friends.push({
-          name,
-          url,
-          avatar: (item.avatar ?? "").trim(),
-          desc: (item.descr ?? "").trim(),
-          snapshot: (item.siteshot ?? "").trim(),
-          feed: (item.feeds ?? "").trim(),
-          tags: tags.trim(),
-          links: (item.friendslink ?? "").trim(),
-        });
-      }
-    }
-
-    return friends;
+    return await loadFriendGroups();
   } catch (err) {
     console.warn("Failed to load friends data:", err);
     return [];
   }
+}
+
+export async function fetchFriends(): Promise<FriendItem[]> {
+  return (await fetchFriendGroups()).flatMap((group) => group.friends);
 }

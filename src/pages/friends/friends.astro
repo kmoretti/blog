@@ -1,7 +1,7 @@
 ---
 import { LATENCY_API_URL } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
-import { fetchFriends } from "../../lib/friends";
+import { fetchFriendGroups } from "../../lib/friends";
 
 interface RemoteLinkItem {
   name?: string;
@@ -49,7 +49,7 @@ const getLatencyTone = (latency?: number, reachable?: boolean) => {
   return "slow";
 };
 
-const friendsData = await fetchFriends();
+const friendGroupsData = await fetchFriendGroups();
 
 let latencyMap = new Map<string, { latency?: number; reachable?: boolean }>();
 
@@ -69,26 +69,31 @@ try {
   latencyMap = new Map();
 }
 
-const friends = friendsData.map((friend) => {
-  const siteUrl = normalizeUrl(friend.url);
-  const linksUrl = normalizeUrl(friend.links);
-  const latencyInfo = latencyMap.get(siteUrl) ?? latencyMap.get(linksUrl);
+const friendGroups = friendGroupsData.map((group) => ({
+  ...group,
+  friends: group.friends.map((friend) => {
+    const siteUrl = normalizeUrl(friend.url);
+    const linksUrl = normalizeUrl(friend.links);
+    const latencyInfo = latencyMap.get(siteUrl) ?? latencyMap.get(linksUrl);
 
-  return {
-    ...friend,
-    url: siteUrl,
-    links: linksUrl,
-    snapshot: normalizeUrl(friend.snapshot),
-    feed: normalizeUrl(friend.feed),
-    desc: friend.desc?.trim() ?? "",
-    tags: normalizeTagList(friend.tags),
-    host: getHost(siteUrl),
-    latency: latencyInfo?.latency,
-    reachable: latencyInfo?.reachable,
-    latencyText: formatLatency(latencyInfo?.latency),
-    latencyTone: getLatencyTone(latencyInfo?.latency, latencyInfo?.reachable),
-  };
-});
+    return {
+      ...friend,
+      url: siteUrl,
+      links: linksUrl,
+      snapshot: normalizeUrl(friend.snapshot),
+      feed: normalizeUrl(friend.feed),
+      desc: friend.desc?.trim() ?? "",
+      tags: normalizeTagList(friend.tags),
+      host: getHost(siteUrl),
+      latency: latencyInfo?.latency,
+      reachable: latencyInfo?.reachable,
+      latencyText: formatLatency(latencyInfo?.latency),
+      latencyTone: getLatencyTone(latencyInfo?.latency, latencyInfo?.reachable),
+    };
+  }),
+}));
+
+const friends = friendGroups.flatMap((group) => group.friends);
 ---
 
 <Layout
@@ -131,131 +136,160 @@ const friends = friendsData.map((friend) => {
           共 {friends.length} 位朋友
         </span>
         <span class="fp-tag rounded-full px-3 py-1">
+          {friendGroups.length} 个分组
+        </span>
+        <span class="fp-tag rounded-full px-3 py-1">
           延迟数据源：fc.081531.xyz
         </span>
       </div>
     </header>
 
-    <section class="friends-grid">
+    <div class="friend-groups">
       {
-        friends.map((friend) => (
-          <article class="friend-card">
-            <div class="friend-shot">
-              {friend.snapshot ? (
-                <img
-                  src={friend.snapshot}
-                  alt=""
-                  class="friend-shot-image"
-                  loading="lazy"
-                />
-              ) : (
-                <div class="friend-shot-fallback" />
-              )}
-              <div class="friend-shot-mask" />
-              <span
-                class={`friend-latency friend-latency--${friend.latencyTone}`}
-              >
-                <span class="friend-latency-dot" />
-                {friend.latencyText}
-              </span>
-            </div>
-
-            <div class="friend-card__main">
-              <a
-                href={friend.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="friend-card__link"
-              >
-                <img
-                  src={friend.avatar}
-                  alt={friend.name}
-                  class="friend-card__avatar"
-                  loading="lazy"
-                />
-                <span class="friend-card__body">
-                  <strong class="friend-card__name">{friend.name}</strong>
-                  <span class="friend-card__host">{friend.host}</span>
-                  <span class="friend-card__desc">
-                    {friend.desc || "这个朋友暂时还没有补充简介。"}
-                  </span>
-                </span>
-              </a>
-
-              {friend.feed && (
-                <a
-                  href={friend.feed}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="friend-card__rss"
-                  aria-label={`${friend.name} 的 RSS`}
-                  title="RSS"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide"
-                  >
-                    <path d="M4 11a9 9 0 0 1 9 9" />
-                    <path d="M4 4a16 16 0 0 1 16 16" />
-                    <circle cx="5" cy="19" r="1" />
-                  </svg>
-                </a>
-              )}
-            </div>
-
-            <div class="friend-card__extra">
-              {friend.tags.length > 0 && (
-                <div class="friend-tags">
-                  {friend.tags.map((tag) => (
-                    <span class="friend-tag">{tag}</span>
-                  ))}
-                </div>
-              )}
-
-              <div class="friend-meta-grid">
-                <div class="friend-meta-box">
-                  <div class="friend-meta-label">主站</div>
-                  <div class="friend-meta-value">{friend.host}</div>
-                </div>
-                <div class="friend-meta-box">
-                  <div class="friend-meta-label">订阅</div>
-                  {friend.feed ? (
-                    <span class="friend-meta-value">已提供</span>
-                  ) : (
-                    <span class="friend-meta-value">未提供</span>
-                  )}
-                </div>
-                {friend.links ? (
-                  <a
-                    href={friend.links}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="friend-meta-box friend-meta-box--link"
-                    aria-label={`访问 ${friend.name} 的友链页面`}
-                  >
-                    <span class="friend-meta-label">友链页</span>
-                    <span class="friend-meta-value">访问页面 ↗</span>
-                  </a>
-                ) : (
-                  <div class="friend-meta-box">
-                    <div class="friend-meta-label">友链页</div>
-                    <span class="friend-meta-value">未提供</span>
-                  </div>
-                )}
+        friendGroups.map((group, groupIndex) => (
+          <section
+            class={`friend-group friend-group--${groupIndex % 4}`}
+            aria-labelledby={`friend-group-${groupIndex}`}
+          >
+            <header class="friend-group__header">
+              <div class="friend-group__tab" aria-hidden="true">
+                <span class="friend-group__tab-mark" />
+                <span>LINKS</span>
               </div>
+              <div class="friend-group__heading">
+                <div class="friend-group__eyebrow">
+                  <span>FRIEND GROUP</span>
+                  <span class="friend-group__count">
+                    {group.friends.length} 位朋友
+                  </span>
+                </div>
+                <h2 id={`friend-group-${groupIndex}`}>{group.name}</h2>
+                {group.description && <p>{group.description}</p>}
+              </div>
+            </header>
+
+            <div class="friends-grid">
+              {group.friends.map((friend) => (
+                <article class="friend-card">
+                  <div class="friend-shot">
+                    {friend.snapshot ? (
+                      <img
+                        src={friend.snapshot}
+                        alt=""
+                        class="friend-shot-image"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="friend-shot-fallback" />
+                    )}
+                    <div class="friend-shot-mask" />
+                    <span
+                      class={`friend-latency friend-latency--${friend.latencyTone}`}
+                    >
+                      <span class="friend-latency-dot" />
+                      {friend.latencyText}
+                    </span>
+                  </div>
+
+                  <div class="friend-card__main">
+                    <a
+                      href={friend.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="friend-card__link"
+                    >
+                      <img
+                        src={friend.avatar}
+                        alt={friend.name}
+                        class="friend-card__avatar"
+                        loading="lazy"
+                      />
+                      <span class="friend-card__body">
+                        <strong class="friend-card__name">{friend.name}</strong>
+                        <span class="friend-card__host">{friend.host}</span>
+                        <span class="friend-card__desc">
+                          {friend.desc || "这个朋友暂时还没有补充简介。"}
+                        </span>
+                      </span>
+                    </a>
+
+                    {friend.feed && (
+                      <a
+                        href={friend.feed}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="friend-card__rss"
+                        aria-label={`${friend.name} 的 RSS`}
+                        title="RSS"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="13"
+                          height="13"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide"
+                        >
+                          <path d="M4 11a9 9 0 0 1 9 9" />
+                          <path d="M4 4a16 16 0 0 1 16 16" />
+                          <circle cx="5" cy="19" r="1" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+
+                  <div class="friend-card__extra">
+                    {friend.tags.length > 0 && (
+                      <div class="friend-tags" aria-label="站点标签">
+                        {friend.tags.map((tag) => (
+                          <span class="friend-tag">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div class="friend-meta-grid">
+                      <div class="friend-meta-box">
+                        <div class="friend-meta-label">主站</div>
+                        <div class="friend-meta-value">{friend.host}</div>
+                      </div>
+                      <div class="friend-meta-box">
+                        <div class="friend-meta-label">订阅</div>
+                        {friend.feed ? (
+                          <span class="friend-meta-value">已提供</span>
+                        ) : (
+                          <span class="friend-meta-value">未提供</span>
+                        )}
+                      </div>
+                      {friend.links ? (
+                        <a
+                          href={friend.links}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="friend-meta-box friend-meta-box--link"
+                          aria-label={`访问 ${friend.name} 的友链页面`}
+                        >
+                          <span class="friend-meta-label">友链页</span>
+                          <span class="friend-meta-value">访问页面 ↗</span>
+                        </a>
+                      ) : (
+                        <div class="friend-meta-box">
+                          <div class="friend-meta-label">友链页</div>
+                          <span class="friend-meta-value">未提供</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
-          </article>
+          </section>
         ))
       }
-    </section>
+    </div>
   </main>
 
   <style is:inline>
@@ -368,9 +402,151 @@ const friends = friendsData.map((friend) => {
       --friends-accent: #93c5fd;
     }
 
+    .friend-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 3.25rem;
+    }
+
+    .friend-group {
+      --friends-group-color: var(--friends-tape-0);
+      --friends-group-tilt: -2deg;
+    }
+
+    .friend-group--1 {
+      --friends-group-color: var(--friends-tape-1);
+      --friends-group-tilt: 2deg;
+    }
+
+    .friend-group--2 {
+      --friends-group-color: var(--friends-tape-2);
+      --friends-group-tilt: -1.5deg;
+    }
+
+    .friend-group--3 {
+      --friends-group-color: var(--friends-tape-3);
+      --friends-group-tilt: 1.5deg;
+    }
+
+    .friend-group__header {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding: 0 0 1rem;
+      border-bottom: 1px dashed var(--friends-card-border);
+    }
+
+    .friend-group__header::after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 5.5rem;
+      height: 5px;
+      background: var(--friends-group-color);
+      opacity: 0.78;
+      transform: rotate(var(--friends-group-tilt));
+      mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8'><path d='M1 4.5 C 14 2 23 5.5 37 3.5 C 51 1.5 63 5.5 79 3' fill='none' stroke='black' stroke-width='5'/></svg>");
+      -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8'><path d='M1 4.5 C 14 2 23 5.5 37 3.5 C 51 1.5 63 5.5 79 3' fill='none' stroke='black' stroke-width='5'/></svg>");
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-size: 100% 100%;
+      -webkit-mask-size: 100% 100%;
+    }
+
+    .friend-group__tab {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 2rem;
+      padding: 0.35rem 0.75rem 0.35rem 0.6rem;
+      border: 1px solid
+        color-mix(
+          in srgb,
+          var(--friends-group-color) 68%,
+          var(--friends-card-border)
+        );
+      border-radius: 3px 10px 4px 9px;
+      background: color-mix(
+        in srgb,
+        var(--friends-group-color) 72%,
+        var(--friends-card-bg)
+      );
+      box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.09);
+      color: var(--friends-ink);
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1;
+      transform: rotate(var(--friends-group-tilt));
+    }
+
+    html.dark .friend-group__tab {
+      box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .friend-group__tab-mark {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+
+    .friend-group__heading {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .friend-group__eyebrow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      color: var(--friends-muted);
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .friend-group__count {
+      color: var(--friends-ink);
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .friend-group__heading h2 {
+      position: relative;
+      display: inline-block;
+      margin: 0.15rem 0 0;
+      color: var(--friends-ink);
+      font-size: clamp(1.25rem, 2.3vw, 1.65rem);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .friend-group__heading h2::first-letter {
+      color: var(--friends-accent);
+    }
+
+    .friend-group__heading p {
+      max-width: 42rem;
+      margin: 0.25rem 0 0;
+      color: var(--friends-muted);
+      font-size: 0.8rem;
+      line-height: 1.65;
+    }
+
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       align-items: stretch;
       gap: 20px;
       margin: 0;
@@ -812,7 +988,54 @@ const friends = friendsData.map((friend) => {
       color: var(--friends-accent);
     }
 
+    .friend-card__link:focus-visible,
+    .friend-card__rss:focus-visible,
+    .friend-meta-box--link:focus-visible {
+      outline: 2px solid var(--friends-accent);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 1024px) {
+      .friends-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 640px) {
+      .friend-groups {
+        gap: 2.75rem;
+      }
+
+      .friend-group__header {
+        gap: 0.65rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.8rem;
+      }
+
+      .friend-group__tab {
+        min-height: 1.75rem;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.5rem;
+        letter-spacing: 0.08em;
+      }
+
+      .friend-group__tab-mark {
+        width: 0.35rem;
+        height: 0.35rem;
+      }
+
+      .friend-group__eyebrow {
+        font-size: 0.55rem;
+      }
+
+      .friend-group__heading h2 {
+        font-size: 1.2rem;
+      }
+
+      .friend-group__heading p {
+        font-size: 0.75rem;
+      }
+
       .friends-grid {
         grid-template-columns: 1fr;
         gap: 18px;
@@ -874,9 +1097,29 @@ const friends = friendsData.map((friend) => {
       }
     }
 
-    @media (min-width: 641px) and (max-width: 1024px) {
-      .friends-grid {
-        grid-template-columns: repeat(2, 1fr);
+    @media (prefers-reduced-motion: reduce) {
+      .friend-card,
+      .friend-card::after,
+      .friend-shot-image,
+      .friend-card__avatar,
+      .friend-card__rss,
+      .friend-card__rss .lucide,
+      .friend-meta-box--link {
+        transition: none;
+      }
+
+      .friend-card,
+      .friend-card:hover,
+      .friend-card__avatar,
+      .friend-card:hover img.friend-card__avatar,
+      .friend-card__rss:hover {
+        transform: none;
+      }
+
+      .friend-card:hover .friend-shot-image,
+      .friend-card:hover .friend-card__rss .lucide {
+        animation: none;
+        transform: none;
       }
     }
   </style>
