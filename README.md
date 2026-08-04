@@ -37,7 +37,7 @@
 
 ### 友链系统
 
-- **远程数据源**：从 `https://friends-api.081531.xyz/source/_data/links.yml`（Butterfly 主题 YAML 格式）自动拉取友链数据
+- **远程数据源**：从 `https://cdn.jsdmirror.com/gh/kmoretti/hexo-blog-source@main/source/_data/links.yml`（Butterfly 主题 YAML 格式）自动拉取友链数据
 - **友链详情页**：卡片式布局（胶带 + tab + 旋转），展示站点截图、延迟检测（整合 Friend-Circle-Lite 数据）、RSS 订阅、标签
 - **友链朋友圈**：RSS 文章流聚合页面，flatpaper 风格卡片
 - **友链申请/更新表单**：通过 `https://verify.081531.xyz` API 提交，双 tab 切换（Apply / Update）
@@ -154,7 +154,7 @@ export const EMAIL = "mcy@kemiaosw.top";
 ```ts
 export const FRIENDLINK_API = "https://verify.081531.xyz"; // 友链申请 API
 export const FRIEND_DATA_URL =
-  "https://friends-api.081531.xyz/source/_data/links.yml"; // 远程友链 YAML
+  "https://cdn.jsdmirror.com/gh/kmoretti/hexo-blog-source@main/source/_data/links.yml"; // CDN 加速的远程友链 YAML
 export const LATENCY_API_URL = "https://fc.081531.xyz/link.json"; // 延迟检测数据
 ```
 
@@ -168,8 +168,11 @@ export const LATENCY_API_URL = "https://fc.081531.xyz/link.json"; // 延迟检�
       link: https://example.com
       avatar: https://example.com/avatar.png
       descr: 简介
-      siteshot: https://example.com/snapshot.jpg
       feeds: https://example.com/atom.xml
+      friendslink: https://example.com/friends/
+      siteshot: https://example.com/snapshot.jpg
+      tags:
+        - 技术
 ```
 
 ### 外链安全中转配置

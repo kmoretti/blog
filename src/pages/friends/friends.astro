@@ -233,6 +233,23 @@ const friends = friendsData.map((friend) => {
                     <span class="friend-meta-value">未提供</span>
                   )}
                 </div>
+                {friend.links ? (
+                  <a
+                    href={friend.links}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="friend-meta-box friend-meta-box--link"
+                    aria-label={`访问 ${friend.name} 的友链页面`}
+                  >
+                    <span class="friend-meta-label">友链页</span>
+                    <span class="friend-meta-value">访问页面 ↗</span>
+                  </a>
+                ) : (
+                  <div class="friend-meta-box">
+                    <div class="friend-meta-label">友链页</div>
+                    <span class="friend-meta-value">未提供</span>
+                  </div>
+                )}
               </div>
             </div>
           </article>
@@ -776,6 +793,25 @@ const friends = friendsData.map((friend) => {
       color: var(--friends-ink);
     }
 
+    .friend-meta-box--link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+    }
+
+    .friend-meta-box--link:hover {
+      border-color: var(--friends-accent);
+      background: color-mix(in srgb, var(--friends-accent) 8%, transparent);
+    }
+
+    .friend-meta-box--link:hover .friend-meta-value {
+      color: var(--friends-accent);
+    }
+
     @media (max-width: 640px) {
       .friends-grid {
         grid-template-columns: 1fr;
@@ -827,6 +863,10 @@ const friends = friendsData.map((friend) => {
 
       .friend-card__extra {
         padding: 10px 14px 14px;
+      }
+
+      .friend-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .friend-card__rss {

@@ -137,16 +137,41 @@ blog/
 
 文章存放于 `src/content/posts/`，每篇文章一个目录，包含 `index.mdx`。
 
-### 友链 Schema
+### 友链数据 Schema
 
-```typescript
-{
-  title?: string;
-  description?: string;
-}
+友链页面从 `src/consts.ts` 的 `FRIEND_DATA_URL` 读取远程 YAML。当前使用 jsDelivr CDN 加速，数据保持 Butterfly 主题兼容格式：
+
+```yaml
+- class_name: 网上邻居
+  class_desc: 我的小伙伴们
+  link_list:
+    - name: 站点名称
+      link: https://example.com
+      avatar: https://example.com/avatar.png
+      descr: 站点简介
+      feeds: https://example.com/atom.xml
+      friendslink: https://example.com/friends/
+      siteshot: https://example.com/screenshot.webp
+      tags:
+        - 技术
 ```
 
-友链内容存放于 `src/content/friends/`。
+字段说明：
+
+| 字段          | 用途                                     |
+| ------------- | ---------------------------------------- |
+| `class_name`  | 友链分组名称                             |
+| `class_desc`  | 友链分组描述                             |
+| `name`        | 站点名称                                 |
+| `link`        | 主站地址                                 |
+| `avatar`      | 头像地址                                 |
+| `descr`       | 站点简介                                 |
+| `feeds`       | RSS/Atom 订阅地址                        |
+| `friendslink` | 对方友链页面地址                         |
+| `siteshot`    | 站点截图地址                             |
+| `tags`        | 可选标签，支持 YAML 数组或逗号分隔字符串 |
+
+其中 `friendslink` 映射为前端友链数据中的 `links` 字段，`tags` 会统一转换为逗号分隔字符串。友链内容页仍存放于 `src/content/friends/`，但不作为远程友链列表的数据源。
 
 ---
 

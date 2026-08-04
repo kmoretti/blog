@@ -14,6 +14,8 @@ interface YAMLItem {
   descr?: string;
   siteshot?: string;
   feeds?: string;
+  friendslink?: string;
+  tags?: string | string[];
 }
 
 export interface FriendItem {
@@ -58,6 +60,10 @@ export async function fetchFriends(): Promise<FriendItem[]> {
 
         if (!name || !url) continue;
 
+        const tags = Array.isArray(item.tags)
+          ? item.tags.join(",")
+          : (item.tags ?? "");
+
         friends.push({
           name,
           url,
@@ -65,7 +71,8 @@ export async function fetchFriends(): Promise<FriendItem[]> {
           desc: (item.descr ?? "").trim(),
           snapshot: (item.siteshot ?? "").trim(),
           feed: (item.feeds ?? "").trim(),
-          tags: "",
+          tags: tags.trim(),
+          links: (item.friendslink ?? "").trim(),
         });
       }
     }
