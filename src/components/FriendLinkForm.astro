@@ -13,121 +13,184 @@ const { mode = "apply", apiBase } = Astro.props;
   data-initial-mode={mode}
   data-api-base={apiBase}
 >
-  <div class="fl-card">
+  <section
+    class="fl-card fl-application-card"
+    aria-labelledby="fl-application-title"
+  >
     <span class="fl-tape" aria-hidden="true"></span>
     <span class="fl-tab" aria-hidden="true"></span>
 
-    <div class="fl-card-head">
-      <h3 class="fl-card-title">友链申请</h3>
-      <span class="fl-card-underline" aria-hidden="true"></span>
+    <header class="fl-card-head">
+      <div>
+        <p class="fl-eyebrow">FRIENDLINK / NOTE 01</p>
+        <h2 id="fl-application-title" class="fl-card-title">友链申请簿</h2>
+        <span class="fl-card-underline" aria-hidden="true"></span>
+      </div>
+      <p class="fl-card-intro">
+        按照 Butterfly 友链格式提交信息，审核通过后会同步到友链 YAML。
+      </p>
+    </header>
+
+    <div class="fl-section-label" aria-hidden="true">
+      <span>01</span>
+      <span>申请前确认</span>
     </div>
 
-    <div id="fl-conditions">
-      <p class="fl-cond-desc">请先确认满足以下条件：</p>
-      <label class="fl-checkbox"
-        ><input type="checkbox" id="fl-cb1" />
-        我已添加 <strong>喵洛阁</strong> 的友情链接</label
-      >
-      <label class="fl-checkbox"
-        ><input type="checkbox" id="fl-cb2" />
-        我的网站现在可以在中国大陆区域正常访问</label
-      >
-      <label class="fl-checkbox"
-        ><input type="checkbox" id="fl-cb3" />
-        网站内容符合中国大陆法律法规</label
-      >
-      <label class="fl-checkbox"
-        ><input type="checkbox" id="fl-cb4" />
-        我的链接主体为 <strong>个人</strong>，网站类型为 <strong>博客</strong
-        ></label
-      >
-      <label class="fl-checkbox"
-        ><input type="checkbox" id="fl-cb5" />
-        网站域名不是 us.kg 等免费域名（github.io、gitee.io 除外）</label
-      >
-      <p class="fl-cond-hint">请先勾选所有条件后再填写申请表单</p>
-    </div>
+    <fieldset class="fl-conditions" aria-describedby="fl-conditions-help">
+      <legend>请先确认满足以下条件</legend>
+      <p id="fl-conditions-help" class="fl-cond-desc">
+        勾选全部条件后，申请和更新表单会自动展开。
+      </p>
+      <div class="fl-condition-grid">
+        <label class="fl-checkbox" for="fl-cb1">
+          <input type="checkbox" id="fl-cb1" />
+          <span>我已添加 <strong>喵洛阁</strong> 的友情链接</span>
+        </label>
+        <label class="fl-checkbox" for="fl-cb2">
+          <input type="checkbox" id="fl-cb2" />
+          <span>我的网站现在可以在中国大陆区域正常访问</span>
+        </label>
+        <label class="fl-checkbox" for="fl-cb3">
+          <input type="checkbox" id="fl-cb3" />
+          <span>网站内容符合中国大陆法律法规</span>
+        </label>
+        <label class="fl-checkbox" for="fl-cb4">
+          <input type="checkbox" id="fl-cb4" />
+          <span
+            >我的链接主体为 <strong>个人</strong>，网站类型为 <strong
+              >博客</strong
+            ></span
+          >
+        </label>
+        <label class="fl-checkbox" for="fl-cb5">
+          <input type="checkbox" id="fl-cb5" />
+          <span>网站域名不是 us.kg 等免费域名（github.io、gitee.io 除外）</span>
+        </label>
+      </div>
+    </fieldset>
 
-    <div id="fl-options" style="display:none">
-      <div class="fl-mode-tabs">
-        <button id="fl-tab-apply" class="fl-mode-btn" data-mode="apply">
-          申请友链
-        </button>
-        <button id="fl-tab-update" class="fl-mode-btn" data-mode="update">
-          更新友链
-        </button>
+    <p id="fl-condition-hint" class="fl-cond-hint" role="status">
+      还差一些确认，完成后再继续填写。
+    </p>
+
+    <div id="fl-options" class="fl-options" hidden>
+      <div class="fl-section-label" aria-hidden="true">
+        <span>02</span>
+        <span>填写信息</span>
       </div>
 
-      <div id="fl-form-container"></div>
-    </div>
-  </div>
+      <div class="fl-mode-tabs" role="tablist" aria-label="友链操作">
+        <button
+          type="button"
+          id="fl-tab-apply"
+          class="fl-mode-btn"
+          role="tab"
+          aria-controls="fl-form-container"
+          data-mode="apply">申请友链</button
+        >
+        <button
+          type="button"
+          id="fl-tab-update"
+          class="fl-mode-btn"
+          role="tab"
+          aria-controls="fl-form-container"
+          data-mode="update">更新友链</button
+        >
+      </div>
 
-  <div id="fl-status-section" class="fl-card fl-status-card">
+      <div
+        id="fl-form-container"
+        role="tabpanel"
+        tabindex="0"
+        aria-labelledby="fl-tab-apply"
+      >
+      </div>
+    </div>
+  </section>
+
+  <section class="fl-card fl-status-card" aria-labelledby="fl-status-title">
     <span class="fl-tape fl-tape--green" aria-hidden="true"></span>
     <span class="fl-tab fl-tab--green" aria-hidden="true"></span>
 
-    <div class="fl-status-head">
+    <header class="fl-status-head">
       <div class="fl-card-head">
-        <h3 class="fl-card-title">申请列表</h3>
+        <p class="fl-eyebrow">FRIENDLINK / LOG</p>
+        <h2 id="fl-status-title" class="fl-card-title">申请进度</h2>
         <span class="fl-card-underline" aria-hidden="true"></span>
       </div>
-      <div class="fl-status-controls">
-        <div class="fl-dropdown" id="fl-status-dropdown">
-          <button class="fl-dropdown-trigger" id="fl-status-dropdown-trigger">
-            <span id="fl-status-dropdown-label">全部状态</span>
-            <span class="fl-dropdown-arrow">▾</span>
-          </button>
-          <div class="fl-dropdown-menu" id="fl-status-dropdown-menu">
-            <div class="fl-dropdown-item active" data-status="">全部状态</div>
-            <div class="fl-dropdown-item" data-status="pending">待审核</div>
-            <div class="fl-dropdown-item" data-status="approved">已通过</div>
-            <div class="fl-dropdown-item" data-status="rejected">已拒绝</div>
-          </div>
-        </div>
-        <div class="fl-search-wrap">
-          <span class="fl-search-icon" aria-hidden="true">🔍</span>
-          <input
-            id="fl-status-search"
-            type="text"
-            placeholder="搜索名称"
-            class="fl-search-input"
-          />
-        </div>
-        <span class="fl-status-count" id="fl-status-count"></span>
+      <p class="fl-card-intro">可以按状态或站点名称查找公开申请记录。</p>
+    </header>
+
+    <div class="fl-status-controls">
+      <label class="fl-control-label" for="fl-status-filter">状态</label>
+      <select id="fl-status-filter" class="fl-control-input">
+        <option value="">全部状态</option>
+        <option value="pending">待审核</option>
+        <option value="approved">已通过</option>
+        <option value="rejected">已拒绝</option>
+      </select>
+      <label class="fl-control-label fl-search-label" for="fl-status-search"
+        >搜索</label
+      >
+      <div class="fl-search-wrap">
+        <span class="fl-search-icon" aria-hidden="true">⌕</span>
+        <input
+          id="fl-status-search"
+          type="search"
+          placeholder="搜索站点名称"
+          class="fl-control-input fl-search-input"
+          autocomplete="off"
+        />
       </div>
+      <span class="fl-status-count" id="fl-status-count" aria-live="polite"
+      ></span>
     </div>
-    <div id="fl-status-grid" class="fl-status-grid"></div>
-    <div id="fl-pagination" class="fl-pagination"></div>
-  </div>
+
+    <div
+      id="fl-status-grid"
+      class="fl-status-grid"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      <div class="fl-status-loading">正在翻阅申请记录…</div>
+    </div>
+    <nav id="fl-pagination" class="fl-pagination" aria-label="申请记录分页">
+    </nav>
+  </section>
 </div>
 
 <style is:global>
-  /* ── Variables ── */
   .fl-root {
     --fl-card-bg: linear-gradient(
       160deg,
       var(--fp-paper) 0%,
       color-mix(in srgb, var(--fp-warm) 90%, transparent) 100%
     );
-    --fl-border: color-mix(in srgb, var(--fp-dash) 55%, transparent);
+    --fl-border: color-mix(in srgb, var(--fp-dash) 58%, transparent);
     --fl-inner-bg: color-mix(in srgb, var(--fp-paper) 72%, transparent);
     --fl-input-bg: var(--fp-paper);
     --fl-input-border: var(--fp-dash);
     --fl-err-text: #dc2626;
     --fl-success-text: var(--fp-accent-strong);
+    --fl-status-pending-bg: color-mix(in srgb, #facc15 18%, var(--fp-paper));
+    --fl-status-pending-text: #a16207;
+    --fl-status-approved-bg: color-mix(in srgb, #4ade80 18%, var(--fp-paper));
+    --fl-status-approved-text: #15803d;
+    --fl-status-rejected-bg: color-mix(in srgb, #f87171 18%, var(--fp-paper));
+    --fl-status-rejected-text: #dc2626;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
-  /* ── Paper Card ── */
   .fl-card {
     --fl-tilt: -0.12deg;
     position: relative;
-    padding: 1.5rem 1.35rem 1.35rem;
+    min-width: 0;
+    padding: 1.6rem 1.4rem 1.45rem;
+    border: 1px solid var(--fl-border);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     background: var(--fl-card-bg);
-    border: 1px solid var(--fl-border);
     box-shadow:
       var(--fp-shadow),
       inset 0 1px color-mix(in srgb, var(--fp-paper) 70%, transparent);
@@ -148,28 +211,26 @@ const { mode = "apply", apiBase } = Astro.props;
     --fl-tilt: 0.15deg;
   }
 
-  /* ── Tape ── */
   .fl-tape {
     position: absolute;
     top: -7px;
     left: 30px;
     z-index: 2;
-    width: 36px;
-    height: 14px;
-    background-color: rgba(200, 170, 230, 0.68);
+    width: 42px;
+    height: 15px;
+    border-radius: 2px;
+    background-color: var(--fp-tape);
     background-image: repeating-linear-gradient(
       45deg,
       rgba(255, 255, 255, 0.22) 0 2px,
       transparent 2px 6px
     );
-    border-radius: 2px;
     box-shadow: 0 2px 6px rgba(82, 64, 38, 0.1);
-    transform: rotate(-3deg);
     pointer-events: none;
+    transform: rotate(-3deg);
   }
 
   html.dark .fl-tape {
-    background-color: rgba(130, 100, 160, 0.56);
     background-image: repeating-linear-gradient(
       45deg,
       rgba(0, 0, 0, 0.12) 0 2px,
@@ -179,26 +240,25 @@ const { mode = "apply", apiBase } = Astro.props;
   }
 
   .fl-tape--green {
-    background-color: rgba(134, 217, 147, 0.68);
+    background-color: color-mix(
+      in srgb,
+      var(--fp-accent-soft) 78%,
+      var(--fp-paper)
+    );
     transform: rotate(-2deg);
   }
 
-  html.dark .fl-tape--green {
-    background-color: rgba(79, 122, 85, 0.56);
-  }
-
-  /* ── Tab ── */
   .fl-tab {
     position: absolute;
-    top: 20px;
+    top: 22px;
     right: -5px;
     z-index: -1;
-    width: 5px;
-    height: 44px;
+    width: 6px;
+    height: 48px;
     border: 1px dashed color-mix(in srgb, var(--fp-dash) 50%, transparent);
     border-left: 0;
     border-radius: 0 6px 6px 0;
-    background: #b8a0d8;
+    background: var(--fp-accent-muted);
     box-shadow: 2px 3px 0 rgba(82, 64, 38, 0.06);
     pointer-events: none;
     transition:
@@ -208,42 +268,46 @@ const { mode = "apply", apiBase } = Astro.props;
 
   html.dark .fl-tab {
     border-color: rgba(225, 230, 245, 0.08);
-    background: #7a5a8a;
     box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.14);
+  }
+
+  .fl-tab--green {
+    background: var(--fp-accent);
   }
 
   .fl-card:hover .fl-tab {
     right: -10px;
-    width: 10px;
+    width: 11px;
   }
 
-  .fl-tab--green {
-    background: #86d993;
-  }
-
-  html.dark .fl-tab--green {
-    background: #4f7a55;
-  }
-
-  /* ── Card Head ── */
   .fl-card-head {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
     margin-bottom: 1rem;
+  }
+
+  .fl-eyebrow {
+    margin: 0 0 0.25rem;
+    color: var(--fp-accent-strong);
+    font-family: "Noto Sans Mono", monospace;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    line-height: 1.4;
   }
 
   .fl-card-title {
     margin: 0;
-    font-size: 1.0625rem;
-    font-weight: 700;
     color: var(--fp-ink);
+    font-size: 1.125rem;
+    font-weight: 750;
     line-height: 1.3;
   }
 
   .fl-card-underline {
     display: block;
-    width: 2.2em;
+    width: 2.4em;
     max-width: 48%;
     height: 5px;
     margin-top: 4px;
@@ -257,74 +321,146 @@ const { mode = "apply", apiBase } = Astro.props;
     -webkit-mask-size: contain;
   }
 
-  /* ── Conditions ── */
-  .fl-cond-desc {
-    margin: 0 0 0.75rem;
+  .fl-card-intro {
+    max-width: 19rem;
+    margin: 0;
+    color: var(--fp-muted);
+    font-size: 0.75rem;
+    line-height: 1.65;
+    text-align: right;
+  }
+
+  .fl-section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 1.25rem 0 0.7rem;
+    color: var(--fp-muted);
+    font-family: "Noto Sans Mono", monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  .fl-section-label::after {
+    flex: 1;
+    height: 1px;
+    background: var(--fp-dash);
+    content: "";
+    opacity: 0.7;
+  }
+
+  .fl-section-label > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.55rem;
+    height: 1.35rem;
+    border: 1px solid var(--fp-accent-muted);
+    color: var(--fp-accent-strong);
+    font-size: 0.625rem;
+  }
+
+  .fl-conditions {
+    min-width: 0;
+    margin: 0;
+    padding: 0.9rem 1rem 0.85rem;
+    border: 1px dashed color-mix(in srgb, var(--fp-dash) 80%, transparent);
+    border-radius: 8px 255px 8px 225px / 225px 8px 225px 8px;
+    background: color-mix(in srgb, var(--fp-warm) 50%, transparent);
+  }
+
+  .fl-conditions legend {
+    padding: 0 0.35rem;
+    color: var(--fp-ink);
     font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .fl-cond-desc {
+    margin: 0 0 0.65rem;
     color: var(--fp-ink-soft);
+    font-size: 0.75rem;
     line-height: 1.6;
+  }
+
+  .fl-condition-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.15rem 1rem;
   }
 
   .fl-checkbox {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
-    cursor: pointer;
-    font-size: 0.8125rem;
-    padding: 4px 0;
+    min-width: 0;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
     color: var(--fp-ink);
-    line-height: 1.5;
+    cursor: pointer;
+    font-size: 0.75rem;
+    line-height: 1.55;
   }
 
-  .fl-checkbox input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin-top: 1px;
+  .fl-checkbox input {
+    width: 1rem;
+    height: 1rem;
+    flex: 0 0 auto;
+    margin: 0.1rem 0 0;
     accent-color: var(--fp-accent);
     cursor: pointer;
-    flex-shrink: 0;
   }
 
   .fl-checkbox strong {
-    font-weight: 700;
     color: var(--fp-accent-strong);
+    font-weight: 700;
   }
 
   .fl-cond-hint {
-    margin: 0.75rem 0 0;
-    font-size: 0.8125rem;
-    color: var(--fl-err-text);
+    margin: 0.6rem 0 0;
+    color: var(--fp-muted);
+    font-size: 0.6875rem;
+    line-height: 1.5;
   }
 
-  /* ── Mode Tabs ── */
+  .fl-options[hidden] {
+    display: none;
+  }
+
   .fl-mode-tabs {
     display: flex;
-    gap: 0;
-    margin-bottom: 1.25rem;
-    background: var(--fl-inner-bg);
-    border: 1px solid color-mix(in srgb, var(--fp-dash) 45%, transparent);
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 0.25rem;
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 55%, transparent);
     border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
-    padding: 4px;
-    box-shadow: inset 0 1px color-mix(in srgb, var(--fp-paper) 80%, transparent);
+    background: var(--fl-inner-bg);
+  }
+
+  .fl-mode-btn,
+  .fl-secondary-btn,
+  .fl-page-btn {
+    border: 1px solid transparent;
+    font-family: inherit;
+    cursor: pointer;
   }
 
   .fl-mode-btn {
     flex: 1;
-    padding: 0.5625rem 1rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    font-family: inherit;
-    border: none;
+    min-height: 2.25rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
     background: transparent;
     color: var(--fp-ink-soft);
-    cursor: pointer;
-    transition: all 0.2s ease;
+    font-size: 0.75rem;
+    font-weight: 650;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 
   .fl-mode-btn:hover {
-    color: var(--fp-ink);
     background: color-mix(in srgb, var(--fp-warm) 80%, transparent);
+    color: var(--fp-ink);
   }
 
   .fl-mode-btn.active {
@@ -333,7 +469,6 @@ const { mode = "apply", apiBase } = Astro.props;
     box-shadow: 0 1px 3px color-mix(in srgb, var(--fp-ink) 12%, transparent);
   }
 
-  /* ── Form Fields ── */
   .fl-form-inner {
     animation: fl-fade-in 0.3s ease;
   }
@@ -349,29 +484,37 @@ const { mode = "apply", apiBase } = Astro.props;
     }
   }
 
-  .fl-form-inner h3 {
-    margin: 0 0 0.25rem;
+  .fl-form-heading {
+    margin: 0 0 0.2rem;
+    color: var(--fp-ink);
     font-size: 0.9375rem;
     font-weight: 700;
-    color: var(--fp-ink);
   }
 
-  .fl-form-inner .fl-subtitle {
-    margin: 0 0 1.25rem;
-    font-size: 0.75rem;
+  .fl-form-subtitle {
+    margin: 0 0 1rem;
     color: var(--fp-muted);
+    font-size: 0.6875rem;
+    line-height: 1.6;
+  }
+
+  .fl-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 0.85rem;
   }
 
   .fl-field {
-    margin-bottom: 0.875rem;
+    min-width: 0;
+    margin-bottom: 0.8rem;
   }
 
   .fl-label {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--fp-ink);
     margin-bottom: 0.3rem;
+    color: var(--fp-ink);
+    font-size: 0.75rem;
+    font-weight: 650;
   }
 
   .fl-star {
@@ -379,466 +522,478 @@ const { mode = "apply", apiBase } = Astro.props;
   }
 
   .fl-input {
+    box-sizing: border-box;
     width: 100%;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-    font-family: inherit;
+    min-height: 2.35rem;
+    padding: 0.5rem 0.7rem;
     border: 1px solid var(--fl-input-border);
     border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
     outline: none;
-    box-sizing: border-box;
-    color: var(--fp-ink);
     background: var(--fl-input-bg);
     box-shadow: inset 0 1px color-mix(in srgb, var(--fp-paper) 60%, transparent);
+    color: var(--fp-ink);
+    font-family: inherit;
+    font-size: 0.75rem;
     transition:
       border-color 0.15s ease,
       box-shadow 0.15s ease;
   }
 
-  .fl-input::placeholder {
+  .fl-input::placeholder,
+  .fl-control-input::placeholder {
     color: var(--fp-muted);
+    opacity: 0.9;
   }
 
-  .fl-input:focus {
+  .fl-input:focus,
+  .fl-control-input:focus,
+  .fl-mode-btn:focus-visible,
+  .fl-secondary-btn:focus-visible,
+  .fl-page-btn:focus-visible,
+  .fl-checkbox input:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--fp-accent) 65%, transparent);
+    outline-offset: 2px;
+  }
+
+  .fl-input:focus,
+  .fl-control-input:focus {
     border-color: var(--fp-accent);
     box-shadow:
       inset 0 1px color-mix(in srgb, var(--fp-paper) 60%, transparent),
       0 0 0 2px color-mix(in srgb, var(--fp-accent) 15%, transparent);
   }
 
+  .fl-input[aria-invalid="true"] {
+    border-color: var(--fl-err-text);
+  }
+
+  .fl-field-error {
+    min-height: 0;
+    margin: 0.25rem 0 0;
+    color: var(--fl-err-text);
+    font-size: 0.6875rem;
+    line-height: 1.45;
+  }
+
   .fl-hint {
     margin: 0.25rem 0 0;
-    font-size: 0.6875rem;
     color: var(--fp-muted);
+    font-size: 0.625rem;
+    line-height: 1.45;
   }
 
   .fl-err-box {
     display: none;
-    padding: 0.625rem 0.875rem;
-    background: color-mix(in srgb, #dc2626 8%, var(--fp-paper));
-    border: 1px solid color-mix(in srgb, #dc2626 20%, var(--fp-dash));
+    margin-bottom: 0.85rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid color-mix(in srgb, #dc2626 25%, var(--fp-dash));
     border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
+    background: color-mix(in srgb, #dc2626 8%, var(--fp-paper));
     color: var(--fl-err-text);
     font-size: 0.75rem;
-    margin-bottom: 0.875rem;
+    line-height: 1.5;
   }
 
   .fl-err-box.visible {
     display: block;
   }
 
-  /* ── Submit Button ── */
   .fl-btn {
     width: 100%;
-    padding: 0.5625rem 1rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    font-family: inherit;
-    color: var(--fp-paper);
-    background: var(--fp-accent);
-    border: none;
+    min-height: 2.45rem;
+    margin-top: 0.25rem;
+    padding: 0.55rem 1rem;
+    border: 0;
     border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
+    background: var(--fp-accent);
+    color: var(--fp-paper);
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    transition:
+      background-color 0.15s ease,
+      transform 0.15s ease;
   }
 
-  .fl-btn:hover {
+  .fl-btn:hover:not(:disabled) {
     background: var(--fp-accent-strong);
+    transform: translateY(-1px);
   }
 
   .fl-btn:disabled {
     background: var(--fp-muted);
-    cursor: not-allowed;
+    cursor: wait;
   }
 
-  /* ── Success ── */
   .fl-success {
-    display: none;
+    padding: 1.6rem 1rem 1rem;
     text-align: center;
-    padding: 2.5rem 1.5rem;
     animation: fl-fade-in 0.3s ease;
   }
 
-  .fl-success.visible {
-    display: block;
+  .fl-success[hidden] {
+    display: none;
   }
 
   .fl-success-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--fp-accent) 12%, var(--fp-paper));
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
+    width: 2.65rem;
+    height: 2.65rem;
+    margin: 0 auto 0.75rem;
+    border: 1px solid var(--fp-accent-muted);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--fp-accent) 12%, var(--fp-paper));
   }
 
   .fl-success-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--fp-accent-strong);
+    width: 1.3rem;
+    height: 1.3rem;
     fill: none;
-    stroke-width: 2;
+    stroke: var(--fl-success-text);
     stroke-linecap: round;
     stroke-linejoin: round;
+    stroke-width: 2;
   }
 
   .fl-success h3 {
     margin: 0 0 0.25rem;
-    font-size: 0.9375rem;
-    font-weight: 700;
     color: var(--fp-ink);
+    font-size: 0.9375rem;
   }
 
   .fl-success p {
     margin: 0;
-    font-size: 0.75rem;
     color: var(--fp-ink-soft);
+    font-size: 0.75rem;
     line-height: 1.6;
   }
 
-  /* ── Status Controls ── */
-  .fl-status-head {
+  .fl-success-actions {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
+    justify-content: center;
+    margin-top: 0.85rem;
+  }
+
+  .fl-secondary-btn {
+    padding: 0.4rem 0.8rem;
+    border-color: var(--fp-dash);
+    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
+    background: transparent;
+    color: var(--fp-accent-strong);
+    font-size: 0.6875rem;
+  }
+
+  .fl-secondary-btn:hover {
+    border-color: var(--fp-accent);
+    background: color-mix(in srgb, var(--fp-accent) 8%, transparent);
+  }
+
+  .fl-status-head {
+    margin-bottom: 0.85rem;
   }
 
   .fl-status-controls {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     flex-wrap: wrap;
-    flex: 1;
-    min-width: 200px;
+    gap: 0.45rem;
+    margin-bottom: 0.95rem;
+    padding: 0.55rem 0.65rem;
+    border-top: 1px dashed var(--fp-dash);
+    border-bottom: 1px dashed var(--fp-dash);
   }
 
-  .fl-dropdown {
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  .fl-dropdown-trigger {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.6875rem;
-    font-family: inherit;
-    font-weight: 500;
-    border: 1px solid var(--fl-input-border);
-    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
-    background: var(--fp-paper);
-    color: var(--fp-ink-soft);
-    cursor: pointer;
-    transition: border-color 0.2s ease;
-  }
-
-  .fl-dropdown-trigger:hover {
-    border-color: var(--fp-accent);
-  }
-
-  .fl-dropdown-arrow {
+  .fl-control-label {
+    color: var(--fp-muted);
     font-size: 0.625rem;
-    transition: transform 0.2s;
+    font-weight: 650;
   }
 
-  .fl-dropdown.open .fl-dropdown-arrow {
-    transform: rotate(180deg);
+  .fl-search-label {
+    margin-left: 0.35rem;
   }
 
-  .fl-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    min-width: 110px;
-    background: var(--fp-paper);
+  .fl-control-input {
+    min-height: 1.9rem;
+    padding: 0.35rem 0.55rem;
     border: 1px solid var(--fl-input-border);
-    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
-    box-shadow: var(--fp-soft-shadow);
-    display: none;
-    z-index: 100;
-    overflow: hidden;
-  }
-
-  .fl-dropdown.open .fl-dropdown-menu {
-    display: block;
-  }
-
-  .fl-dropdown-item {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.6875rem;
+    border-radius: 255px 5px 225px 5px / 5px 225px 5px 255px;
+    outline: none;
+    background: var(--fl-input-bg);
     color: var(--fp-ink-soft);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-
-  .fl-dropdown-item:hover {
-    background: color-mix(in srgb, var(--fp-accent) 10%, transparent);
-    color: var(--fp-accent-strong);
-  }
-
-  .fl-dropdown-item.active {
-    color: var(--fp-accent-strong);
-    font-weight: 600;
-    background: color-mix(in srgb, var(--fp-accent) 8%, transparent);
+    font-family: inherit;
+    font-size: 0.6875rem;
   }
 
   .fl-search-wrap {
     position: relative;
-    flex: 1;
-    min-width: 100px;
+    min-width: 8rem;
+    flex: 1 1 9rem;
   }
 
   .fl-search-icon {
     position: absolute;
-    left: 10px;
     top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.6875rem;
+    left: 0.6rem;
     color: var(--fp-muted);
+    font-size: 0.9rem;
+    line-height: 1;
     pointer-events: none;
+    transform: translateY(-52%);
   }
 
   .fl-search-input {
+    box-sizing: border-box;
     width: 100%;
-    padding: 0.375rem 0.75rem 0.375rem 1.75rem;
-    font-size: 0.6875rem;
-    font-family: inherit;
-    border: 1px solid var(--fl-input-border);
-    border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
-    outline: none;
-    background: var(--fp-paper);
-    color: var(--fp-ink);
-    transition: border-color 0.2s ease;
-  }
-
-  .fl-search-input:focus {
-    border-color: var(--fp-accent);
+    padding-left: 1.55rem;
   }
 
   .fl-status-count {
-    font-size: 0.6875rem;
+    margin-left: auto;
     color: var(--fp-muted);
+    font-family: "Noto Sans Mono", monospace;
+    font-size: 0.625rem;
     white-space: nowrap;
-    flex-shrink: 0;
   }
 
-  /* ── Status Grid ── */
   .fl-status-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.65rem;
   }
 
-  .fl-status-grid .fl-status-empty,
-  .fl-status-grid .fl-status-loading,
-  .fl-status-grid .fl-status-error {
+  .fl-status-loading,
+  .fl-status-empty,
+  .fl-status-error {
     grid-column: 1 / -1;
-    text-align: center;
-    padding: 2.5rem 1rem;
+    padding: 2rem 1rem;
     color: var(--fp-muted);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+    text-align: center;
   }
 
-  .fl-status-grid .fl-status-error {
+  .fl-status-error {
     color: var(--fl-err-text);
   }
 
-  .fl-status-grid .fl-status-item {
-    min-width: 0;
-    padding: 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--fp-dash) 50%, transparent);
-    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
-    background: var(--fl-inner-bg);
+  .fl-status-retry {
+    margin-left: 0.35rem;
+    border: 0;
+    background: transparent;
+    color: var(--fp-accent-strong);
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .fl-status-item {
     display: flex;
+    min-width: 0;
     flex-direction: column;
     gap: 0.35rem;
+    padding: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--fp-dash) 52%, transparent);
+    border-radius: 255px 8px 225px 8px / 8px 225px 8px 255px;
+    background: var(--fl-inner-bg);
     box-shadow: inset 0 1px color-mix(in srgb, var(--fp-paper) 80%, transparent);
     transition:
       transform 0.2s ease,
       border-color 0.2s ease;
   }
 
-  .fl-status-grid .fl-status-item:hover {
-    border-color: color-mix(in srgb, var(--fp-accent) 40%, var(--fp-dash));
+  .fl-status-item:hover {
+    border-color: color-mix(in srgb, var(--fp-accent) 42%, var(--fp-dash));
     transform: translateY(-2px);
   }
 
-  .fl-status-grid .fl-status-top {
+  .fl-status-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 6px;
     min-width: 0;
+    gap: 0.45rem;
   }
 
-  .fl-status-grid .fl-status-name {
-    font-size: 0.8125rem;
-    font-weight: 600;
+  .fl-status-name {
+    min-width: 0;
+    overflow: hidden;
     color: var(--fp-ink);
-    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: 650;
     text-overflow: ellipsis;
     white-space: nowrap;
-    flex: 1;
-    min-width: 0;
   }
 
-  .fl-status-grid .fl-status-desc {
-    font-size: 0.6875rem;
-    color: var(--fp-muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-  }
-
-  .fl-status-grid .fl-status-top-right {
+  .fl-status-top-right {
     display: flex;
-    align-items: center;
-    gap: 4px;
     flex-shrink: 0;
+    align-items: center;
+    gap: 0.25rem;
   }
 
-  .fl-status-grid .fl-status-badge {
-    padding: 1px 8px;
-    font-size: 0.625rem;
-    font-weight: 600;
-    border-radius: 255px 4px 225px 4px / 4px 225px 4px 255px;
+  .fl-status-badge,
+  .fl-status-type {
+    line-height: 1.5;
     white-space: nowrap;
-    line-height: 1.6;
   }
 
-  .fl-status-grid .fl-status-type {
+  .fl-status-badge {
+    padding: 0.1rem 0.4rem;
+    border-radius: 255px 4px 225px 4px / 4px 225px 4px 255px;
     font-size: 0.5625rem;
-    color: var(--fp-muted);
-    padding: 1px 5px;
-    background: var(--fl-inner-bg);
+    font-weight: 700;
+  }
+
+  .fl-status-badge.pending {
+    background: var(--fl-status-pending-bg);
+    color: var(--fl-status-pending-text);
+  }
+
+  .fl-status-badge.approved {
+    background: var(--fl-status-approved-bg);
+    color: var(--fl-status-approved-text);
+  }
+
+  .fl-status-badge.rejected {
+    background: var(--fl-status-rejected-bg);
+    color: var(--fl-status-rejected-text);
+  }
+
+  .fl-status-type {
+    padding: 0.1rem 0.3rem;
     border: 1px solid color-mix(in srgb, var(--fp-dash) 40%, transparent);
     border-radius: 3px;
-    line-height: 1.6;
+    color: var(--fp-muted);
+    font-size: 0.5rem;
   }
 
-  .fl-status-grid .fl-status-badge.pending {
-    background: color-mix(in srgb, #facc15 18%, var(--fp-paper));
-    color: #a16207;
+  .fl-status-desc {
+    overflow: hidden;
+    color: var(--fp-muted);
+    font-size: 0.625rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .fl-status-grid .fl-status-badge.approved {
-    background: color-mix(in srgb, #4ade80 18%, var(--fp-paper));
-    color: #15803d;
-  }
-
-  .fl-status-grid .fl-status-badge.rejected {
-    background: color-mix(in srgb, #f87171 18%, var(--fp-paper));
-    color: #dc2626;
-  }
-
-  html.dark .fl-status-grid .fl-status-badge.pending {
-    background: rgba(234, 179, 8, 0.2);
-    color: #facc15;
-  }
-
-  html.dark .fl-status-grid .fl-status-badge.approved {
-    background: rgba(34, 197, 94, 0.2);
-    color: #4ade80;
-  }
-
-  html.dark .fl-status-grid .fl-status-badge.rejected {
-    background: rgba(239, 68, 68, 0.2);
-    color: #f87171;
-  }
-
-  /* ── Pagination ── */
   .fl-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.35rem;
-    margin-top: 0.875rem;
     flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.85rem;
   }
 
-  .fl-pagination .fl-page-btn {
-    min-width: 28px;
-    height: 28px;
-    padding: 0 8px;
-    font-size: 0.6875rem;
-    font-family: inherit;
-    border: 1px solid color-mix(in srgb, var(--fp-dash) 50%, transparent);
+  .fl-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    padding: 0 0.4rem;
+    border-color: color-mix(in srgb, var(--fp-dash) 55%, transparent);
     border-radius: 255px 4px 225px 4px / 4px 225px 4px 255px;
     background: var(--fp-paper);
     color: var(--fp-ink);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+    font-size: 0.625rem;
   }
 
-  .fl-pagination .fl-page-btn:hover {
+  .fl-page-btn:hover:not(:disabled) {
     border-color: var(--fp-accent);
     color: var(--fp-accent-strong);
   }
 
-  .fl-pagination .fl-page-btn.active {
-    background: var(--fp-accent);
+  .fl-page-btn.active {
     border-color: var(--fp-accent);
+    background: var(--fp-accent);
     color: var(--fp-paper);
   }
 
-  .fl-pagination .fl-page-btn:disabled {
-    opacity: 0.4;
+  .fl-page-btn:disabled {
     cursor: not-allowed;
+    opacity: 0.4;
   }
 
-  .fl-pagination .fl-page-dots {
+  .fl-page-dots {
+    padding: 0 0.2rem;
     color: var(--fp-muted);
     font-size: 0.6875rem;
-    padding: 0 4px;
   }
 
-  /* ── Responsive ── */
   @media (max-width: 860px) {
     .fl-status-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 640px) {
     .fl-card {
-      padding: 1.25rem 1rem 1rem;
+      padding: 1.35rem 1rem 1.15rem;
       border-radius: 255px 12px 225px 12px / 12px 225px 12px 255px;
       transform: none;
     }
 
-    .fl-mode-tabs {
-      border-radius: 255px 6px 225px 6px / 6px 225px 6px 255px;
+    .fl-card:hover {
+      transform: translateY(-1px);
     }
 
-    .fl-status-head {
-      flex-direction: column;
-      align-items: flex-start;
+    .fl-card-head {
+      display: block;
+    }
+
+    .fl-card-intro {
+      max-width: none;
+      margin-top: 0.55rem;
+      text-align: left;
+    }
+
+    .fl-condition-grid,
+    .fl-form-grid,
+    .fl-status-grid {
+      grid-template-columns: 1fr;
     }
 
     .fl-status-controls {
+      align-items: stretch;
+    }
+
+    .fl-status-count {
       width: 100%;
-      min-width: unset;
+      margin-left: 0;
     }
 
-    .fl-dropdown,
-    .fl-search-wrap {
-      flex: 1;
-      min-width: 0;
+    .fl-search-label {
+      margin-left: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fl-card:hover,
+    .fl-status-item:hover,
+    .fl-btn:hover:not(:disabled) {
+      transform: none;
     }
 
-    .fl-status-grid {
-      grid-template-columns: 1fr;
+    .fl-card:hover .fl-tab {
+      right: -5px;
+      width: 6px;
+    }
+
+    .fl-card,
+    .fl-tab,
+    .fl-mode-btn,
+    .fl-input,
+    .fl-control-input,
+    .fl-btn,
+    .fl-status-item,
+    .fl-form-inner,
+    .fl-success {
+      transition: none;
+      animation: none;
     }
   }
 </style>
@@ -852,315 +1007,453 @@ const { mode = "apply", apiBase } = Astro.props;
       root.dataset.apiBase ||
       window.__FRIENDLINK_API_BASE__ ||
       "https://verify.081531.xyz";
-    var API_URL = apiBase + "/api/submissions";
-    var initialMode = root.dataset.initialMode || "apply";
+    var apiUrl = apiBase.replace(/\/$/, "") + "/api/submissions";
+    var initialMode =
+      root.dataset.initialMode === "update" ? "update" : "apply";
+    var currentMode = initialMode;
+    var formState = { apply: {}, update: {} };
+    var requestId = 0;
 
-    /* ── Condition checkboxes ── */
     var cbIds = ["fl-cb1", "fl-cb2", "fl-cb3", "fl-cb4", "fl-cb5"];
-    var condHint = root.querySelector(".fl-cond-hint");
-    var optionsEl = document.getElementById("fl-options");
+    var optionsEl = root.querySelector("#fl-options");
+    var conditionHint = root.querySelector("#fl-condition-hint");
+    var formContainer = root.querySelector("#fl-form-container");
+    var tabApply = root.querySelector("#fl-tab-apply");
+    var tabUpdate = root.querySelector("#fl-tab-update");
 
-    function checkConditions() {
-      var all = cbIds.every(function (id) {
-        return document.getElementById(id).checked;
-      });
-      optionsEl.style.display = all ? "block" : "none";
-      condHint.style.display = all ? "none" : "block";
+    var fieldsByMode = {
+      apply: [
+        {
+          key: "name",
+          label: "站点名称",
+          required: true,
+          type: "text",
+          placeholder: "例如：喵洛阁",
+          autocomplete: "organization",
+        },
+        {
+          key: "url",
+          label: "站点地址",
+          required: true,
+          type: "url",
+          placeholder: "https://example.com",
+          autocomplete: "url",
+        },
+        {
+          key: "description",
+          label: "站点描述",
+          required: false,
+          type: "text",
+          placeholder: "例如：一个关于技术和设计的博客",
+        },
+        {
+          key: "avatar",
+          label: "头像地址",
+          required: true,
+          type: "url",
+          placeholder: "https://example.com/avatar.png",
+        },
+        {
+          key: "friendslink",
+          label: "友链页面地址",
+          required: true,
+          type: "url",
+          placeholder: "https://example.com/link/",
+        },
+        {
+          key: "siteshot",
+          label: "站点截图",
+          required: false,
+          type: "url",
+          placeholder: "站点截图链接（支持 siteshot / topimg）",
+          hint: "可选，审核时用于预览。",
+        },
+        {
+          key: "feeds",
+          label: "RSS 订阅",
+          required: false,
+          type: "url",
+          placeholder: "https://example.com/atom.xml",
+        },
+        {
+          key: "email",
+          label: "邮箱",
+          required: false,
+          type: "email",
+          placeholder: "用于接收审核结果通知（选填）",
+          hint: "只用于接收审核结果通知。",
+          autocomplete: "email",
+        },
+      ],
+      update: [
+        {
+          key: "originalUrl",
+          label: "原站点地址",
+          required: true,
+          type: "url",
+          placeholder: "原来的网站地址",
+          autocomplete: "url",
+        },
+        {
+          key: "name",
+          label: "新站点名称",
+          required: true,
+          type: "text",
+          placeholder: "站点名称",
+          autocomplete: "organization",
+        },
+        {
+          key: "url",
+          label: "新站点地址",
+          required: true,
+          type: "url",
+          placeholder: "https://example.com",
+          autocomplete: "url",
+        },
+        {
+          key: "description",
+          label: "新站点描述",
+          required: false,
+          type: "text",
+          placeholder: "例如：一个关于技术和设计的博客",
+        },
+        {
+          key: "avatar",
+          label: "新头像地址",
+          required: true,
+          type: "url",
+          placeholder: "https://example.com/avatar.png",
+        },
+        {
+          key: "friendslink",
+          label: "友链页面地址",
+          required: true,
+          type: "url",
+          placeholder: "https://example.com/link/",
+        },
+        {
+          key: "siteshot",
+          label: "新站点截图",
+          required: false,
+          type: "url",
+          placeholder: "站点截图链接（支持 siteshot / topimg）",
+          hint: "可选，审核时用于预览。",
+        },
+        {
+          key: "feeds",
+          label: "RSS 订阅",
+          required: false,
+          type: "url",
+          placeholder: "https://example.com/atom.xml",
+        },
+        {
+          key: "email",
+          label: "邮箱",
+          required: false,
+          type: "email",
+          placeholder: "用于接收审核结果通知（选填）",
+          hint: "只用于接收审核结果通知。",
+          autocomplete: "email",
+        },
+      ],
+    };
+
+    function escapeHtml(value) {
+      var div = document.createElement("div");
+      div.textContent = value == null ? "" : String(value);
+      return div.innerHTML;
     }
 
-    cbIds.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener("change", checkConditions);
-    });
+    function escapeAttribute(value) {
+      var entities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+        "`": "&#96;",
+      };
+      return String(value == null ? "" : value).replace(
+        /[&<>"'`]/g,
+        function (character) {
+          return entities[character];
+        },
+      );
+    }
 
-    /* ── Tabs ── */
-    var currentMode = initialMode;
-    var tabApply = document.getElementById("fl-tab-apply");
-    var tabUpdate = document.getElementById("fl-tab-update");
-    var containerEl = document.getElementById("fl-form-container");
-    var formState = {};
-
-    var FIELDS_APPLY = [
-      {
-        key: "name",
-        label: "站点名称",
-        required: true,
-        type: "text",
-        placeholder: "站点名称",
-      },
-      {
-        key: "url",
-        label: "站点地址",
-        required: true,
-        type: "url",
-        placeholder: "https://example.com",
-      },
-      {
-        key: "description",
-        label: "站点描述",
-        required: false,
-        type: "text",
-        placeholder: "例如：一个关于技术和设计的博客",
-      },
-      {
-        key: "avatar",
-        label: "头像地址",
-        required: true,
-        type: "url",
-        placeholder: "https://example.com/avatar.png",
-      },
-      {
-        key: "friendslink",
-        label: "友链页面地址",
-        required: true,
-        type: "url",
-        placeholder: "https://example.com/link/",
-      },
-      {
-        key: "siteshot",
-        label: "站点截图",
-        required: false,
-        type: "url",
-        placeholder: "站点截图链接",
-        hint: "支持 siteshot 和 topimg 字段",
-      },
-      {
-        key: "feeds",
-        label: "RSS 订阅",
-        required: false,
-        type: "url",
-        placeholder: "https://example.com/atom.xml",
-      },
-      {
-        key: "email",
-        label: "邮箱",
-        required: false,
-        type: "email",
-        placeholder: "用于接收审核结果通知（选填）",
-        hint: "用于接收审核结果通知",
-      },
-    ];
-
-    var FIELDS_UPDATE = [
-      {
-        key: "originalUrl",
-        label: "原站点地址",
-        required: true,
-        type: "url",
-        placeholder: "原网站地址",
-      },
-      {
-        key: "name",
-        label: "站点名称",
-        required: true,
-        type: "text",
-        placeholder: "站点名称",
-      },
-      {
-        key: "url",
-        label: "新站点地址",
-        required: true,
-        type: "url",
-        placeholder: "https://example.com",
-      },
-      {
-        key: "description",
-        label: "站点描述",
-        required: false,
-        type: "text",
-        placeholder: "例如：一个关于技术和设计的博客",
-      },
-      {
-        key: "avatar",
-        label: "头像地址",
-        required: true,
-        type: "url",
-        placeholder: "https://example.com/avatar.png",
-      },
-      {
-        key: "friendslink",
-        label: "友链页面地址",
-        required: true,
-        type: "url",
-        placeholder: "https://example.com/link/",
-      },
-      {
-        key: "siteshot",
-        label: "站点截图",
-        required: false,
-        type: "url",
-        placeholder: "站点截图链接",
-        hint: "支持 siteshot 和 topimg 字段",
-      },
-      {
-        key: "feeds",
-        label: "RSS 订阅",
-        required: false,
-        type: "url",
-        placeholder: "https://example.com/atom.xml",
-      },
-      {
-        key: "email",
-        label: "邮箱",
-        required: false,
-        type: "email",
-        placeholder: "用于接收审核结果通知（选填）",
-        hint: "用于接收审核结果通知",
-      },
-    ];
+    function fieldId(mode, key) {
+      return "fl-" + mode + "-" + key;
+    }
 
     function setActiveTab(mode) {
-      currentMode = mode;
-      tabApply.classList.toggle("active", mode === "apply");
-      tabUpdate.classList.toggle("active", mode === "update");
-      renderForm(mode);
+      currentMode = mode === "update" ? "update" : "apply";
+      var isApply = currentMode === "apply";
+      tabApply.classList.toggle("active", isApply);
+      tabUpdate.classList.toggle("active", !isApply);
+      tabApply.setAttribute("aria-selected", String(isApply));
+      tabUpdate.setAttribute("aria-selected", String(!isApply));
+      formContainer.setAttribute(
+        "aria-labelledby",
+        isApply ? "fl-tab-apply" : "fl-tab-update",
+      );
+      tabApply.tabIndex = isApply ? 0 : -1;
+      tabUpdate.tabIndex = isApply ? -1 : 0;
+      renderForm(currentMode);
+    }
+
+    function updateConditionGate() {
+      var allChecked = cbIds.every(function (id) {
+        var checkbox = root.querySelector("#" + id);
+        return checkbox && checkbox.checked;
+      });
+      optionsEl.hidden = !allChecked;
+      conditionHint.hidden = allChecked;
+    }
+
+    function fieldMarkup(mode, field) {
+      var id = fieldId(mode, field.key);
+      var state = formState[mode][field.key] || "";
+      var hintId = field.hint ? id + "-hint" : "";
+      var errorId = id + "-error";
+      var describedBy =
+        ' aria-describedby="' +
+        [hintId, errorId].filter(Boolean).join(" ") +
+        '"';
+      return (
+        '<div class="fl-field">' +
+        '<label class="fl-label" for="' +
+        id +
+        '">' +
+        escapeHtml(field.label) +
+        (field.required
+          ? ' <span class="fl-star" aria-hidden="true">*</span>'
+          : "") +
+        "</label>" +
+        '<input class="fl-input" id="' +
+        id +
+        '" name="' +
+        escapeAttribute(field.key) +
+        '" type="' +
+        field.type +
+        '" placeholder="' +
+        escapeAttribute(field.placeholder) +
+        '" value="' +
+        escapeAttribute(state) +
+        '"' +
+        (field.required ? " required" : "") +
+        (field.autocomplete
+          ? ' autocomplete="' + field.autocomplete + '"'
+          : "") +
+        describedBy +
+        ' aria-invalid="false" />' +
+        (field.hint
+          ? '<p class="fl-hint" id="' +
+            hintId +
+            '">' +
+            escapeHtml(field.hint) +
+            "</p>"
+          : "") +
+        '<p class="fl-field-error" id="' +
+        errorId +
+        '" aria-live="polite"></p>' +
+        "</div>"
+      );
     }
 
     function renderForm(mode) {
-      var fields = mode === "apply" ? FIELDS_APPLY : FIELDS_UPDATE;
+      var fields = fieldsByMode[mode];
       var title = mode === "apply" ? "申请友链" : "更新友链";
       var subtitle =
         mode === "apply"
-          ? "请填写你的网站信息，提交后等待管理员审核。"
-          : "更新已存在的友链信息。";
-      var submitText = mode === "apply" ? "提交申请" : "提交更新";
+          ? "填写这些信息，审核通过后会按 Butterfly YAML 格式发布。"
+          : "用原站点地址找到已有记录，再填写需要更新的信息。";
+      var html =
+        '<form class="fl-form-inner" id="fl-form-' +
+        mode +
+        '" novalidate>' +
+        '<h3 class="fl-form-heading">' +
+        title +
+        '</h3><p class="fl-form-subtitle">' +
+        subtitle +
+        '</p><div class="fl-err-box" id="fl-error-' +
+        mode +
+        '" role="alert"></div>' +
+        '<div class="fl-form-grid">';
 
-      var html = '<div class="fl-form-inner">';
-      html += "<h3>" + title + "</h3>";
-      html += '<p class="fl-subtitle">' + subtitle + "</p>";
-      html += '<div id="fl-error" class="fl-err-box"></div>';
-
-      for (var i = 0; i < fields.length; i++) {
-        var f = fields[i];
-        html += '<div class="fl-field">';
-        html += '<label class="fl-label" for="fl-' + f.key + '">';
-        html += f.label;
-        if (f.required) html += ' <span class="fl-star">*</span>';
-        html += "</label>";
-        html +=
-          '<input class="fl-input" id="fl-' +
-          f.key +
-          '" type="' +
-          f.type +
-          '" ' +
-          (f.required ? "required" : "") +
-          ' placeholder="' +
-          f.placeholder +
-          '" value="' +
-          (formState[f.key] || "") +
-          '" />';
-        if (f.hint) html += '<p class="fl-hint">' + f.hint + "</p>";
-        html += "</div>";
-      }
+      fields.forEach(function (field) {
+        html += fieldMarkup(mode, field);
+      });
 
       html +=
-        '<button type="submit" class="fl-btn" id="fl-submit-btn">' +
-        submitText +
-        "</button>";
-      html += "</div>";
-
-      var successHtml = '<div id="fl-success" class="fl-success">';
-      successHtml += '<div class="fl-success-icon">';
-      successHtml +=
-        '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>';
-      successHtml += "</div>";
-      successHtml += "<h3>提交成功</h3>";
-      successHtml +=
-        "<p>感谢您！友链" +
+        '</div><button type="submit" class="fl-btn" id="fl-submit-' +
+        mode +
+        '">' +
+        (mode === "apply" ? "提交申请" : "提交更新") +
+        "</button></form>" +
+        '<div class="fl-success" id="fl-success-' +
+        mode +
+        '" role="status" tabindex="-1" hidden>' +
+        '<div class="fl-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>' +
+        "<h3>提交成功</h3><p>感谢你！友链" +
         (mode === "apply" ? "申请" : "更新请求") +
-        "已提交，等待管理员审核。</p>";
-      if (mode === "apply") successHtml += "<p>审核结果将通过邮件通知您。</p>";
-      successHtml += "</div>";
+        "已经提交，等待管理员审核。</p>" +
+        (mode === "apply"
+          ? "<p>如果填写了邮箱，审核结果会通过邮件通知你。</p>"
+          : "") +
+        '<div class="fl-success-actions"><button type="button" class="fl-secondary-btn" data-action="again">继续填写</button></div></div>';
 
-      containerEl.innerHTML = html + successHtml;
-      attachFormHandler(mode);
+      formContainer.innerHTML = html;
+      attachForm(mode);
     }
 
-    function attachFormHandler(mode) {
-      var formInner = containerEl.querySelector(".fl-form-inner");
-      if (!formInner) return;
+    function setFieldError(input, message) {
+      var error = root.querySelector("#" + input.id + "-error");
+      input.setAttribute("aria-invalid", message ? "true" : "false");
+      if (error) error.textContent = message || "";
+    }
 
-      var inputs = formInner.querySelectorAll(".fl-input");
-      for (var i = 0; i < inputs.length; i++) {
-        (function (input) {
-          var key = input.id.replace("fl-", "");
-          input.addEventListener("input", function () {
-            formState[key] = input.value;
-          });
-        })(inputs[i]);
+    function validateField(mode, field) {
+      var input = root.querySelector("#" + fieldId(mode, field.key));
+      if (!input) return false;
+      var value = input.value.trim();
+      var message = "";
+
+      if (field.required && !value) {
+        message = "请填写" + field.label + "。";
+      } else if (value && input.type === "url" && !input.checkValidity()) {
+        message = "请输入有效的网址（需包含 http:// 或 https://）。";
+      } else if (value && input.type === "email" && !input.checkValidity()) {
+        message = "请输入有效的邮箱地址。";
       }
 
-      var submitBtn = document.getElementById("fl-submit-btn");
-      if (!submitBtn) return;
-      submitBtn.addEventListener("click", function (e) {
-        e.preventDefault();
+      setFieldError(input, message);
+      return !message;
+    }
+
+    function attachForm(mode) {
+      var form = root.querySelector("#fl-form-" + mode);
+      if (!form) return;
+      var fields = fieldsByMode[mode];
+
+      fields.forEach(function (field) {
+        var input = root.querySelector("#" + fieldId(mode, field.key));
+        if (!input) return;
+        input.addEventListener("input", function () {
+          formState[mode][field.key] = input.value;
+          if (input.getAttribute("aria-invalid") === "true") {
+            validateField(mode, field);
+          }
+        });
+        input.addEventListener("blur", function () {
+          if (input.value.trim()) validateField(mode, field);
+        });
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
         handleSubmit(mode);
       });
+
+      var againButton = root.querySelector(
+        "#fl-success-" + mode + ' [data-action="again"]',
+      );
+      if (againButton) {
+        againButton.addEventListener("click", function () {
+          var success = root.querySelector("#fl-success-" + mode);
+          var errorBox = root.querySelector("#fl-error-" + mode);
+          form.hidden = false;
+          success.hidden = true;
+          if (errorBox) {
+            errorBox.textContent = "";
+            errorBox.classList.remove("visible");
+          }
+          fieldsByMode[mode].forEach(function (field) {
+            var input = root.querySelector("#" + fieldId(mode, field.key));
+            if (input) input.setAttribute("aria-invalid", "false");
+          });
+          var firstInput = form.querySelector(".fl-input");
+          if (firstInput) firstInput.focus();
+        });
+      }
     }
 
     function handleSubmit(mode) {
-      var fields = mode === "apply" ? FIELDS_APPLY : FIELDS_UPDATE;
-      var errBox = document.getElementById("fl-error");
-      var submitBtn = document.getElementById("fl-submit-btn");
-      var successEl = document.getElementById("fl-success");
+      var fields = fieldsByMode[mode];
+      var form = root.querySelector("#fl-form-" + mode);
+      var submitButton = root.querySelector("#fl-submit-" + mode);
+      var errorBox = root.querySelector("#fl-error-" + mode);
+      var firstInvalid = null;
+      var valid = true;
 
-      for (var i = 0; i < fields.length; i++) {
-        var f = fields[i];
-        if (!f.required) continue;
-        var input = document.getElementById("fl-" + f.key);
-        if (!input || !input.value.trim()) {
-          if (errBox) {
-            errBox.textContent = "请填写 " + f.label;
-            errBox.classList.add("visible");
-          }
-          input && input.focus();
-          return;
+      fields.forEach(function (field) {
+        if (!validateField(mode, field)) {
+          valid = false;
+          if (!firstInvalid)
+            firstInvalid = root.querySelector("#" + fieldId(mode, field.key));
         }
+      });
+
+      if (!valid) {
+        errorBox.textContent = "请先修正标记出来的字段。";
+        errorBox.classList.add("visible");
+        if (firstInvalid) firstInvalid.focus();
+        return;
       }
 
-      var payload = {};
-      for (var key in formState) {
-        if (formState[key] && formState[key].trim()) {
-          payload[key] = formState[key].trim();
-        }
-      }
-      payload.type = mode;
+      errorBox.classList.remove("visible");
+      var payload = { type: mode };
+      fields.forEach(function (field) {
+        var input = root.querySelector("#" + fieldId(mode, field.key));
+        var value = input ? input.value.trim() : "";
+        if (value) payload[field.key] = value;
+      });
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "提交中...";
+      submitButton.disabled = true;
+      submitButton.textContent = "提交中…";
+      form.setAttribute("aria-busy", "true");
 
-      fetch(API_URL, {
+      fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-        .then(function (res) {
-          if (!res.ok) {
-            return res.json().then(function (data) {
-              throw new Error(data.error || "提交失败");
-            });
-          }
-          return res.json();
+        .then(function (response) {
+          return response.text().then(function (text) {
+            var data = {};
+            try {
+              data = text ? JSON.parse(text) : {};
+            } catch (error) {
+              data = {};
+            }
+            if (!response.ok) {
+              throw new Error(data.error || "提交失败，请稍后重试。");
+            }
+            return data;
+          });
         })
         .then(function () {
-          if (errBox) errBox.classList.remove("visible");
-          var fi = containerEl.querySelector(".fl-form-inner");
-          if (fi) fi.style.display = "none";
-          if (successEl) successEl.classList.add("visible");
+          form.hidden = true;
+          var success = root.querySelector("#fl-success-" + mode);
+          success.hidden = false;
+          success.focus();
+          var statusGrid = root.querySelector("#fl-status-grid");
+          if (statusGrid) renderStatus();
         })
-        .catch(function (err) {
-          if (errBox) {
-            errBox.textContent = err.message || "发生未知错误，请稍后重试";
-            errBox.classList.add("visible");
-          }
+        .catch(function (error) {
+          errorBox.textContent = error.message || "网络异常，请稍后重试。";
+          errorBox.classList.add("visible");
         })
         .finally(function () {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = mode === "apply" ? "提交申请" : "提交更新";
-          }
+          submitButton.disabled = false;
+          submitButton.textContent = mode === "apply" ? "提交申请" : "提交更新";
+          form.setAttribute("aria-busy", "false");
         });
     }
+
+    cbIds.forEach(function (id) {
+      var checkbox = root.querySelector("#" + id);
+      if (checkbox) checkbox.addEventListener("change", updateConditionGate);
+    });
 
     tabApply.addEventListener("click", function () {
       setActiveTab("apply");
@@ -1168,167 +1461,52 @@ const { mode = "apply", apiBase } = Astro.props;
     tabUpdate.addEventListener("click", function () {
       setActiveTab("update");
     });
-    setActiveTab(initialMode);
+    [tabApply, tabUpdate].forEach(function (tab) {
+      tab.addEventListener("keydown", function (event) {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        setActiveTab(event.key === "ArrowLeft" ? "apply" : "update");
+        (event.key === "ArrowLeft" ? tabApply : tabUpdate).focus();
+      });
+    });
 
-    /* ── Status List ── */
-    var gridEl = document.getElementById("fl-status-grid");
-    var countEl = document.getElementById("fl-status-count");
-    var paginationEl = document.getElementById("fl-pagination");
-    var searchEl = document.getElementById("fl-status-search");
-    var dropdownEl = document.getElementById("fl-status-dropdown");
-    var dropdownTrigger = document.getElementById("fl-status-dropdown-trigger");
-    var dropdownMenu = document.getElementById("fl-status-dropdown-menu");
-    var dropdownLabel = document.getElementById("fl-status-dropdown-label");
-    var dropdownItems = document.querySelectorAll(
-      "#fl-status-dropdown .fl-dropdown-item",
-    );
+    setActiveTab(initialMode);
+    updateConditionGate();
+
+    var gridEl = root.querySelector("#fl-status-grid");
+    var countEl = root.querySelector("#fl-status-count");
+    var paginationEl = root.querySelector("#fl-pagination");
+    var filterEl = root.querySelector("#fl-status-filter");
+    var searchEl = root.querySelector("#fl-status-search");
     var currentStatus = "";
     var currentPage = 1;
     var pageSize = 9;
     var searchTimer = null;
 
-    if (dropdownTrigger) {
-      dropdownTrigger.addEventListener("click", function (e) {
-        e.stopPropagation();
-        dropdownEl.classList.toggle("open");
-      });
+    function statusText(status) {
+      if (status === "pending") return "待审核";
+      if (status === "approved") return "已通过";
+      if (status === "rejected") return "已拒绝";
+      return "未知状态";
     }
 
-    dropdownItems.forEach(function (item) {
-      item.addEventListener("click", function () {
-        dropdownEl.classList.remove("open");
-        currentStatus = this.getAttribute("data-status");
-        dropdownLabel.textContent = this.textContent;
-        dropdownItems.forEach(function (i) {
-          i.classList.remove("active");
-        });
-        this.classList.add("active");
-        currentPage = 1;
-        renderStatus();
-      });
-    });
-
-    document.addEventListener("click", function () {
-      if (dropdownEl) dropdownEl.classList.remove("open");
-    });
-
-    if (searchEl) {
-      searchEl.addEventListener("input", function () {
-        clearTimeout(searchTimer);
-        searchTimer = setTimeout(function () {
-          currentPage = 1;
-          renderStatus();
-        }, 200);
-      });
+    function typeText(type) {
+      if (type === "update") return "更新";
+      if (type === "apply") return "新增";
+      return "未知类型";
     }
 
-    function getStatusText(s) {
-      if (s === "pending") return "待审核";
-      if (s === "approved") return "已通过";
-      if (s === "rejected") return "已拒绝";
-      return "";
-    }
-
-    function escapeHtml(str) {
-      if (!str) return "";
-      var d = document.createElement("div");
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
-    function renderStatus() {
-      var keyword = searchEl ? searchEl.value.trim().toLowerCase() : "";
-      var url = API_URL + "?public=1";
-      if (currentStatus) url += "&status=" + currentStatus;
-      if (keyword) url += "&search=" + encodeURIComponent(keyword);
-
-      if (gridEl) {
-        gridEl.innerHTML = '<div class="fl-status-loading">加载中...</div>';
-      }
-      if (countEl) countEl.textContent = "";
-      if (paginationEl) paginationEl.innerHTML = "";
-
-      fetch(url)
-        .then(function (r) {
-          if (!r.ok) throw new Error("请求失败");
-          return r.json();
-        })
-        .then(function (data) {
-          var list = data.submissions || [];
-          var total = list.length;
-          var totalPages = Math.ceil(total / pageSize) || 1;
-          if (currentPage > totalPages) currentPage = totalPages;
-          var start = (currentPage - 1) * pageSize;
-          var pageItems = list.slice(start, start + pageSize);
-
-          if (!gridEl) return;
-
-          if (pageItems.length === 0) {
-            gridEl.innerHTML = '<div class="fl-status-empty">暂无数据</div>';
-            if (countEl) countEl.textContent = "共 0 条";
-            return;
-          }
-
-          if (countEl) countEl.textContent = "共 " + total + " 条";
-
-          var html = "";
-          pageItems.forEach(function (item) {
-            var statusText = getStatusText(item.status);
-            var typeText = item.type === "update" ? "更新" : "新增";
-            var nameText = escapeHtml(item.name);
-            var descText = escapeHtml(item.description || "暂无描述");
-            html +=
-              '<div class="fl-status-item">' +
-              '<div class="fl-status-top">' +
-              '<div class="fl-status-name" title="' +
-              nameText +
-              '">' +
-              nameText +
-              "</div>" +
-              '<div class="fl-status-top-right">' +
-              '<span class="fl-status-badge ' +
-              item.status +
-              '">' +
-              statusText +
-              "</span>" +
-              '<span class="fl-status-type">' +
-              typeText +
-              "</span>" +
-              "</div>" +
-              "</div>" +
-              '<div class="fl-status-desc" title="' +
-              descText +
-              '">' +
-              descText +
-              "</div>" +
-              "</div>";
-          });
-          gridEl.innerHTML = html;
-          renderPagination(totalPages);
-        })
-        .catch(function () {
-          if (gridEl)
-            gridEl.innerHTML =
-              '<div class="fl-status-error">加载失败，请稍后重试</div>';
-        });
+    function statusClass(status) {
+      return ["pending", "approved", "rejected"].indexOf(status) >= 0
+        ? status
+        : "pending";
     }
 
     function renderPagination(totalPages) {
-      if (!paginationEl) return;
       if (totalPages <= 1) {
         paginationEl.innerHTML = "";
         return;
       }
-
-      var prevDisabled = currentPage <= 1 ? "disabled" : "";
-      var nextDisabled = currentPage >= totalPages ? "disabled" : "";
-      var html = "";
-      html +=
-        '<button class="fl-page-btn" onclick="window._flGoPage(' +
-        (currentPage - 1) +
-        ')" ' +
-        prevDisabled +
-        ">‹</button>";
 
       var pages = [];
       if (totalPages <= 7) {
@@ -1337,42 +1515,142 @@ const { mode = "apply", apiBase } = Astro.props;
         pages.push(1);
         if (currentPage > 3) pages.push("...");
         for (
-          var i = Math.max(2, currentPage - 1);
-          i <= Math.min(totalPages - 1, currentPage + 1);
-          i++
-        )
-          pages.push(i);
+          var page = Math.max(2, currentPage - 1);
+          page <= Math.min(totalPages - 1, currentPage + 1);
+          page++
+        ) {
+          pages.push(page);
+        }
         if (currentPage < totalPages - 2) pages.push("...");
         pages.push(totalPages);
       }
 
-      pages.forEach(function (p) {
-        if (p === "...") {
-          html += '<span class="fl-page-dots">…</span>';
+      var html =
+        '<button type="button" class="fl-page-btn" data-page="' +
+        (currentPage - 1) +
+        '"' +
+        (currentPage === 1 ? " disabled" : "") +
+        ' aria-label="上一页">‹</button>';
+      pages.forEach(function (page) {
+        if (page === "...") {
+          html += '<span class="fl-page-dots" aria-hidden="true">…</span>';
         } else {
           html +=
-            '<button class="fl-page-btn' +
-            (p === currentPage ? " active" : "") +
-            '" onclick="window._flGoPage(' +
-            p +
-            ')">' +
-            p +
+            '<button type="button" class="fl-page-btn' +
+            (page === currentPage ? " active" : "") +
+            '" data-page="' +
+            page +
+            '" aria-label="第 ' +
+            page +
+            ' 页"' +
+            (page === currentPage ? ' aria-current="page"' : "") +
+            ">" +
+            page +
             "</button>";
         }
       });
       html +=
-        '<button class="fl-page-btn" onclick="window._flGoPage(' +
+        '<button type="button" class="fl-page-btn" data-page="' +
         (currentPage + 1) +
-        ')" ' +
-        nextDisabled +
-        ">›</button>";
+        '"' +
+        (currentPage === totalPages ? " disabled" : "") +
+        ' aria-label="下一页">›</button>';
       paginationEl.innerHTML = html;
     }
 
-    window._flGoPage = function (page) {
-      currentPage = page;
+    function renderStatus() {
+      var thisRequest = ++requestId;
+      var keyword = searchEl.value.trim();
+      var params = new URLSearchParams({ public: "1" });
+      if (currentStatus) params.set("status", currentStatus);
+      if (keyword) params.set("search", keyword);
+      gridEl.setAttribute("aria-busy", "true");
+      gridEl.innerHTML =
+        '<div class="fl-status-loading">正在翻阅申请记录…</div>';
+      countEl.textContent = "";
+      paginationEl.innerHTML = "";
+
+      fetch(apiUrl + "?" + params.toString())
+        .then(function (response) {
+          if (!response.ok) throw new Error("申请记录暂时无法读取。");
+          return response.json();
+        })
+        .then(function (data) {
+          if (thisRequest !== requestId) return;
+          var list = Array.isArray(data.submissions) ? data.submissions : [];
+          var totalPages = Math.max(1, Math.ceil(list.length / pageSize));
+          currentPage = Math.min(currentPage, totalPages);
+          var start = (currentPage - 1) * pageSize;
+          var pageItems = list.slice(start, start + pageSize);
+          countEl.textContent = "共 " + list.length + " 条";
+
+          if (!pageItems.length) {
+            gridEl.innerHTML =
+              '<div class="fl-status-empty">暂时没有符合条件的记录。</div>';
+            return;
+          }
+
+          var html = "";
+          pageItems.forEach(function (item) {
+            var safeStatus = statusClass(item.status);
+            var name = item.name || "未命名站点";
+            var description = item.description || "暂无描述";
+            html +=
+              '<article class="fl-status-item">' +
+              '<div class="fl-status-top"><strong class="fl-status-name" title="' +
+              escapeAttribute(name) +
+              '">' +
+              escapeHtml(name) +
+              '</strong><div class="fl-status-top-right"><span class="fl-status-badge ' +
+              safeStatus +
+              '">' +
+              statusText(item.status) +
+              '</span><span class="fl-status-type">' +
+              typeText(item.type) +
+              '</span></div></div><p class="fl-status-desc" title="' +
+              escapeAttribute(description) +
+              '">' +
+              escapeHtml(description) +
+              "</p></article>";
+          });
+          gridEl.innerHTML = html;
+          renderPagination(totalPages);
+        })
+        .catch(function (error) {
+          if (thisRequest !== requestId) return;
+          gridEl.innerHTML =
+            '<div class="fl-status-error" role="alert">' +
+            escapeHtml(error.message || "申请记录加载失败。") +
+            ' <button type="button" class="fl-status-retry" id="fl-status-retry">重试</button></div>';
+          var retry = root.querySelector("#fl-status-retry");
+          if (retry) retry.addEventListener("click", renderStatus);
+        })
+        .finally(function () {
+          if (thisRequest === requestId)
+            gridEl.setAttribute("aria-busy", "false");
+        });
+    }
+
+    filterEl.addEventListener("change", function () {
+      currentStatus = filterEl.value;
+      currentPage = 1;
       renderStatus();
-    };
+    });
+
+    searchEl.addEventListener("input", function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () {
+        currentPage = 1;
+        renderStatus();
+      }, 250);
+    });
+
+    paginationEl.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-page]");
+      if (!button || button.disabled) return;
+      currentPage = Number(button.dataset.page) || 1;
+      renderStatus();
+    });
 
     renderStatus();
   })();
