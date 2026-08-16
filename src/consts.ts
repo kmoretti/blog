@@ -10,7 +10,9 @@ export const EMAIL = "mcy@kemiaosw.top";
 
 export const FRIENDLINK_API = "https://verify.081531.xyz";
 export const FRIEND_DATA_URL =
-  "https://cdn.jsdmirror.com/gh/kmoretti/hexo-blog-source@main/source/_data/links.yml";
+  "https://cdn.jsdmirror.com/gh/kmoretti/butterfly-link-check@main/link.yml";
+export const FRIEND_FALSE_DATA_URL =
+  "https://cdn.jsdmirror.com/gh/kmoretti/butterfly-link-check@main/link-false.yml";
 export const LATENCY_API_URL = "https://fc.081531.xyz/link.json";
 
 export const SAFEGO = {

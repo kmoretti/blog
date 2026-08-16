@@ -293,6 +293,42 @@ const friends = friendGroups.flatMap((group) => group.friends);
         ))
       }
     </div>
+
+    <section
+      id="failed-friends"
+      class="failed-friends"
+      aria-labelledby="failed-friends-title"
+      hidden
+    >
+      <header class="failed-friends__header">
+        <h2 id="failed-friends-title">友链墓碑</h2>
+        <p>
+          此处保留因长期无法访问、站点关闭或友链失效而暂时下线的朋友。
+          若站点已恢复，请前往
+          <a href="/friends/exchange/">友链申请表单</a>
+          更新资料。
+        </p>
+      </header>
+      <ul
+        id="failed-friends-list"
+        class="failed-friends__list"
+        aria-label="失效友链列表"
+      >
+      </ul>
+    </section>
+
+    <section
+      class="friend-application"
+      aria-labelledby="friend-application-title"
+    >
+      <div>
+        <h2 id="friend-application-title">申请友链</h2>
+        <p>想交换友链，或需要更新已经恢复的站点资料？</p>
+      </div>
+      <a href="/friends/exchange/" class="friend-application__link">
+        前往申请表单 <span aria-hidden="true">→</span>
+      </a>
+    </section>
   </main>
 
   <style is:inline>
@@ -421,6 +457,115 @@ const friends = friendGroups.flatMap((group) => group.friends);
       display: flex;
       flex-direction: column;
       gap: 3.25rem;
+    }
+
+    .failed-friends {
+      border: 1px dashed var(--fp-dash);
+      padding: 1.25rem;
+      background: color-mix(in srgb, var(--fp-warm) 68%, transparent);
+    }
+
+    .failed-friends__header {
+      margin-bottom: 1rem;
+    }
+
+    .failed-friends__header h2,
+    .friend-application h2 {
+      margin: 0;
+      color: var(--friends-ink);
+      font-size: 1.125rem;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .failed-friends__header h2::first-letter {
+      color: var(--friends-accent);
+    }
+
+    .failed-friends__header p,
+    .friend-application p {
+      margin: 0.4rem 0 0;
+      color: var(--friends-muted);
+      font-size: 0.8125rem;
+      line-height: 1.7;
+    }
+
+    .failed-friends__header a {
+      color: var(--fp-accent-strong);
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-decoration-color: color-mix(
+        in srgb,
+        var(--fp-accent) 45%,
+        transparent
+      );
+      text-underline-offset: 3px;
+    }
+
+    .failed-friends__header a:hover {
+      color: var(--fp-accent);
+    }
+
+    .failed-friends__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .failed-friends__item {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      gap: 0.4rem;
+      color: var(--friends-muted);
+      font-size: 0.875rem;
+      line-height: 1.35;
+    }
+
+    .failed-friends__avatar {
+      width: 1.5rem;
+      height: 1.5rem;
+      flex: 0 0 auto;
+      border: 1px solid var(--friends-avatar-border);
+      border-radius: 50%;
+      background: var(--friends-card-bg);
+      object-fit: cover;
+    }
+
+    .failed-friends__name {
+      border-bottom: 1px dashed currentColor;
+      overflow-wrap: anywhere;
+    }
+
+    .friend-application {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-top: 1px dashed var(--fp-dash);
+      padding-top: 1.5rem;
+    }
+
+    .friend-application__link {
+      flex: 0 0 auto;
+      color: var(--fp-accent-strong);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-decoration-color: color-mix(
+        in srgb,
+        var(--fp-accent) 45%,
+        transparent
+      );
+      text-underline-offset: 3px;
+    }
+
+    .friend-application__link:hover {
+      color: var(--fp-accent);
     }
 
     .friend-group {
@@ -1021,6 +1166,19 @@ const friends = friendGroups.flatMap((group) => group.friends);
         gap: 2.75rem;
       }
 
+      .failed-friends {
+        padding: 1rem;
+      }
+
+      .failed-friends__list {
+        gap: 0.6rem 0.8rem;
+      }
+
+      .friend-application {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
       .friend-group__header {
         gap: 0.65rem;
         margin-bottom: 1rem;
@@ -1138,4 +1296,87 @@ const friends = friendGroups.flatMap((group) => group.friends);
       }
     }
   </style>
+
+  <script>
+    import { load as yamlLoad } from "js-yaml/browser";
+    import { FRIEND_FALSE_DATA_URL } from "../../consts";
+
+    interface FalseLinkEntry {
+      name?: unknown;
+      avatar?: unknown;
+    }
+
+    interface FalseLinkRecord {
+      entry?: FalseLinkEntry;
+    }
+
+    const falseFriendsSection =
+      document.querySelector<HTMLElement>("#failed-friends");
+    const falseFriendsList = document.querySelector<HTMLUListElement>(
+      "#failed-friends-list",
+    );
+
+    const getFalseLinkEntries = (value: unknown): FalseLinkEntry[] => {
+      if (!Array.isArray(value)) return [];
+
+      return value.flatMap((record: FalseLinkRecord) => {
+        const entry = record?.entry;
+        const name = typeof entry?.name === "string" ? entry.name.trim() : "";
+
+        return name ? [{ ...entry, name }] : [];
+      });
+    };
+
+    const createFalseLinkItem = (entry: FalseLinkEntry) => {
+      const item = document.createElement("li");
+      item.className = "failed-friends__item";
+
+      const avatar =
+        typeof entry.avatar === "string" ? entry.avatar.trim() : "";
+      if (avatar) {
+        const image = document.createElement("img");
+        image.className = "failed-friends__avatar";
+        image.src = avatar;
+        image.alt = "";
+        image.loading = "lazy";
+        image.addEventListener("error", () => image.remove(), { once: true });
+        item.append(image);
+      }
+
+      const name = document.createElement("span");
+      name.className = "failed-friends__name";
+      name.textContent = entry.name as string;
+      item.append(name);
+
+      return item;
+    };
+
+    const loadFalseFriends = async () => {
+      if (!falseFriendsSection || !falseFriendsList) return;
+
+      falseFriendsSection.hidden = true;
+      falseFriendsList.replaceChildren();
+
+      try {
+        const response = await fetch(FRIEND_FALSE_DATA_URL, {
+          cache: "no-store",
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch false friends: ${response.status}`);
+        }
+
+        const entries = getFalseLinkEntries(yamlLoad(await response.text()));
+        if (entries.length === 0) return;
+
+        falseFriendsList.append(
+          ...entries.map((entry) => createFalseLinkItem(entry)),
+        );
+        falseFriendsSection.hidden = false;
+      } catch (error) {
+        console.warn("Failed to load false friends:", error);
+      }
+    };
+
+    document.addEventListener("astro:page-load", () => void loadFalseFriends());
+  </script>
 </Layout>
