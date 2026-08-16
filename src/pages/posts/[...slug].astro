@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
 import Giscus from "../../components/Giscus.astro";
 import PostFooter from "../../components/PostFooter.astro";
 import PostMetaChips from "../../components/PostMetaChips.astro";
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
   const posts = await getCollection("posts");
   const sorted = sortPostsByDate(posts);
   return sorted.map((post, index) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: {
       ...post,
       prevPost: index > 0 ? sorted[index - 1] : undefined,
@@ -34,8 +34,8 @@ type Props = CollectionEntry<"posts"> & {
 
 const { prevPost, nextPost } = Astro.props;
 const post: CollectionEntry<"posts"> = Astro.props;
-const { Content } = await post.render();
-const stats = getPostReadingStats(post.body);
+const { Content } = await render(post);
+const stats = getPostReadingStats(post.body ?? "");
 ---
 
 <Layout

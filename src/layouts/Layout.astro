@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import aisummaryCss from "../assets/styles/aisummary.css?url";
 import Header from "../components/Header.astro";
 import { cn } from "../lib/utils";
@@ -105,7 +105,7 @@ const {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-    <ViewTransitions />
+    <ClientRouter />
     <style is:inline>
       :root {
         --app-bg: #f7f3e9;

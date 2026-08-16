@@ -26,7 +26,7 @@ const hasNoPosts = !prevPost && !nextPost;
     ) : (
       <div class="nav-grid">
         {prevPost ? (
-          <a href={`/posts/${prevPost.slug}/`} class="nav-card nav-card-prev">
+          <a href={`/posts/${prevPost.id}/`} class="nav-card nav-card-prev">
             <span class="nav-card-label">
               <Icon
                 name="material-symbols:arrow-back-rounded"
@@ -58,7 +58,7 @@ const hasNoPosts = !prevPost && !nextPost;
           </div>
         )}
         {nextPost ? (
-          <a href={`/posts/${nextPost.slug}/`} class="nav-card nav-card-next">
+          <a href={`/posts/${nextPost.id}/`} class="nav-card nav-card-next">
             <span class="nav-card-label">
               <span>下一篇</span>
               <Icon

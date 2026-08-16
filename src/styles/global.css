@@ -55,9 +55,8 @@
   src: url("../../node_modules/@fontsource/noto-sans-mono/files/noto-sans-mono-latin-700-normal.woff2")
     format("woff2");
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../../tailwind.config.ts";
+@import "tailwindcss";
 
 @layer base {
   html.dark .astro-code,
@@ -167,12 +166,12 @@
       @apply my-4 leading-relaxed;
     }
     h1 {
-      @apply mb-4 mt-6 text-2xl font-semibold;
+      @apply mt-6 mb-4 text-2xl font-semibold;
       color: var(--fp-ink);
     }
     h2 {
       position: relative;
-      @apply mb-3 mt-6 pb-2 text-xl font-semibold;
+      @apply mt-6 mb-3 pb-2 text-xl font-semibold;
       color: var(--fp-ink);
       border-bottom: 1px solid var(--fp-dash);
     }
@@ -192,19 +191,19 @@
       -webkit-mask-size: contain;
     }
     h3 {
-      @apply mb-3 mt-6 text-lg font-semibold;
+      @apply mt-6 mb-3 text-lg font-semibold;
       color: var(--fp-ink);
     }
     h4 {
-      @apply mb-2 mt-4 text-base font-semibold;
+      @apply mt-4 mb-2 text-base font-semibold;
       color: var(--fp-ink);
     }
     h5 {
-      @apply mb-2 mt-4 text-sm font-semibold;
+      @apply mt-4 mb-2 text-sm font-semibold;
       color: var(--fp-ink);
     }
     h6 {
-      @apply mb-2 mt-4 text-sm font-medium;
+      @apply mt-4 mb-2 text-sm font-medium;
       color: var(--fp-ink);
     }
     h2,
@@ -215,7 +214,7 @@
       @apply scroll-mt-24;
     }
     :not(pre) > code {
-      @apply inline-block max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap rounded px-1 py-0.5 align-middle font-mono text-sm font-medium;
+      @apply inline-block max-w-full overflow-x-auto overflow-y-hidden rounded px-1 py-0.5 align-middle font-mono text-sm font-medium whitespace-nowrap;
       border: 1px solid var(--fp-dash);
       background: var(--fp-warm);
       color: var(--fp-ink);

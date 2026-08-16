@@ -2,6 +2,11 @@
   "name": "feny-blog",
   "type": "module",
   "version": "4.0.0",
+  "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10.30.3"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -12,27 +17,28 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.0.2",
-    "@astrojs/rss": "^4.0.9",
-    "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^5.1.2",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-remark": "^7.2.2",
+    "@astrojs/mdx": "^7.0.5",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
     "@fontsource/noto-sans-mono": "^5.2.10",
     "@fontsource/noto-sans-sc": "^5.2.9",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/ri": "^1.2.10",
     "@iconify-json/simple-icons": "^1.2.86",
     "@iconify-json/tabler": "^1.2.35",
-    "astro": "^5.1.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.2",
     "clsx": "^2.1.1",
-    "js-yaml": "^5.2.0",
-    "markdown-it": "^14.1.0",
+    "js-yaml": "^5.3.0",
+    "markdown-it": "^14.3.0",
     "material-symbols": "^0.40.2",
     "remark-gfm": "^4.0.1",
     "remark-github-blockquote-alert": "^2.0.1",
-    "sanitize-html": "^2.17.0",
-    "tailwind-merge": "^2.5.4",
-    "tailwindcss": "^3.4.14",
+    "sanitize-html": "^2.17.7",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
@@ -45,8 +51,8 @@
     "pagefind": "^1.5.2",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-astro-organize-imports": "^0.4.11",
-    "prettier-plugin-tailwindcss": "^0.6.8",
+    "prettier-plugin-astro-organize-imports": "^0.4.12",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "tsx": "^4.22.4"
   },
   "prettier": {

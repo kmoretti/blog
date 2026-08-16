@@ -1,6 +1,13 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+
 const posts = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "**/index.mdx",
+    base: "./src/content/posts",
+    generateId: ({ entry }) => entry.replace(/\/index\.mdx$/, ""),
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -11,10 +18,13 @@ const posts = defineCollection({
     summary: z.string().optional(),
   }),
 });
-// Friends pages (e.g. link exchange instructions)
-// Keep schema minimal; only optional metadata for simple Markdown pages.
+
 const friends = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "index.md",
+    base: "./src/content/friends",
+    generateId: () => "index",
+  }),
   schema: z.object({
     title: z.string().optional(),
     description: z.string().optional(),

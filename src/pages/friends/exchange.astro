@@ -1,5 +1,5 @@
 ---
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 import FriendLinkForm from "../../components/FriendLinkForm.astro";
 import { FRIENDLINK_API } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
@@ -11,7 +11,7 @@ const entry = await getEntry("friends", "index");
 if (!entry) {
   throw new Error("Missing content entry: friends/index.md");
 }
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 ---
 
 <Layout title={pageTitle} description={pageDescription} className="max-w-3xl">
