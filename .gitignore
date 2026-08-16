@@ -25,3 +25,8 @@ pnpm-debug.log*
 static-aisummary-1.0.0/
 .qoder/
 .rtk/
+.zcode/
+.trae
+.vscode/
+.uploads/
+.agents/

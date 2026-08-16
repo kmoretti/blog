@@ -1,10 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { fetchFriends } from "../../lib/friends";
 
 const pageTitle = "友情链接 | 喵洛阁";
 const pageDescription = "我的朋友们";
-const friendsData = await fetchFriends();
 ---
 
 <Layout
@@ -37,32 +35,13 @@ const friendsData = await fetchFriends();
       </div>
     </header>
     <div
+      id="friends-list"
       class="grid grid-cols-6 gap-3 p-4 sm:grid-cols-8 sm:gap-4 md:grid-cols-10 lg:grid-cols-10"
+      aria-live="polite"
     >
-      {
-        friendsData.map((friend) => (
-          <a
-            href={friend.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative flex items-center justify-center transition-transform hover:z-10 hover:scale-110"
-            title={friend.name}
-          >
-            <img
-              src={friend.avatar}
-              alt={friend.name}
-              class="w-12 rounded-full object-cover sm:w-14 md:w-16"
-              loading="lazy"
-            />
-            <span
-              class="pointer-events-none absolute bottom-[-2rem] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-sm opacity-0 transition-opacity group-hover:opacity-100"
-              style="background: var(--fp-ink); color: var(--fp-paper);"
-            >
-              {friend.name}
-            </span>
-          </a>
-        ))
-      }
+      <p class="friends-status col-span-full text-center text-sm">
+        正在加载友链…
+      </p>
     </div>
     <div class="mt-6 flex justify-center gap-4">
       <a href="/friends/exchange/" class="fp-muted hover:underline">
@@ -97,7 +76,8 @@ const friendsData = await fetchFriends();
     .fp-subtext {
       color: var(--fp-ink-soft);
     }
-    .fp-muted {
+    .fp-muted,
+    .friends-status {
       color: var(--fp-muted);
     }
     .fp-link-btn {
@@ -119,4 +99,69 @@ const friendsData = await fetchFriends();
       border: 1px solid var(--fp-dash);
     }
   </style>
+
+  <script>
+    import { loadFriendGroups } from "../../lib/friends-client";
+
+    const createFriend = (friend: {
+      name: string;
+      url: string;
+      avatar: string;
+    }) => {
+      const link = document.createElement("a");
+      link.href = friend.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className =
+        "group relative flex items-center justify-center transition-transform hover:z-10 hover:scale-110";
+      link.title = friend.name;
+
+      if (friend.avatar) {
+        const image = document.createElement("img");
+        image.src = friend.avatar;
+        image.alt = friend.name;
+        image.className = "w-12 rounded-full object-cover sm:w-14 md:w-16";
+        image.loading = "lazy";
+        image.addEventListener("error", () => image.remove(), { once: true });
+        link.append(image);
+      }
+
+      const name = document.createElement("span");
+      name.className =
+        "pointer-events-none absolute bottom-[-2rem] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded px-2 py-1 text-sm opacity-0 transition-opacity group-hover:opacity-100";
+      name.style.background = "var(--fp-ink)";
+      name.style.color = "var(--fp-paper)";
+      name.textContent = friend.name;
+      link.append(name);
+
+      return link;
+    };
+
+    const loadFriends = async () => {
+      const friendsList = document.querySelector<HTMLElement>("#friends-list");
+      if (!friendsList) return;
+
+      friendsList.replaceChildren();
+
+      try {
+        const friends = (await loadFriendGroups()).flatMap(
+          (group) => group.friends,
+        );
+        if (friends.length === 0) {
+          throw new Error("No valid friends in remote data");
+        }
+
+        friendsList.append(...friends.map(createFriend));
+      } catch (error) {
+        console.warn("Failed to load friends:", error);
+        const message = document.createElement("p");
+        message.className = "friends-status col-span-full text-center text-sm";
+        message.setAttribute("role", "alert");
+        message.textContent = "友链数据暂时无法加载，请稍后刷新重试。";
+        friendsList.append(message);
+      }
+    };
+
+    document.addEventListener("astro:page-load", () => void loadFriends());
+  </script>
 </Layout>

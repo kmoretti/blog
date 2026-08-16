@@ -268,7 +268,7 @@ html.dark {
 
 ### Cloudflare Pages
 
-参照官方文档配置即可，无需额外适配。自动检测 `astro build` 输出 `dist/` 目录。
+生产部署由 GitHub Actions 构建并直传 Cloudflare Pages，避免使用 Cloudflare 的构建额度。配置仓库 Secret `CLOUDFLARE_API_TOKEN`、`CLOUDFLARE_ACCOUNT_ID`，以及 Variable `CLOUDFLARE_PAGES_PROJECT` 后，推送 `main` 即会上传 `dist/`。Pages 项目应使用 Direct Upload 并关闭 Git 集成自动构建。
 
 ## 许可证
 

@@ -2,7 +2,7 @@
 
 ## 概览
 
-这是一个基于 **Astro 5** 构建的中文个人博客，项目名称 **feny-blog**（v4.0.0），采用静态站点生成（SSG）模式，通过 GitHub Actions 自动构建并部署到 `deploy` 分支。
+这是一个基于 **Astro 7** 构建的中文个人博客，项目名称 **feny-blog**（v4.0.0），采用静态站点生成（SSG）模式，通过 GitHub Actions 构建产物后直接部署到 Cloudflare Pages。
 
 - **站点地址**：https://blog.081531.xyz
 - **站点名称**：喵洛阁
@@ -14,9 +14,9 @@
 
 | 类别          | 技术                                                                |
 | ------------- | ------------------------------------------------------------------- |
-| 框架          | Astro 5                                                             |
+| 框架          | Astro 7                                                             |
 | 语言          | TypeScript（strict 模式）                                           |
-| 样式          | Tailwind CSS 3（class 暗色模式）                                    |
+| 样式          | Tailwind CSS 4（class 暗色模式）                                    |
 | 内容          | `astro:content` + MDX                                               |
 | 图标          | astro-icon + Iconify（mdi / ion / material-symbols / skill-icons）  |
 | 字体          | Noto Sans SC / Noto Serif SC / Noto Sans Mono（@fontsource 自托管） |
@@ -24,7 +24,7 @@
 | 搜索          | Pagefind（构建时生成索引）                                          |
 | 评论          | Giscus（基于 GitHub Discussions）                                   |
 | 分析          | Umami                                                               |
-| 包管理器      | pnpm 9                                                              |
+| 包管理器      | pnpm 10                                                             |
 | 格式化        | Prettier + prettier-plugin-astro + prettier-plugin-tailwindcss      |
 | Markdown 增强 | remark-gfm + remark-github-blockquote-alert                         |
 
@@ -208,13 +208,19 @@ pnpm format:check   # 检查代码格式
 
 ## CI/CD 部署
 
-GitHub Actions 工作流（`.github/workflows/build.yml`）在推送到 `main` 分支时自动执行：
+GitHub Actions 负责构建和部署，不使用 Cloudflare Pages 的构建额度：
 
-1. Checkout 代码
-2. 设置 pnpm 9 + Node.js 20
-3. 安装依赖（`pnpm install --frozen-lockfile`）
-4. 构建站点（`pnpm build`）
-5. 将 `dist/` 目录推送到 `deploy` 分支
+1. `.github/workflows/build.yml` 在 Pull Request 与手动触发时执行安装和 `pnpm build` 验证。
+2. `.github/workflows/deploy.yml` 在推送到 `main` 分支或手动触发时，以 pnpm 10.30.3 和 Node.js 22.12.0 安装锁文件依赖并构建 `dist/`。
+3. 工作流通过 Cloudflare Wrangler 将 GitHub Actions 生成的 `dist/` 直接上传至 Cloudflare Pages，不再写入 `deploy` 分支。
+
+部署前需要在 GitHub 仓库配置中添加：
+
+- Secret `CLOUDFLARE_API_TOKEN`：目标 Cloudflare 账户的 Account > Cloudflare Pages > Edit 权限。
+- Secret `CLOUDFLARE_ACCOUNT_ID`：目标 Cloudflare 账户 ID。
+- Variable `CLOUDFLARE_PAGES_PROJECT`：目标 Cloudflare Pages 项目名称。
+
+Cloudflare Pages 项目应使用 Direct Upload，并关闭 Git 集成自动构建。自定义域名仍在对应 Pages 项目中配置。
 
 ---
 

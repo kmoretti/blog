@@ -1,99 +1,8 @@
 ---
-import { LATENCY_API_URL } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
-import { fetchFriendGroups } from "../../lib/friends";
-
-interface RemoteLinkItem {
-  name?: string;
-  link?: string;
-  link_page?: string;
-  latency?: number;
-  reachable?: boolean;
-}
-
-interface RemoteLinkPayload {
-  link_data?: RemoteLinkItem[];
-}
 
 const pageTitle = "友链详情 | 喵洛阁";
 const pageDescription = "友情链接详细页面";
-
-const normalizeUrl = (value?: string) =>
-  value?.trim().replace(/^`|`$/g, "").replace(/\/+$/, "") ?? "";
-const normalizeTagList = (value?: string) =>
-  (value ?? "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-const getHost = (value: string) => {
-  try {
-    return new URL(value).host.replace(/^www\./, "");
-  } catch {
-    return value;
-  }
-};
-
-const formatLatency = (latency?: number) => {
-  if (!latency || Number.isNaN(latency)) return "检测中";
-  return latency < 1
-    ? `${Math.round(latency * 1000)} MS`
-    : `${latency.toFixed(1)} S`;
-};
-
-const getLatencyTone = (latency?: number, reachable?: boolean) => {
-  if (reachable === false) return "down";
-  if (!latency || Number.isNaN(latency)) return "idle";
-  if (latency < 0.8) return "fast";
-  if (latency < 1.8) return "ok";
-  return "slow";
-};
-
-const friendGroupsData = await fetchFriendGroups();
-
-let latencyMap = new Map<string, { latency?: number; reachable?: boolean }>();
-
-try {
-  const response = await fetch(LATENCY_API_URL);
-  const remoteData = (await response.json()) as RemoteLinkPayload;
-  latencyMap = new Map(
-    (remoteData.link_data ?? []).flatMap((item) => {
-      const entries: [string, { latency?: number; reachable?: boolean }][] = [];
-      const payload = { latency: item.latency, reachable: item.reachable };
-      if (item.link) entries.push([normalizeUrl(item.link), payload]);
-      if (item.link_page) entries.push([normalizeUrl(item.link_page), payload]);
-      return entries;
-    }),
-  );
-} catch {
-  latencyMap = new Map();
-}
-
-const friendGroups = friendGroupsData.map((group) => ({
-  ...group,
-  friends: group.friends.map((friend) => {
-    const siteUrl = normalizeUrl(friend.url);
-    const linksUrl = normalizeUrl(friend.links);
-    const latencyInfo = latencyMap.get(siteUrl) ?? latencyMap.get(linksUrl);
-
-    return {
-      ...friend,
-      url: siteUrl,
-      links: linksUrl,
-      snapshot: normalizeUrl(friend.snapshot),
-      feed: normalizeUrl(friend.feed),
-      desc: friend.desc?.trim() ?? "",
-      tags: normalizeTagList(friend.tags),
-      host: getHost(siteUrl),
-      latency: latencyInfo?.latency,
-      reachable: latencyInfo?.reachable,
-      latencyText: formatLatency(latencyInfo?.latency),
-      latencyTone: getLatencyTone(latencyInfo?.latency, latencyInfo?.reachable),
-    };
-  }),
-}));
-
-const friends = friendGroups.flatMap((group) => group.friends);
 ---
 
 <Layout
@@ -135,11 +44,11 @@ const friends = friendGroups.flatMap((group) => group.friends);
         </div>
       </div>
       <div class="fp-muted flex flex-wrap gap-2 text-xs">
-        <span class="fp-tag rounded-full px-3 py-1">
-          共 {friends.length} 位朋友
+        <span id="friends-total" class="fp-tag rounded-full px-3 py-1">
+          正在加载友链…
         </span>
-        <span class="fp-tag rounded-full px-3 py-1">
-          {friendGroups.length} 个分组
+        <span id="friends-group-total" class="fp-tag rounded-full px-3 py-1">
+          正在加载分组…
         </span>
         <span class="fp-tag rounded-full px-3 py-1">
           延迟数据源：fc.081531.xyz
@@ -147,151 +56,8 @@ const friends = friendGroups.flatMap((group) => group.friends);
       </div>
     </header>
 
-    <div class="friend-groups">
-      {
-        friendGroups.map((group, groupIndex) => (
-          <section
-            class={`friend-group friend-group--${groupIndex % 4}`}
-            aria-labelledby={`friend-group-${groupIndex}`}
-          >
-            <header class="friend-group__header">
-              <div class="friend-group__tab" aria-hidden="true">
-                <span class="friend-group__tab-mark" />
-                <span>LINKS</span>
-              </div>
-              <div class="friend-group__heading">
-                <div class="friend-group__eyebrow">
-                  <span>FRIEND GROUP</span>
-                  <span class="friend-group__count">
-                    {group.friends.length} 位朋友
-                  </span>
-                </div>
-                <h2 id={`friend-group-${groupIndex}`}>{group.name}</h2>
-                {group.description && <p>{group.description}</p>}
-              </div>
-            </header>
-
-            <div class="friends-grid">
-              {group.friends.map((friend) => (
-                <article class="friend-card">
-                  <div class="friend-shot">
-                    {friend.snapshot ? (
-                      <img
-                        src={friend.snapshot}
-                        alt=""
-                        class="friend-shot-image"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div class="friend-shot-fallback" />
-                    )}
-                    <div class="friend-shot-mask" />
-                    <span
-                      class={`friend-latency friend-latency--${friend.latencyTone}`}
-                    >
-                      <span class="friend-latency-dot" />
-                      {friend.latencyText}
-                    </span>
-                  </div>
-
-                  <div class="friend-card__main">
-                    <a
-                      href={friend.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="friend-card__link"
-                    >
-                      <img
-                        src={friend.avatar}
-                        alt={friend.name}
-                        class="friend-card__avatar"
-                        loading="lazy"
-                      />
-                      <span class="friend-card__body">
-                        <strong class="friend-card__name">{friend.name}</strong>
-                        <span class="friend-card__host">{friend.host}</span>
-                        <span class="friend-card__desc">
-                          {friend.desc || "这个朋友暂时还没有补充简介。"}
-                        </span>
-                      </span>
-                    </a>
-
-                    {friend.feed && (
-                      <a
-                        href={friend.feed}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="friend-card__rss"
-                        aria-label={`${friend.name} 的 RSS`}
-                        title="RSS"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="13"
-                          height="13"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="lucide"
-                        >
-                          <path d="M4 11a9 9 0 0 1 9 9" />
-                          <path d="M4 4a16 16 0 0 1 16 16" />
-                          <circle cx="5" cy="19" r="1" />
-                        </svg>
-                      </a>
-                    )}
-                  </div>
-
-                  <div class="friend-card__extra">
-                    {friend.tags.length > 0 && (
-                      <div class="friend-tags" aria-label="站点标签">
-                        {friend.tags.map((tag) => (
-                          <span class="friend-tag">{tag}</span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div class="friend-meta-grid">
-                      <div class="friend-meta-box">
-                        <div class="friend-meta-label">主站</div>
-                        <div class="friend-meta-value">{friend.host}</div>
-                      </div>
-                      <div class="friend-meta-box">
-                        <div class="friend-meta-label">订阅</div>
-                        {friend.feed ? (
-                          <span class="friend-meta-value">已提供</span>
-                        ) : (
-                          <span class="friend-meta-value">未提供</span>
-                        )}
-                      </div>
-                      {friend.links ? (
-                        <a
-                          href={friend.links}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="friend-meta-box friend-meta-box--link"
-                          aria-label={`访问 ${friend.name} 的友链页面`}
-                        >
-                          <span class="friend-meta-label">友链页</span>
-                          <span class="friend-meta-value">访问页面 ↗</span>
-                        </a>
-                      ) : (
-                        <div class="friend-meta-box">
-                          <div class="friend-meta-label">友链页</div>
-                          <span class="friend-meta-value">未提供</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        ))
-      }
+    <div id="friend-groups" class="friend-groups" aria-live="polite">
+      <p class="friend-groups__status">正在加载友链…</p>
     </div>
 
     <section
@@ -457,6 +223,13 @@ const friends = friendGroups.flatMap((group) => group.friends);
       display: flex;
       flex-direction: column;
       gap: 3.25rem;
+    }
+
+    .friend-groups__status {
+      margin: 0;
+      color: var(--friends-muted);
+      font-size: 0.875rem;
+      text-align: center;
     }
 
     .failed-friends {
@@ -1299,7 +1072,12 @@ const friends = friendGroups.flatMap((group) => group.friends);
 
   <script>
     import { load as yamlLoad } from "js-yaml/browser";
-    import { FRIEND_FALSE_DATA_URL } from "../../consts";
+    import { FRIEND_FALSE_DATA_URL, LATENCY_API_URL } from "../../consts";
+    import {
+      getHttpUrl,
+      loadFriendGroups,
+      type FriendItem,
+    } from "../../lib/friends-client";
 
     interface FalseLinkEntry {
       name?: unknown;
@@ -1310,11 +1088,317 @@ const friends = friendGroups.flatMap((group) => group.friends);
       entry?: FalseLinkEntry;
     }
 
-    const falseFriendsSection =
-      document.querySelector<HTMLElement>("#failed-friends");
-    const falseFriendsList = document.querySelector<HTMLUListElement>(
-      "#failed-friends-list",
-    );
+    interface RemoteLinkItem {
+      link?: unknown;
+      link_page?: unknown;
+      latency?: unknown;
+      reachable?: unknown;
+    }
+
+    interface RemoteLinkPayload {
+      link_data?: unknown;
+    }
+
+    interface LatencyInfo {
+      latency?: number;
+      reachable?: boolean;
+    }
+
+    const getHost = (url: string) => new URL(url).host.replace(/^www\./, "");
+
+    const formatLatency = (latency?: number) => {
+      if (!latency || Number.isNaN(latency)) return "检测中";
+      return latency < 1
+        ? `${Math.round(latency * 1000)} MS`
+        : `${latency.toFixed(1)} S`;
+    };
+
+    const getLatencyTone = (latency?: number, reachable?: boolean) => {
+      if (reachable === false) return "down";
+      if (!latency || Number.isNaN(latency)) return "idle";
+      if (latency < 0.8) return "fast";
+      if (latency < 1.8) return "ok";
+      return "slow";
+    };
+
+    const createTextElement = (
+      tag: string,
+      className: string,
+      text: string,
+    ) => {
+      const element = document.createElement(tag);
+      element.className = className;
+      element.textContent = text;
+      return element;
+    };
+
+    const createExternalLink = (href: string, className: string) => {
+      const link = document.createElement("a");
+      link.href = href;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className = className;
+      return link;
+    };
+
+    const createLatencyBadge = () => {
+      const badge = document.createElement("span");
+      badge.className = "friend-latency friend-latency--idle";
+      const dot = document.createElement("span");
+      dot.className = "friend-latency-dot";
+      badge.append(dot, document.createTextNode("检测中"));
+      return badge;
+    };
+
+    const createRssIcon = () => {
+      const namespace = "http://www.w3.org/2000/svg";
+      const icon = document.createElementNS(namespace, "svg");
+      icon.setAttribute("xmlns", namespace);
+      icon.setAttribute("width", "13");
+      icon.setAttribute("height", "13");
+      icon.setAttribute("viewBox", "0 0 24 24");
+      icon.setAttribute("fill", "none");
+      icon.setAttribute("stroke", "currentColor");
+      icon.setAttribute("stroke-width", "2.5");
+      icon.setAttribute("stroke-linecap", "round");
+      icon.setAttribute("stroke-linejoin", "round");
+      icon.setAttribute("class", "lucide");
+
+      for (const attributes of [
+        { d: "M4 11a9 9 0 0 1 9 9" },
+        { d: "M4 4a16 16 0 0 1 16 16" },
+        { cx: "5", cy: "19", r: "1" },
+      ]) {
+        const shape = document.createElementNS(
+          namespace,
+          "d" in attributes ? "path" : "circle",
+        );
+        for (const [name, value] of Object.entries(attributes)) {
+          shape.setAttribute(name, value);
+        }
+        icon.append(shape);
+      }
+
+      return icon;
+    };
+
+    const createFriendCard = (friend: FriendItem) => {
+      const card = document.createElement("article");
+      card.className = "friend-card";
+
+      const shot = document.createElement("div");
+      shot.className = "friend-shot";
+      if (friend.snapshot) {
+        const image = document.createElement("img");
+        image.src = friend.snapshot;
+        image.alt = "";
+        image.className = "friend-shot-image";
+        image.loading = "lazy";
+        image.addEventListener(
+          "error",
+          () =>
+            image.replaceWith(
+              Object.assign(document.createElement("div"), {
+                className: "friend-shot-fallback",
+              }),
+            ),
+          { once: true },
+        );
+        shot.append(image);
+      } else {
+        shot.append(
+          Object.assign(document.createElement("div"), {
+            className: "friend-shot-fallback",
+          }),
+        );
+      }
+      shot.append(
+        Object.assign(document.createElement("div"), {
+          className: "friend-shot-mask",
+        }),
+        createLatencyBadge(),
+      );
+
+      const main = document.createElement("div");
+      main.className = "friend-card__main";
+      const link = createExternalLink(friend.url, "friend-card__link");
+      if (friend.avatar) {
+        const avatar = document.createElement("img");
+        avatar.src = friend.avatar;
+        avatar.alt = friend.name;
+        avatar.className = "friend-card__avatar";
+        avatar.loading = "lazy";
+        avatar.addEventListener("error", () => avatar.remove(), { once: true });
+        link.append(avatar);
+      }
+      const body = document.createElement("span");
+      body.className = "friend-card__body";
+      body.append(
+        createTextElement("strong", "friend-card__name", friend.name),
+        createTextElement("span", "friend-card__host", getHost(friend.url)),
+        createTextElement(
+          "span",
+          "friend-card__desc",
+          friend.desc || "这个朋友暂时还没有补充简介。",
+        ),
+      );
+      link.append(body);
+      main.append(link);
+
+      if (friend.feed) {
+        const rss = createExternalLink(friend.feed, "friend-card__rss");
+        rss.setAttribute("aria-label", `${friend.name} 的 RSS`);
+        rss.title = "RSS";
+        rss.append(createRssIcon());
+        main.append(rss);
+      }
+
+      const extra = document.createElement("div");
+      extra.className = "friend-card__extra";
+      if (friend.tags.length > 0) {
+        const tags = document.createElement("div");
+        tags.className = "friend-tags";
+        tags.setAttribute("aria-label", "站点标签");
+        tags.append(
+          ...friend.tags.map((tag) =>
+            createTextElement("span", "friend-tag", tag),
+          ),
+        );
+        extra.append(tags);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "friend-meta-grid";
+      const host = getHost(friend.url);
+      const createMeta = (label: string, value: string) => {
+        const box = document.createElement("div");
+        box.className = "friend-meta-box";
+        box.append(
+          createTextElement("div", "friend-meta-label", label),
+          createTextElement("span", "friend-meta-value", value),
+        );
+        return box;
+      };
+      meta.append(
+        createMeta("主站", host),
+        createMeta("订阅", friend.feed ? "已提供" : "未提供"),
+      );
+      if (friend.links) {
+        const links = createExternalLink(
+          friend.links,
+          "friend-meta-box friend-meta-box--link",
+        );
+        links.setAttribute("aria-label", `访问 ${friend.name} 的友链页面`);
+        links.append(
+          createTextElement("span", "friend-meta-label", "友链页"),
+          createTextElement("span", "friend-meta-value", "访问页面 ↗"),
+        );
+        meta.append(links);
+      } else {
+        meta.append(createMeta("友链页", "未提供"));
+      }
+      extra.append(meta);
+
+      card.append(shot, main, extra);
+      return card;
+    };
+
+    const createFriendGroup = (
+      group: { name: string; description: string; friends: FriendItem[] },
+      index: number,
+    ) => {
+      const section = document.createElement("section");
+      section.className = `friend-group friend-group--${index % 4}`;
+      const headingId = `friend-group-${index}`;
+      section.setAttribute("aria-labelledby", headingId);
+
+      const header = document.createElement("header");
+      header.className = "friend-group__header";
+      const tab = document.createElement("div");
+      tab.className = "friend-group__tab";
+      tab.setAttribute("aria-hidden", "true");
+      tab.append(
+        Object.assign(document.createElement("span"), {
+          className: "friend-group__tab-mark",
+        }),
+        createTextElement("span", "", "LINKS"),
+      );
+      const heading = document.createElement("div");
+      heading.className = "friend-group__heading";
+      const eyebrow = document.createElement("div");
+      eyebrow.className = "friend-group__eyebrow";
+      eyebrow.append(
+        createTextElement("span", "", "FRIEND GROUP"),
+        createTextElement(
+          "span",
+          "friend-group__count",
+          `${group.friends.length} 位朋友`,
+        ),
+      );
+      const title = createTextElement("h2", "", group.name);
+      title.id = headingId;
+      heading.append(eyebrow, title);
+      if (group.description) {
+        heading.append(createTextElement("p", "", group.description));
+      }
+      header.append(tab, heading);
+
+      const grid = document.createElement("div");
+      grid.className = "friends-grid";
+      grid.append(...group.friends.map(createFriendCard));
+      section.append(header, grid);
+      return section;
+    };
+
+    const getLatencyMap = async () => {
+      const response = await fetch(LATENCY_API_URL, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch latency data: ${response.status}`);
+      }
+
+      const payload = (await response.json()) as RemoteLinkPayload;
+      if (!Array.isArray(payload.link_data)) {
+        throw new Error("Unexpected latency data structure");
+      }
+
+      return new Map(
+        payload.link_data.flatMap((value) => {
+          if (!value || typeof value !== "object") return [];
+          const item = value as RemoteLinkItem;
+          const payload: LatencyInfo = {
+            latency:
+              typeof item.latency === "number" ? item.latency : undefined,
+            reachable:
+              typeof item.reachable === "boolean" ? item.reachable : undefined,
+          };
+          return [getHttpUrl(item.link), getHttpUrl(item.link_page)]
+            .filter(Boolean)
+            .map((url) => [url, payload] as const);
+        }),
+      );
+    };
+
+    const applyLatency = (
+      friends: FriendItem[],
+      latencyMap: Map<string, LatencyInfo>,
+    ) => {
+      const cards = document.querySelectorAll<HTMLElement>(".friend-card");
+      for (const [index, friend] of friends.entries()) {
+        const badge =
+          cards[index]?.querySelector<HTMLElement>(".friend-latency");
+        if (!badge) continue;
+
+        const info = latencyMap.get(friend.url) ?? latencyMap.get(friend.links);
+        const tone = getLatencyTone(info?.latency, info?.reachable);
+        badge.className = `friend-latency friend-latency--${tone}`;
+        badge.replaceChildren(
+          Object.assign(document.createElement("span"), {
+            className: "friend-latency-dot",
+          }),
+          document.createTextNode(formatLatency(info?.latency)),
+        );
+      }
+    };
 
     const getFalseLinkEntries = (value: unknown): FalseLinkEntry[] => {
       if (!Array.isArray(value)) return [];
@@ -1322,7 +1406,6 @@ const friends = friendGroups.flatMap((group) => group.friends);
       return value.flatMap((record: FalseLinkRecord) => {
         const entry = record?.entry;
         const name = typeof entry?.name === "string" ? entry.name.trim() : "";
-
         return name ? [{ ...entry, name }] : [];
       });
     };
@@ -1330,9 +1413,7 @@ const friends = friendGroups.flatMap((group) => group.friends);
     const createFalseLinkItem = (entry: FalseLinkEntry) => {
       const item = document.createElement("li");
       item.className = "failed-friends__item";
-
-      const avatar =
-        typeof entry.avatar === "string" ? entry.avatar.trim() : "";
+      const avatar = getHttpUrl(entry.avatar);
       if (avatar) {
         const image = document.createElement("img");
         image.className = "failed-friends__avatar";
@@ -1342,21 +1423,21 @@ const friends = friendGroups.flatMap((group) => group.friends);
         image.addEventListener("error", () => image.remove(), { once: true });
         item.append(image);
       }
-
-      const name = document.createElement("span");
-      name.className = "failed-friends__name";
-      name.textContent = entry.name as string;
-      item.append(name);
-
+      item.append(
+        createTextElement("span", "failed-friends__name", entry.name as string),
+      );
       return item;
     };
 
     const loadFalseFriends = async () => {
-      if (!falseFriendsSection || !falseFriendsList) return;
+      const section = document.querySelector<HTMLElement>("#failed-friends");
+      const list = document.querySelector<HTMLUListElement>(
+        "#failed-friends-list",
+      );
+      if (!section || !list) return;
 
-      falseFriendsSection.hidden = true;
-      falseFriendsList.replaceChildren();
-
+      section.hidden = true;
+      list.replaceChildren();
       try {
         const response = await fetch(FRIEND_FALSE_DATA_URL, {
           cache: "no-store",
@@ -1364,19 +1445,67 @@ const friends = friendGroups.flatMap((group) => group.friends);
         if (!response.ok) {
           throw new Error(`Failed to fetch false friends: ${response.status}`);
         }
-
         const entries = getFalseLinkEntries(yamlLoad(await response.text()));
         if (entries.length === 0) return;
-
-        falseFriendsList.append(
-          ...entries.map((entry) => createFalseLinkItem(entry)),
-        );
-        falseFriendsSection.hidden = false;
+        list.append(...entries.map(createFalseLinkItem));
+        section.hidden = false;
       } catch (error) {
         console.warn("Failed to load false friends:", error);
       }
     };
 
-    document.addEventListener("astro:page-load", () => void loadFalseFriends());
+    const loadFriends = async () => {
+      const groupsContainer =
+        document.querySelector<HTMLElement>("#friend-groups");
+      const total = document.querySelector<HTMLElement>("#friends-total");
+      const groupTotal = document.querySelector<HTMLElement>(
+        "#friends-group-total",
+      );
+      if (!groupsContainer || !total || !groupTotal) return;
+
+      groupsContainer.replaceChildren(
+        createTextElement("p", "friend-groups__status", "正在加载友链…"),
+      );
+      total.textContent = "正在加载友链…";
+      groupTotal.textContent = "正在加载分组…";
+
+      const latencyPromise = getLatencyMap().catch((error) => {
+        console.warn("Failed to load latency data:", error);
+        return null;
+      });
+
+      try {
+        const groups = await loadFriendGroups();
+        const friends = groups.flatMap((group) => group.friends);
+        if (friends.length === 0) {
+          throw new Error("No valid friends in remote data");
+        }
+
+        groupsContainer.replaceChildren(
+          ...groups.map((group, index) => createFriendGroup(group, index)),
+        );
+        total.textContent = `共 ${friends.length} 位朋友`;
+        groupTotal.textContent = `${groups.length} 个分组`;
+
+        const latencyMap = await latencyPromise;
+        if (latencyMap) applyLatency(friends, latencyMap);
+      } catch (error) {
+        console.warn("Failed to load friends:", error);
+        const message = createTextElement(
+          "p",
+          "friend-groups__status",
+          "友链数据暂时无法加载，请稍后刷新重试。",
+        );
+        message.setAttribute("role", "alert");
+        groupsContainer.replaceChildren(message);
+        total.textContent = "友链数据加载失败";
+        groupTotal.textContent = "分组数据加载失败";
+      }
+    };
+
+    document.addEventListener("astro:page-load", () => {
+      void loadFriends();
+      void loadFalseFriends();
+    });
   </script>
 </Layout>
